@@ -1,0 +1,26 @@
+body {
+    background-color: #f3f6fa;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.form-container {
+    max-width: 850px;
+}
+
+.form-title {
+    letter-spacing: 0.5px;
+}
+
+form {
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}

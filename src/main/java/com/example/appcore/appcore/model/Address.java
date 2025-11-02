@@ -3,6 +3,9 @@ package com.example.appcore.appcore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -23,7 +26,6 @@ public class Address {
     private String complement;
     private int number;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "address")
+    private List<User> users = new ArrayList<>();
 }
