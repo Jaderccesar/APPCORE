@@ -1,6 +1,6 @@
-package model;
+package com.example.appcore.appcore.model;
 
-import enums.PhoneType;
+import com.example.appcore.appcore.enums.PhoneType;
 import jakarta.persistence.*;
 import lombok.*;
 

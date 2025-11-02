@@ -1,4 +1,4 @@
-package model;
+package com.example.appcore.appcore.model;
 
 import jakarta.persistence.*;
 import lombok.*;

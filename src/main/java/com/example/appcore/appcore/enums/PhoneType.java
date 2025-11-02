@@ -1,4 +1,4 @@
-package enums;
+package com.example.appcore.appcore.enums;
 
 public enum PhoneType {
     RESIDENTIAL,
