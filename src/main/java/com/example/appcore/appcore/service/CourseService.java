@@ -1,6 +1,6 @@
 package com.example.appcore.appcore.service;
 
-import com.example.appcore.appcore.enums.CourseStatus;
+import com.example.appcore.appcore.enums.CreateStatus;
 import com.example.appcore.appcore.model.Course;
 import com.example.appcore.appcore.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,7 +28,7 @@ public class CourseService {
     public Course save(Course course) {
         course.setCreatedAt(LocalDateTime.now());
         course.setUpdatedAt(LocalDateTime.now());
-        course.setStatus(CourseStatus.DRAFT);
+        course.setStatus(CreateStatus.DRAFT);
         return courseRepository.save(course);
     }
 

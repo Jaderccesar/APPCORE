@@ -1,10 +1,11 @@
 package com.example.appcore.appcore.model;
 
-import com.example.appcore.appcore.enums.CourseStatus;
+import com.example.appcore.appcore.enums.CreateStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,7 +34,7 @@ public class Course {
     private boolean certificateEnabled;
 
     @Enumerated(EnumType.STRING)
-    private CourseStatus status;
+    private CreateStatus status;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -47,11 +48,22 @@ public class Course {
     @JoinColumn(name = "teacher_id")
     private User teacher;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ArrayList<Challenge> challenges;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ArrayList<Certificate> certificates;
+
+    @ManyToMany
+    @JoinTable(name = "tb_course_promotion", joinColumns = @JoinColumn(name = "course_id"),
+    inverseJoinColumns = @JoinColumn(name = "promotion_id"))
+    private ArrayList<Promotion> promotions;
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.status = CourseStatus.DRAFT;
+        this.status = CreateStatus.DRAFT;
     }
 
     @PreUpdate

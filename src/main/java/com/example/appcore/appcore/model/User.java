@@ -58,12 +58,18 @@ public abstract class User {
     @JsonIgnore
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Telephone> phones = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ArrayList<Telephone> phones;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ArrayList<Post> posts;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Timeline timeline;
 
     @PreUpdate
     public void preUpdate() {

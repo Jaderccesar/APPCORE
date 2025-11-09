@@ -11,12 +11,12 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-@Table(name = "telephone")
+@Table(name = "tb_telephone")
 public class Telephone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String number;
     private PhoneType phoneType;
     @ManyToOne
