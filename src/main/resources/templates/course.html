@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos - APPCORE</title>
+    <meta name="description" content="Explore todos os cursos disponíveis na APPCORE">
+    <link rel="stylesheet" href="../static/course.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="appcore.html" class="logo">APPCORE</a>
+                <nav class="nav">
+                    <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
+                    <a onclick="window.location.href='course.html'" class="nav-link active">Cursos</a>
+                    <a href="#" class="nav-link">Desafios</a>
+                    <a href="#" class="nav-link">Eventos</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <a onclick="window.location.href='course-register.html'" class="btn btn-outline">Criar Curso</a>
+                <a onclick="window.location.href='user-register.html'" class="btn btn-primary">Entrar / Registrar</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h1>Todos os Cursos</h1>
+                    <p class="hero-subtitle" style="text-align: left; margin-top: 0.5rem;">
+                        Explore nossa biblioteca completa de cursos e comece a aprender hoje
+                    </p>
+                </div>
+                <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
+                    <select class="filter-select">
+                        <option value="">Todos os níveis</option>
+                        <option value="iniciante">Iniciante</option>
+                        <option value="intermediario">Intermediário</option>
+                        <option value="avancado">Avançado</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Ordenar por</option>
+                        <option value="recentes">Mais Recentes</option>
+                        <option value="populares">Mais Populares</option>
+                        <option value="avaliacao">Melhor Avaliados</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="courses-grid">
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">APPCORE</h3>
+                <p class="footer-text">A plataforma definitiva para aprender programação se divertindo.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-heading">Plataforma</h4>
+                <ul class="footer-links">
+                    <li><a href="#cursos">Cursos</a></li>
+                    <li><a href="#desafios">Desafios</a></li>
+                    <li><a href="#eventos">Eventos</a></li>
+                    <li><a href="#certificados">Certificados</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    async function carregarCursos() {
+      const container = document.querySelector(".courses-grid");
+      container.innerHTML = "<p>Carregando cursos...</p>";
+
+      try {
+        const response = await fetch("http://localhost:8080/courses/list");
+        const cursos = await response.json();
+
+        if (cursos.length === 0) {
+          container.innerHTML = "<p>Nenhum curso disponível no momento.</p>";
+          return;
+        }
+
+        container.innerHTML = cursos.map(curso => `
+          <article class="course-card-full">
+              <div class="course-image" style="background-image: url('${curso.imageUrl}');"></div>
+              <div class="course-content">
+                  <div class="course-tags">
+                      <span class="tag tag-level">${curso.level}</span>
+                      <span class="tag tag-price">${curso.price > 0 ? "R$ " + curso.price.toFixed(2) : "Gratuito"}</span>
+                  </div>
+                  <h3 class="course-title">${curso.title}</h3>
+                  <p class="course-description">${curso.description}</p>
+                  <div class="course-meta">
+                      <div class="course-rating">
+                          <span class="rating-stars">★★★★★</span>
+                          <span class="rating-value">${curso.rating || "0.0"}</span>
+                      </div>
+                      <div class="course-workload">
+                          ⏱ ${curso.workload}h
+                      </div>
+                  </div>
+                  <a href="#" class="btn btn-primary btn-block">Ver Curso</a>
+              </div>
+          </article>
+        `).join("");
+      } catch (err) {
+        console.error("Erro:", err);
+        container.innerHTML = "<p>Erro ao carregar os cursos.</p>";
+      }
+    }
+
+    carregarCursos();
+</script>
+
+</body>
+</html>
+
+
