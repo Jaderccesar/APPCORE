@@ -21,6 +21,6 @@ public class Teacher extends User{
     @JoinColumn(name = "course_id")
     private ArrayList<Course> ministredCourses;
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "responsible", cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<Challenge> challenges;
 }

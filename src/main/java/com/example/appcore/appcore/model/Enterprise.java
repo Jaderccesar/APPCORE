@@ -20,6 +20,7 @@ public class Enterprise extends User{
 
     private String fantasyName;
     private String cnpj;
-    @OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "responsible", cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<Event> promotedEvents;
 }

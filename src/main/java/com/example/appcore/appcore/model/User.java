@@ -65,7 +65,7 @@ public abstract class User {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private ArrayList<Post> posts;
 
     @OneToOne(cascade = CascadeType.ALL)
