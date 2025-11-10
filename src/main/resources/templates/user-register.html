@@ -214,14 +214,14 @@
             cpf: data.cpf,
             birthday: data.birthday,
             genero: data.genero,
-            favoriteLanguage: data.FavoriteLanguage,
+            favoriteLanguage: data.favoriteLanguage,
             accountType: data.accountType,
             phones,
             address
         };
 
         try {
-            const response = await fetch(`/${accountType}/save`, {
+            const response = await fetch("http://localhost:8080/Students/save", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

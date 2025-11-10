@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@Table(name = "tb_address")
+@Table(name = "address")
 public class Address {
 
     @Id

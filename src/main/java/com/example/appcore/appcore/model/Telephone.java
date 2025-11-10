@@ -19,6 +19,7 @@ public class Telephone {
     private Long id;
     private String number;
     private PhoneType phoneType;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

@@ -59,10 +59,10 @@ public abstract class User {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Telephone> phones;
+    private List<Telephone> phones = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)

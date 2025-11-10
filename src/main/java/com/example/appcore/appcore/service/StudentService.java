@@ -46,8 +46,31 @@ public class StudentService {
         existingStudent.setAccountType(student.getAccountType());
         existingStudent.setTotalScore(student.getTotalScore());
         existingStudent.setNivel(student.getNivel());
+        
+        // Atualizar endereço se fornecido
+        if (student.getAddress() != null) {
+            if (existingStudent.getAddress() != null) {
+                // Atualiza campos do endereço existente
+                existingStudent.getAddress().setStreet(student.getAddress().getStreet());
+                existingStudent.getAddress().setCity(student.getAddress().getCity());
+                existingStudent.getAddress().setState(student.getAddress().getState());
+                existingStudent.getAddress().setZip(student.getAddress().getZip());
+                existingStudent.getAddress().setCountry(student.getAddress().getCountry());
+                existingStudent.getAddress().setComplement(student.getAddress().getComplement());
+                existingStudent.getAddress().setNumber(student.getAddress().getNumber());
+            } else {
+                // Cria novo endereço se não existir
+                existingStudent.setAddress(student.getAddress());
+            }
+        }
 
         return studentRepository.save(existingStudent);
+    }
+    
+    public Optional<Student> findByEmail(String email) {
+        return studentRepository.findAll().stream()
+                .filter(s -> s.getEmail().equalsIgnoreCase(email))
+                .findFirst();
     }
 
     public void delete(Long id) {

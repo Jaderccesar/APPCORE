@@ -1,10 +1,10 @@
 package com.example.appcore.appcore.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum FavoriteLanguage {
-    @JsonProperty("PORTUGUES")
     PORTUGUESE,
-    @JsonProperty("INGLES")
     ENGLISH
 }
