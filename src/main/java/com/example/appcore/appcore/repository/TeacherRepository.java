@@ -1,4 +1,8 @@
 package com.example.appcore.appcore.repository;
 
-public interface TeacherRepository {
-}
+import com.example.appcore.appcore.model.Teacher;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {}
