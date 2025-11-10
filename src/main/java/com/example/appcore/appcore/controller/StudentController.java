@@ -2,7 +2,6 @@ package com.example.appcore.appcore.controller;
 
 import com.example.appcore.appcore.model.Student;
 import com.example.appcore.appcore.service.StudentService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,23 @@ public class StudentController {
     @GetMapping("/{id}")
     public Student listById(@PathVariable Long id) {
         return studentService.findById(id).orElse(null);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Student> findByEmail(@PathVariable String email) {
+        return studentService.findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<Student> getCurrentUser(@RequestParam(required = false) Long id) {
+        if (id != null) {
+            return studentService.findById(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/save")
