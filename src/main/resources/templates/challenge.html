@@ -1,15 +1,12 @@
-<!-- Arquivo gerado: desafios.html — APPCORE — Listagem de Desafios — Apenas HTML/CSS/JS -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Desafios - APPCORE</title>
-    <meta name="description" content="Explore e participe dos desafios disponíveis na APPCORE">
     <link rel="stylesheet" href="../static/challenge.css">
 </head>
 <body>
-<!-- Header -->
 <header class="header">
     <div class="container">
         <div class="header-content">
@@ -20,300 +17,134 @@
                     <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
                     <a onclick="window.location.href='challenge.html'" class="nav-link active">Desafios</a>
                     <a href="#" class="nav-link">Eventos</a>
-                    <a href="#" class="nav-link">Fórum</a>
                 </nav>
             </div>
             <div class="header-right">
-                <a href="#" class="btn btn-primary">Entrar / Registrar</a>
+                <a href="profile.html" class="btn btn-icon" title="Perfil">
+                    <img src="../static/icons/user.svg" alt="Perfil" style="width:20px;">
+                </a>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
 <main>
-    <!-- Hero Section -->
     <section class="hero hero-small">
         <div class="container">
             <h1>Desafios</h1>
-            <p class="hero-subtitle">
-                Teste seus conhecimentos e ganhe pontos resolvendo desafios práticos
-            </p>
+            <p class="hero-subtitle">Teste seus conhecimentos — participe de desafios práticos com questões de múltipla escolha.</p>
         </div>
     </section>
 
-    <!-- Search and Filter Section -->
     <section class="section">
         <div class="container">
             <div class="search-filter-bar">
-                <input
-                        type="search"
-                        id="searchInput"
-                        class="search-input"
-                        placeholder="Buscar desafios..."
-                >
-                <a onclick="window.location.href='challenge-register.html'" class="btn btn-primary">
-                    + Criar Desafio
-                </a>
-            </div>
-
-            <div class="filter-bar">
-                <select id="statusFilter" class="filter-select">
-                    <option value="">Todos os Status</option>
-                    <option value="aberto">Aberto</option>
-                    <option value="fechado">Fechado</option>
-                    <option value="rascunho">Rascunho</option>
-                </select>
-                <select id="sortFilter" class="filter-select">
-                    <option value="recent">Mais Recentes</option>
-                    <option value="points">Maior Pontuação</option>
-                    <option value="title">Título (A-Z)</option>
-                </select>
+                <input id="searchInput" class="search-input" placeholder="Buscar desafios..." />
+                <a onclick="window.location.href='challenge-register.html'" class="btn btn-primary">+ Criar Desafio</a>
             </div>
         </div>
     </section>
 
-    <!-- Challenges Grid -->
     <section class="section section-gray">
         <div class="container">
-            <div class="courses-grid">
-                <!-- Challenge Card 1 -->
-                <article class="course-card-full challenge-card">
-                    <div class="course-card-image">
-                        <div class="placeholder-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <span style="font-size: 48px; color: white;">💻</span>
-                        </div>
-                        <span class="badge badge-success">Aberto</span>
-                    </div>
-                    <div class="course-card-content">
-                        <h3 class="course-card-title">Algoritmos de Ordenação</h3>
-                        <p class="course-card-description">
-                            Implemente três algoritmos de ordenação diferentes e compare sua eficiência.
-                        </p>
-                        <div class="course-card-meta">
-                                <span class="meta-item">
-                                    <strong>🏆 150</strong> pontos
-                                </span>
-                            <span class="meta-item">
-                                    ⏰ Termina em 7 dias
-                                </span>
-                        </div>
-                        <a href="#" class="btn btn-primary btn-block">Ver Desafio</a>
-                    </div>
-                </article>
-
-                <!-- Challenge Card 2 -->
-                <article class="course-card-full challenge-card">
-                    <div class="course-card-image">
-                        <div class="placeholder-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                            <span style="font-size: 48px; color: white;">🎯</span>
-                        </div>
-                        <span class="badge badge-success">Aberto</span>
-                    </div>
-                    <div class="course-card-content">
-                        <h3 class="course-card-title">API REST com Node.js</h3>
-                        <p class="course-card-description">
-                            Crie uma API completa com autenticação e operações CRUD para gerenciar usuários.
-                        </p>
-                        <div class="course-card-meta">
-                                <span class="meta-item">
-                                    <strong>🏆 200</strong> pontos
-                                </span>
-                            <span class="meta-item">
-                                    ⏰ Termina em 14 dias
-                                </span>
-                        </div>
-                        <a href="#" class="btn btn-primary btn-block">Ver Desafio</a>
-                    </div>
-                </article>
-
-                <!-- Challenge Card 3 -->
-                <article class="course-card-full challenge-card">
-                    <div class="course-card-image">
-                        <div class="placeholder-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                            <span style="font-size: 48px; color: white;">🧪</span>
-                        </div>
-                        <span class="badge badge-success">Aberto</span>
-                    </div>
-                    <div class="course-card-content">
-                        <h3 class="course-card-title">Testes Automatizados</h3>
-                        <p class="course-card-description">
-                            Escreva testes unitários e de integração para uma aplicação web existente.
-                        </p>
-                        <div class="course-card-meta">
-                                <span class="meta-item">
-                                    <strong>🏆 120</strong> pontos
-                                </span>
-                            <span class="meta-item">
-                                    ⏰ Termina em 10 dias
-                                </span>
-                        </div>
-                        <a href="#" class="btn btn-primary btn-block">Ver Desafio</a>
-                    </div>
-                </article>
-
-                <!-- Challenge Card 4 -->
-                <article class="course-card-full challenge-card">
-                    <div class="course-card-image">
-                        <div class="placeholder-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                            <span style="font-size: 48px; color: white;">🔐</span>
-                        </div>
-                        <span class="badge badge-warning">Fechado</span>
-                    </div>
-                    <div class="course-card-content">
-                        <h3 class="course-card-title">Segurança em Aplicações Web</h3>
-                        <p class="course-card-description">
-                            Identifique e corrija vulnerabilidades comuns em uma aplicação web.
-                        </p>
-                        <div class="course-card-meta">
-                                <span class="meta-item">
-                                    <strong>🏆 180</strong> pontos
-                                </span>
-                            <span class="meta-item">
-                                    ⏰ Encerrado
-                                </span>
-                        </div>
-                        <a href="#" class="btn btn-outline btn-block">Ver Desafio</a>
-                    </div>
-                </article>
-
-                <!-- Challenge Card 5 -->
-                <article class="course-card-full challenge-card">
-                    <div class="course-card-image">
-                        <div class="placeholder-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                            <span style="font-size: 48px; color: white;">📊</span>
-                        </div>
-                        <span class="badge badge-success">Aberto</span>
-                    </div>
-                    <div class="course-card-content">
-                        <h3 class="course-card-title">Visualização de Dados</h3>
-                        <p class="course-card-description">
-                            Crie dashboards interativos para visualizar dados complexos usando D3.js.
-                        </p>
-                        <div class="course-card-meta">
-                                <span class="meta-item">
-                                    <strong>🏆 160</strong> pontos
-                                </span>
-                            <span class="meta-item">
-                                    ⏰ Termina em 21 dias
-                                </span>
-                        </div>
-                        <a href="#" class="btn btn-primary btn-block">Ver Desafio</a>
-                    </div>
-                </article>
-
-                <!-- Challenge Card 6 -->
-                <article class="course-card-full challenge-card">
-                    <div class="course-card-image">
-                        <div class="placeholder-image" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
-                            <span style="font-size: 48px; color: white;">🤖</span>
-                        </div>
-                        <span class="badge badge-success">Aberto</span>
-                    </div>
-                    <div class="course-card-content">
-                        <h3 class="course-card-title">Machine Learning Básico</h3>
-                        <p class="course-card-description">
-                            Implemente um modelo de classificação usando Python e scikit-learn.
-                        </p>
-                        <div class="course-card-meta">
-                                <span class="meta-item">
-                                    <strong>🏆 250</strong> pontos
-                                </span>
-                            <span class="meta-item">
-                                    ⏰ Termina em 30 dias
-                                </span>
-                        </div>
-                        <a href="#" class="btn btn-primary btn-block">Ver Desafio</a>
-                    </div>
-                </article>
+            <div id="challengeGrid" class="courses-grid">
+                <p id="loadingText">Carregando desafios...</p>
             </div>
         </div>
     </section>
 </main>
 
-<!-- Footer -->
 <footer class="footer">
     <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3 class="footer-title">APPCORE</h3>
-                <p class="footer-text">
-                    Plataforma completa para aprendizado prático através de cursos, desafios e eventos.
-                </p>
-            </div>
-            <div class="footer-section">
-                <h4 class="footer-heading">Plataforma</h4>
-                <div class="footer-links">
-                    <a href="cursos.html">Cursos</a>
-                    <a href="desafios.html">Desafios</a>
-                    <a href="#">Eventos</a>
-                    <a href="#">Fórum</a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4 class="footer-heading">Empresa</h4>
-                <div class="footer-links">
-                    <a href="#">Sobre</a>
-                    <a href="#">Carreiras</a>
-                    <a href="#">Blog</a>
-                    <a href="#">Contato</a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4 class="footer-heading">Legal</h4>
-                <div class="footer-links">
-                    <a href="#">Termos de Uso</a>
-                    <a href="#">Privacidade</a>
-                    <a href="#">Cookies</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p class="footer-copyright">© 2024 APPCORE. Todos os direitos reservados.</p>
-            <div class="social-links">
-                <a href="#" class="social-icon">Li</a>
-                <a href="#" class="social-icon">Tw</a>
-                <a href="#" class="social-icon">Gh</a>
-                <a href="#" class="social-icon">Yt</a>
-            </div>
-        </div>
+        <p>© 2025 APPCORE. Todos os direitos reservados.</p>
     </div>
 </footer>
 
 <script>
-    // Simple search functionality
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const cards = document.querySelectorAll('.challenge-card');
+    const API_BASE = "http://localhost:8080/challenges";
 
-        cards.forEach(card => {
+    function isoDateShort(dateString) {
+      if (!dateString) return "";
+      try {
+        return new Date(dateString).toLocaleDateString('pt-BR');
+      } catch { return dateString; }
+    }
+
+    async function loadChallenges() {
+      const grid = document.getElementById("challengeGrid");
+      const loading = document.getElementById("loadingText");
+      try {
+        const res = await fetch(`${API_BASE}/list`);
+        if (!res.ok) throw new Error("Erro ao carregar");
+        const challenges = await res.json();
+        grid.innerHTML = "";
+
+        if (!challenges || challenges.length === 0) {
+          grid.innerHTML = "<p>Nenhum desafio cadastrado.</p>";
+          return;
+        }
+
+        challenges.forEach(ch => {
+          const ended = ch.endDate ? new Date(ch.endDate) < new Date() : false;
+          const daysLeft = ch.endDate ? Math.ceil((new Date(ch.endDate) - new Date()) / (1000*60*60*24)) : null;
+          const questionCount = ch.questions ? ch.questions.length : (ch.questionCount ?? 0);
+
+          const card = document.createElement("article");
+          card.className = "course-card-full challenge-card";
+          card.innerHTML = `
+            <div class="course-card-image">
+              <div class="placeholder-image" style="background:linear-gradient(135deg,#6772ff 0%,#7b61ff 100%);">
+                <span style="font-size:42px;color:white">🧩</span>
+              </div>
+              <span class="badge ${ended ? 'badge-warning' : 'badge-success'}">${ended ? 'Encerrado' : 'Aberto'}</span>
+            </div>
+            <div class="course-card-content">
+              <h3 class="course-card-title">${escapeHtml(ch.title)}</h3>
+              <p class="course-card-description">${escapeHtml(ch.description || '')}</p>
+              <div class="course-card-meta">
+                <span class="meta-item">🏆 ${ch.maxScore ?? '—'} pts</span>
+                <span class="meta-item">📋 ${questionCount} questões</span>
+                <span class="meta-item">Início: ${isoDateShort(ch.startDate)}</span>
+                <span class="meta-item">Fim: ${isoDateShort(ch.endDate)}</span>
+                ${!ended && daysLeft ? `<span class="meta-item">🔥 ${daysLeft} dias</span>` : ''}
+              </div>
+              <div style="margin-top:12px;display:flex;gap:8px;">
+                <a href="#" data-id="${ch.id}" class="btn btn-primary btn-block btn-view">Ver</a>
+                <a href="challenge-register.html?id=${ch.id}" class="btn btn-outline">Editar</a>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        // attach simple search/filter behavior
+        document.getElementById('searchInput').addEventListener('input', (e)=>{
+          const term = e.target.value.toLowerCase();
+          document.querySelectorAll('.challenge-card').forEach(card=>{
             const title = card.querySelector('.course-card-title').textContent.toLowerCase();
-            const description = card.querySelector('.course-card-description').textContent.toLowerCase();
-
-            if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
+            const desc = card.querySelector('.course-card-description').textContent.toLowerCase();
+            card.style.display = (title.includes(term) || desc.includes(term)) ? 'flex' : 'none';
+          });
         });
-    });
 
-    // Status filter
-    document.getElementById('statusFilter').addEventListener('change', function(e) {
-        const status = e.target.value.toLowerCase();
-        const cards = document.querySelectorAll('.challenge-card');
-
-        cards.forEach(card => {
-            const badge = card.querySelector('.badge');
-            const cardStatus = badge.textContent.toLowerCase();
-
-            if (status === '' || cardStatus === status) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
+        // view button (could open modal or route)
+        document.querySelectorAll('.btn-view').forEach(b=>{
+          b.addEventListener('click', (ev)=>{
+            ev.preventDefault();
+            const id = b.getAttribute('data-id');
+            window.location.href = `challenge-view.html?id=${id}`; // optional page you can implement
+          });
         });
-    });
+
+      } catch (err) {
+        console.error(err);
+        loading.textContent = "Erro ao carregar desafios.";
+      }
+    }
+
+    function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+
+    document.addEventListener('DOMContentLoaded', loadChallenges);
 </script>
 </body>
 </html>

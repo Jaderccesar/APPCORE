@@ -1,15 +1,12 @@
-<!-- Arquivo gerado: cadastro-desafio.html — APPCORE — Cadastro de Desafio — HTML/CSS/JS -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Desafio - APPCORE</title>
-    <meta name="description" content="Crie um novo desafio na APPCORE">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Criar / Editar Desafio - APPCORE</title>
     <link rel="stylesheet" href="../static/challenge.css">
 </head>
 <body>
-<!-- Header -->
 <header class="header">
     <div class="container">
         <div class="header-content">
@@ -19,147 +16,59 @@
                     <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
                     <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
                     <a onclick="window.location.href='challenge.html'" class="nav-link active">Desafios</a>
-                    <a href="#" class="nav-link">Eventos</a>
-                    <a href="#" class="nav-link">Fórum</a>
                 </nav>
-            </div>
-            <div class="header-right">
-                <a href="#" class="btn btn-primary">Entrar / Registrar</a>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
 <main>
     <section class="section">
         <div class="container">
             <div class="form-container">
-                <div class="form-header">
-                    <h1>Criar Novo Desafio</h1>
-                    <p class="form-subtitle">
-                        Preencha as informações abaixo para criar um desafio para seus alunos
-                    </p>
-                </div>
+                <h1 id="formTitle">Criar Novo Desafio</h1>
 
-                <form class="course-form" id="challengeForm" action="#" method="POST">
-                    <!-- Informações Básicas -->
+                <form id="challengeForm">
+                    <input type="hidden" id="challengeId" />
+
                     <div class="form-section">
-                        <h2 class="form-section-title">Informações Básicas</h2>
+                        <label class="form-label" for="title">Título *</label>
+                        <input id="title" class="form-input" required />
 
-                        <div class="form-group">
-                            <label for="title" class="form-label">Título do Desafio *</label>
-                            <input
-                                    type="text"
-                                    id="title"
-                                    name="title"
-                                    class="form-input"
-                                    placeholder="Ex: Implementação de Algoritmos de Busca"
-                                    required
-                            >
-                        </div>
+                        <label class="form-label" for="description" style="margin-top:12px">Descrição *</label>
+                        <textarea id="description" class="form-textarea" rows="5" required></textarea>
 
-                        <div class="form-group">
-                            <label for="description" class="form-label">Descrição Detalhada *</label>
-                            <textarea
-                                    id="description"
-                                    name="description"
-                                    class="form-textarea"
-                                    rows="6"
-                                    placeholder="Descreva o desafio, os objetivos de aprendizagem e o que os alunos precisam entregar..."
-                                    required
-                            ></textarea>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="max_score" class="form-label">Pontuação Máxima *</label>
-                                <input
-                                        type="number"
-                                        id="max_score"
-                                        name="max_score"
-                                        class="form-input"
-                                        placeholder="100"
-                                        min="1"
-                                        required
-                                >
-                            </div>
-
-                            <div class="form-group">
-                                <label for="course_id" class="form-label">Curso Vinculado *</label>
-                                <select id="course_id" name="course_id" class="form-select" required>
-                                    <option value="">Selecione um curso</option>
-                                    <option value="1">Fundamentos de Desenvolvimento Web</option>
-                                    <option value="2">Estruturas de Dados e Algoritmos</option>
-                                    <option value="3">Desenvolvimento Backend com Node.js</option>
-                                    <option value="4">Testes Automatizados</option>
-                                </select>
+                        <div class="form-row" style="margin-top:12px">
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Pontuação Máxima *</label>
+                                <input id="maxScore" type="number" min="1" class="form-input" required />
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="start_date" class="form-label">Data de Início *</label>
-                                <input
-                                        type="datetime-local"
-                                        id="start_date"
-                                        name="start_date"
-                                        class="form-input"
-                                        required
-                                >
+                        <div class="form-row" style="margin-top:12px">
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Data de Início *</label>
+                                <input id="startDate" type="datetime-local" class="form-input" required />
                             </div>
-
-                            <div class="form-group">
-                                <label for="end_date" class="form-label">Data de Término *</label>
-                                <input
-                                        type="datetime-local"
-                                        id="end_date"
-                                        name="end_date"
-                                        class="form-input"
-                                        required
-                                >
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Data de Término *</label>
+                                <input id="endDate" type="datetime-local" class="form-input" required />
                             </div>
                         </div>
                     </div>
 
-                    <!-- Critérios de Avaliação -->
-                    <div class="form-section">
-                        <h2 class="form-section-title">Critérios de Avaliação</h2>
-
-                        <div class="form-group">
-                            <label for="evaluation_criteria" class="form-label">Critérios de Avaliação *</label>
-                            <textarea
-                                    id="evaluation_criteria"
-                                    name="evaluation_criteria"
-                                    class="form-textarea"
-                                    rows="5"
-                                    placeholder="Descreva os critérios que serão usados para avaliar as submissões dos alunos..."
-                                    required
-                            ></textarea>
-                            <p class="form-help">
-                                Exemplo: Qualidade do código (30%), Funcionalidade (40%), Documentação (20%), Testes (10%)
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Questões -->
-                    <div class="form-section">
+                    <div class="form-section" style="margin-top:18px">
                         <h2 class="form-section-title">Questões</h2>
-                        <p class="form-help" style="margin-bottom: 24px;">
-                            Adicione questões de múltipla escolha para o desafio
-                        </p>
+                        <p class="form-help">Adicione questões de múltipla escolha. Marque a alternativa correta em cada questão.</p>
 
-                        <div id="questionsContainer">
-                            <!-- As questões serão adicionadas aqui dinamicamente -->
+                        <div id="questionsContainer"></div>
+
+                        <div style="margin-top:12px">
+                            <button type="button" id="addQuestionBtn" class="btn btn-outline">+ Adicionar Questão</button>
                         </div>
-
-                        <button type="button" id="addQuestionBtn" class="btn btn-outline">
-                            + Adicionar Questão
-                        </button>
                     </div>
 
-                    <!-- Form Actions -->
-                    <div class="form-actions">
+                    <div class="form-actions" style="margin-top:18px">
                         <a onclick="window.location.href='challenge.html'" class="btn btn-outline btn-lg">Cancelar</a>
                         <button type="submit" class="btn btn-primary btn-lg">Salvar Desafio</button>
                     </div>
@@ -169,199 +78,190 @@
     </section>
 </main>
 
-<!-- Footer -->
 <footer class="footer">
     <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3 class="footer-title">APPCORE</h3>
-                <p class="footer-text">
-                    Plataforma completa para aprendizado prático através de cursos, desafios e eventos.
-                </p>
-            </div>
-            <div class="footer-section">
-                <h4 class="footer-heading">Plataforma</h4>
-                <div class="footer-links">
-                    <a href="cursos.html">Cursos</a>
-                    <a href="desafios.html">Desafios</a>
-                    <a href="#">Eventos</a>
-                    <a href="#">Fórum</a>
-                </div>
-            </div>
-        </div>
+        <p>© 2025 APPCORE</p>
     </div>
 </footer>
 
 <script>
-    let questionCount = 0;
+    const API_BASE = "http://localhost:8080/challenges";
+    let questionIndex = 0;
+    const questionsContainer = document.getElementById('questionsContainer');
 
-    // Template de questão
-    function createQuestionHTML(number) {
-        return `
-            <div class="question-block" data-question="${number}">
-                <div class="question-header">
-                    <h3 class="question-title">Questão ${number}</h3>
-                    <button type="button" class="btn-remove-question" onclick="removeQuestion(${number})">
-                        ✕ Remover
-                    </button>
-                </div>
-
-                <div class="form-group">
-                    <label for="question_${number}" class="form-label">Enunciado da Questão *</label>
-                    <textarea
-                        id="question_${number}"
-                        name="questions[${number}][text]"
-                        class="form-textarea"
-                        rows="3"
-                        placeholder="Digite o enunciado da questão..."
-                        required
-                    ></textarea>
-                </div>
-
-                <div class="alternatives-container">
-                    <label class="form-label">Alternativas *</label>
-
-                    <div class="alternative-item">
-                        <label class="alternative-label">
-                            <input
-                                type="radio"
-                                name="questions[${number}][correct]"
-                                value="A"
-                                class="alternative-radio"
-                                required
-                            >
-                            <span class="alternative-letter">A</span>
-                            <input
-                                type="text"
-                                name="questions[${number}][alt_a]"
-                                class="alternative-input"
-                                placeholder="Digite a alternativa A"
-                                required
-                            >
-                        </label>
-                    </div>
-
-                    <div class="alternative-item">
-                        <label class="alternative-label">
-                            <input
-                                type="radio"
-                                name="questions[${number}][correct]"
-                                value="B"
-                                class="alternative-radio"
-                                required
-                            >
-                            <span class="alternative-letter">B</span>
-                            <input
-                                type="text"
-                                name="questions[${number}][alt_b]"
-                                class="alternative-input"
-                                placeholder="Digite a alternativa B"
-                                required
-                            >
-                        </label>
-                    </div>
-
-                    <div class="alternative-item">
-                        <label class="alternative-label">
-                            <input
-                                type="radio"
-                                name="questions[${number}][correct]"
-                                value="C"
-                                class="alternative-radio"
-                                required
-                            >
-                            <span class="alternative-letter">C</span>
-                            <input
-                                type="text"
-                                name="questions[${number}][alt_c]"
-                                class="alternative-input"
-                                placeholder="Digite a alternativa C"
-                                required
-                            >
-                        </label>
-                    </div>
-
-                    <div class="alternative-item">
-                        <label class="alternative-label">
-                            <input
-                                type="radio"
-                                name="questions[${number}][correct]"
-                                value="D"
-                                class="alternative-radio"
-                                required
-                            >
-                            <span class="alternative-letter">D</span>
-                            <input
-                                type="text"
-                                name="questions[${number}][alt_d]"
-                                class="alternative-input"
-                                placeholder="Digite a alternativa D"
-                                required
-                            >
-                        </label>
-                    </div>
-
-                    <div class="alternative-item">
-                        <label class="alternative-label">
-                            <input
-                                type="radio"
-                                name="questions[${number}][correct]"
-                                value="E"
-                                class="alternative-radio"
-                                required
-                            >
-                            <span class="alternative-letter">E</span>
-                            <input
-                                type="text"
-                                name="questions[${number}][alt_e]"
-                                class="alternative-input"
-                                placeholder="Digite a alternativa E"
-                                required
-                            >
-                        </label>
-                    </div>
-
-                    <p class="form-help">
-                        Marque a alternativa correta acima
-                    </p>
-                </div>
-            </div>
-        `;
+    function createQuestionBlock(idx, data) {
+      const q = data || { text: '', alternatives: [{text:''},{text:''},{text:''},{text:''},{text:''}], correct: 'A' };
+      const block = document.createElement('div');
+      block.className = 'question-block';
+      block.dataset.idx = idx;
+      block.innerHTML = `
+        <div class="question-header" style="display:flex;justify-content:space-between;align-items:center">
+          <h3>Questão ${idx+1}</h3>
+          <button type="button" class="btn btn-ghost btn-sm btn-remove" data-idx="${idx}">Remover</button>
+        </div>
+        <div class="form-group">
+          <textarea class="form-textarea q-text" rows="3" placeholder="Enunciado" required>${escapeHtml(q.text)}</textarea>
+        </div>
+        <div class="alternatives">
+          ${['A','B','C','D','E'].map((letter,i)=>`
+            <label class="alternative-label" style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+              <input type="radio" name="q_${idx}_correct" value="${letter}" ${q.correct === letter ? 'checked' : ''} required>
+              <span style="width:20px;font-weight:700">${letter}</span>
+              <input type="text" class="alternative-input" placeholder="Alternativa ${letter}" value="${escapeHtml(q.alternatives[i]?.text || '')}" required style="flex:1">
+            </label>
+          `).join('')}
+        </div>
+        <hr style="margin:12px 0">
+      `;
+      // remove handler
+      block.querySelector('.btn-remove').addEventListener('click', (e)=>{
+        e.preventDefault();
+        block.remove();
+      });
+      return block;
     }
 
-    // Adicionar questão
-    document.getElementById('addQuestionBtn').addEventListener('click', function() {
-        questionCount++;
-        const container = document.getElementById('questionsContainer');
-        const questionHTML = createQuestionHTML(questionCount);
-        container.insertAdjacentHTML('beforeend', questionHTML);
+    document.getElementById('addQuestionBtn').addEventListener('click', ()=>{
+      const block = createQuestionBlock(questionIndex++);
+      questionsContainer.appendChild(block);
+      block.querySelector('.q-text').focus();
     });
 
-    // Remover questão
-    function removeQuestion(number) {
-        const questionBlock = document.querySelector(`[data-question="${number}"]`);
-        if (questionBlock) {
-            questionBlock.remove();
-        }
+    function collectQuestions() {
+      const blocks = Array.from(questionsContainer.querySelectorAll('.question-block'));
+      return blocks.map((b, idx)=>{
+        const text = b.querySelector('.q-text').value.trim();
+        const altInputs = Array.from(b.querySelectorAll('.alternative-input'));
+        const correct = b.querySelector(`input[name="q_${b.dataset.idx}_correct"]:checked`);
+        if(!correct) throw new Error('Marque a alternativa correta em todas as questões.');
+        const alternatives = altInputs.map(ai => ({ text: ai.value.trim(), correct: false }));
+        const correctLetter = correct.value;
+        const letterIndex = ['A','B','C','D','E'].indexOf(correctLetter);
+        if(letterIndex >= 0) alternatives[letterIndex].correct = true;
+        return { enunciado: text, alternatives };
+      });
     }
 
-    // Submit do formulário
-    document.getElementById('challengeForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
-        // Validação básica
-        const questions = document.querySelectorAll('.question-block');
-        if (questions.length === 0) {
-            alert('Adicione pelo menos uma questão ao desafio!');
-            return;
+    async function submitForm(e) {
+      e.preventDefault();
+      try {
+        const id = document.getElementById('challengeId').value || null;
+        const title = document.getElementById('title').value.trim();
+        const description = document.getElementById('description').value.trim();
+        const maxScore = parseInt(document.getElementById('maxScore').value,10) || 0;
+        const startDateRaw = document.getElementById('startDate').value;
+        const endDateRaw = document.getElementById('endDate').value;
+
+        if(!title || !description) return alert('Preencha título e descrição.');
+        if(!startDateRaw || !endDateRaw) return alert('Defina datas de início e término.');
+
+        const questions = collectQuestions();
+        if(questions.length === 0) return alert('Adicione pelo menos uma questão.');
+
+        // convert local datetime to ISO (server expects LocalDateTime; ISO is usually parsed)
+        const startDateIso = new Date(startDateRaw).toISOString();
+        const endDateIso = new Date(endDateRaw).toISOString();
+
+        const payload = {
+          title,
+          description,
+          maxScore,
+          startDate: startDateIso,
+          endDate: endDateIso,
+          questions // array of { enunciado, alternatives: [{text, correct}] }
+        };
+
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `${API_BASE}/update/${id}` : `${API_BASE}/save`;
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type':'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const txt = await res.text();
+          throw new Error(txt || 'Erro no servidor');
         }
 
-        // Aqui você processaria os dados do formulário
-        console.log('Formulário válido! Dados prontos para envio.');
-        alert('Desafio criado com sucesso!');
+        alert('Desafio salvo com sucesso!');
+        window.location.href = 'challenge.html';
 
-        // Redirecionar para a lista de desafios
-        // window.location.href = 'desafios.html';
+      } catch (err) {
+        console.error(err);
+        alert('Erro: ' + (err.message || err));
+      }
+    }
+
+    document.getElementById('challengeForm').addEventListener('submit', submitForm);
+
+    // if ?id=.. present, load existing challenge to edit (fills fields and questions)
+    async function loadIfEdit() {
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      if (!id) return;
+      document.getElementById('formTitle').textContent = 'Editar Desafio';
+      document.getElementById('challengeId').value = id;
+
+      try {
+        const res = await fetch(`${API_BASE}/${id}`);
+        if (!res.ok) throw new Error('Não encontrado');
+        const ch = await res.json();
+        document.getElementById('title').value = ch.title || '';
+        document.getElementById('description').value = ch.description || '';
+        document.getElementById('maxScore').value = ch.maxScore ?? '';
+        if (ch.startDate) document.getElementById('startDate').value = toInputDatetime(ch.startDate);
+        if (ch.endDate) document.getElementById('endDate').value = toInputDatetime(ch.endDate);
+
+        // clear container and add questions if any
+        questionsContainer.innerHTML = '';
+        questionIndex = 0;
+        if (ch.questions && ch.questions.length) {
+          ch.questions.forEach(q=>{
+            const block = createQuestionBlock(questionIndex++, mapQuestionFromBackend(q));
+            questionsContainer.appendChild(block);
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Falha ao carregar desafio para edição.');
+      }
+    }
+
+    function mapQuestionFromBackend(q) {
+      // backend question shape: { enunciado, alternatives: [{text, correct}] }
+      const mapped = { text: q.enunciado || '', alternatives: [], correct: 'A' };
+      const alts = q.alternatives || [];
+      for(let i=0;i<5;i++){
+        mapped.alternatives.push({ text: alts[i] ? (alts[i].text || '') : '' });
+        if (alts[i] && alts[i].correct) mapped.correct = ['A','B','C','D','E'][i];
+      }
+      return mapped;
+    }
+
+    function toInputDatetime(iso) {
+      // convert ISO to "yyyy-MM-ddThh:mm" for input value (local)
+      const d = new Date(iso);
+      if (isNaN(d)) return '';
+      // get local components
+      const pad = n=>n.toString().padStart(2,'0');
+      const yyyy = d.getFullYear();
+      const MM = pad(d.getMonth()+1);
+      const dd = pad(d.getDate());
+      const hh = pad(d.getHours());
+      const mm = pad(d.getMinutes());
+      return `${yyyy}-${MM}-${dd}T${hh}:${mm}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // ensure at least one question present on new form
+      if (!location.search.includes('id=')) {
+        document.getElementById('addQuestionBtn').click();
+      }
+      loadIfEdit();
     });
 </script>
 </body>

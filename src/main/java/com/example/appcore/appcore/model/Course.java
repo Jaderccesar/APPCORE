@@ -49,9 +49,6 @@ public class Course {
     private User teacher;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Challenge> challenges;
-
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<Certificate> certificates;
 
     @ManyToMany
