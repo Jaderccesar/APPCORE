@@ -1,9 +1,11 @@
 package com.example.appcore.appcore.service;
 
 import com.example.appcore.appcore.model.Address;
+import com.example.appcore.appcore.model.Course;
 import com.example.appcore.appcore.model.Telephone;
 import com.example.appcore.appcore.repository.AddressRepository;
 import com.example.appcore.appcore.repository.TelephoneRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,24 @@ public class AddressService {
 
     public Address save(Address address) {
         return addressRepository.save(address);
+    }
+
+    public Address update(Long id, Address address) {
+        Address existing = addressRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Endereço com o id " + id + " não encontrado"));
+
+        existing.setStreet(address.getStreet());
+        existing.setCity(address.getCity());
+        existing.setState(address.getState());
+        existing.setZip(address.getZip());
+        existing.setCountry(address.getCountry());
+        existing.setComplement(address.getComplement());
+        existing.setNumber(address.getNumber());
+
+        return addressRepository.save(existing);
+    }
+
+    public void delete(Long id) {
+        addressRepository.deleteById(id);
     }
 
 }
