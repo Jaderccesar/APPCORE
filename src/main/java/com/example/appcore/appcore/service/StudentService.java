@@ -2,7 +2,9 @@ package com.example.appcore.appcore.service;
 
 import com.example.appcore.appcore.enums.AccountType;
 import com.example.appcore.appcore.enums.Status;
+import com.example.appcore.appcore.model.Address;
 import com.example.appcore.appcore.model.Student;
+import com.example.appcore.appcore.repository.AddressRepository;
 import com.example.appcore.appcore.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     public List<Student> findAll() {
         return studentRepository.findAll();
     }
@@ -27,15 +32,45 @@ public class StudentService {
     }
 
     public Student save(Student student) {
-        student.setCreatedAt(LocalDateTime.now());
-        student.setUpdatedAt(LocalDateTime.now());
+        Address address = student.getAddress();
+
+        if (address != null) {
+            if (address.getId() != null) {
+                Address existingAddress = addressRepository.findById(address.getId())
+                        .map(existing -> {
+                            existing.setStreet(address.getStreet());
+                            existing.setCity(address.getCity());
+                            existing.setState(address.getState());
+                            existing.setZip(address.getZip());
+                            existing.setCountry(address.getCountry());
+                            existing.setComplement(address.getComplement());
+                            existing.setNumber(address.getNumber());
+                            return addressRepository.save(existing);
+                        })
+                        .orElseGet(() -> addressRepository.save(address));
+
+                student.setAddress(existingAddress);
+            } else {
+                Address savedAddress = addressRepository.save(address);
+                student.setAddress(savedAddress);
+            }
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        student.setCreatedAt(now);
+        student.setUpdatedAt(now);
         student.setStatus(Status.ACTIVE);
-        student.setAccountType(AccountType.ENTERPRISE); //provisorio e padrão precisa revisar criação de um nivel admin
+
+        if (student.getAccountType() == null) {
+            student.setAccountType(AccountType.STUDENT);
+        }
+
         return studentRepository.save(student);
     }
 
     public Student update(Long id, Student student) {
-        Student existingStudent = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Estudante não econtrado com o id: " + id));
+        Student existingStudent = studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado com o id: " + id));
 
         existingStudent.setName(student.getName());
         existingStudent.setEmail(student.getEmail());
@@ -46,27 +81,31 @@ public class StudentService {
         existingStudent.setAccountType(student.getAccountType());
         existingStudent.setTotalScore(student.getTotalScore());
         existingStudent.setNivel(student.getNivel());
-        
-        // Atualizar endereço se fornecido
-        if (student.getAddress() != null) {
-            if (existingStudent.getAddress() != null) {
-                // Atualiza campos do endereço existente
-                existingStudent.getAddress().setStreet(student.getAddress().getStreet());
-                existingStudent.getAddress().setCity(student.getAddress().getCity());
-                existingStudent.getAddress().setState(student.getAddress().getState());
-                existingStudent.getAddress().setZip(student.getAddress().getZip());
-                existingStudent.getAddress().setCountry(student.getAddress().getCountry());
-                existingStudent.getAddress().setComplement(student.getAddress().getComplement());
-                existingStudent.getAddress().setNumber(student.getAddress().getNumber());
+        existingStudent.setUpdatedAt(LocalDateTime.now());
+
+        Address newAddress = student.getAddress();
+        Address existingAddress = existingStudent.getAddress();
+
+        if (newAddress != null) {
+            if (existingAddress != null) {
+                existingAddress.setStreet(newAddress.getStreet());
+                existingAddress.setCity(newAddress.getCity());
+                existingAddress.setState(newAddress.getState());
+                existingAddress.setZip(newAddress.getZip());
+                existingAddress.setCountry(newAddress.getCountry());
+                existingAddress.setComplement(newAddress.getComplement());
+                existingAddress.setNumber(newAddress.getNumber());
             } else {
-                // Cria novo endereço se não existir
-                existingStudent.setAddress(student.getAddress());
+                existingStudent.setAddress(newAddress);
             }
+        } else {
+            existingStudent.setAddress(null);
         }
 
         return studentRepository.save(existingStudent);
     }
-    
+
+
     public Optional<Student> findByEmail(String email) {
         return studentRepository.findAll().stream()
                 .filter(s -> s.getEmail().equalsIgnoreCase(email))
