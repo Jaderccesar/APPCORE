@@ -1,0 +1,368 @@
+<!-- Arquivo gerado: cadastro-desafio.html — APPCORE — Cadastro de Desafio — HTML/CSS/JS -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Desafio - APPCORE</title>
+    <meta name="description" content="Crie um novo desafio na APPCORE">
+    <link rel="stylesheet" href="../static/challenge.css">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-left">
+                <a onclick="window.location.href='home.html'" class="logo">APPCORE</a>
+                <nav class="nav">
+                    <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
+                    <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
+                    <a onclick="window.location.href='challenge.html'" class="nav-link active">Desafios</a>
+                    <a href="#" class="nav-link">Eventos</a>
+                    <a href="#" class="nav-link">Fórum</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <a href="#" class="btn btn-primary">Entrar / Registrar</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    <section class="section">
+        <div class="container">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>Criar Novo Desafio</h1>
+                    <p class="form-subtitle">
+                        Preencha as informações abaixo para criar um desafio para seus alunos
+                    </p>
+                </div>
+
+                <form class="course-form" id="challengeForm" action="#" method="POST">
+                    <!-- Informações Básicas -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Informações Básicas</h2>
+
+                        <div class="form-group">
+                            <label for="title" class="form-label">Título do Desafio *</label>
+                            <input
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    class="form-input"
+                                    placeholder="Ex: Implementação de Algoritmos de Busca"
+                                    required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="form-label">Descrição Detalhada *</label>
+                            <textarea
+                                    id="description"
+                                    name="description"
+                                    class="form-textarea"
+                                    rows="6"
+                                    placeholder="Descreva o desafio, os objetivos de aprendizagem e o que os alunos precisam entregar..."
+                                    required
+                            ></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="max_score" class="form-label">Pontuação Máxima *</label>
+                                <input
+                                        type="number"
+                                        id="max_score"
+                                        name="max_score"
+                                        class="form-input"
+                                        placeholder="100"
+                                        min="1"
+                                        required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="course_id" class="form-label">Curso Vinculado *</label>
+                                <select id="course_id" name="course_id" class="form-select" required>
+                                    <option value="">Selecione um curso</option>
+                                    <option value="1">Fundamentos de Desenvolvimento Web</option>
+                                    <option value="2">Estruturas de Dados e Algoritmos</option>
+                                    <option value="3">Desenvolvimento Backend com Node.js</option>
+                                    <option value="4">Testes Automatizados</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="start_date" class="form-label">Data de Início *</label>
+                                <input
+                                        type="datetime-local"
+                                        id="start_date"
+                                        name="start_date"
+                                        class="form-input"
+                                        required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end_date" class="form-label">Data de Término *</label>
+                                <input
+                                        type="datetime-local"
+                                        id="end_date"
+                                        name="end_date"
+                                        class="form-input"
+                                        required
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Critérios de Avaliação -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Critérios de Avaliação</h2>
+
+                        <div class="form-group">
+                            <label for="evaluation_criteria" class="form-label">Critérios de Avaliação *</label>
+                            <textarea
+                                    id="evaluation_criteria"
+                                    name="evaluation_criteria"
+                                    class="form-textarea"
+                                    rows="5"
+                                    placeholder="Descreva os critérios que serão usados para avaliar as submissões dos alunos..."
+                                    required
+                            ></textarea>
+                            <p class="form-help">
+                                Exemplo: Qualidade do código (30%), Funcionalidade (40%), Documentação (20%), Testes (10%)
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Questões -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Questões</h2>
+                        <p class="form-help" style="margin-bottom: 24px;">
+                            Adicione questões de múltipla escolha para o desafio
+                        </p>
+
+                        <div id="questionsContainer">
+                            <!-- As questões serão adicionadas aqui dinamicamente -->
+                        </div>
+
+                        <button type="button" id="addQuestionBtn" class="btn btn-outline">
+                            + Adicionar Questão
+                        </button>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <a onclick="window.location.href='challenge.html'" class="btn btn-outline btn-lg">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-lg">Salvar Desafio</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">APPCORE</h3>
+                <p class="footer-text">
+                    Plataforma completa para aprendizado prático através de cursos, desafios e eventos.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-heading">Plataforma</h4>
+                <div class="footer-links">
+                    <a href="cursos.html">Cursos</a>
+                    <a href="desafios.html">Desafios</a>
+                    <a href="#">Eventos</a>
+                    <a href="#">Fórum</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    let questionCount = 0;
+
+    // Template de questão
+    function createQuestionHTML(number) {
+        return `
+            <div class="question-block" data-question="${number}">
+                <div class="question-header">
+                    <h3 class="question-title">Questão ${number}</h3>
+                    <button type="button" class="btn-remove-question" onclick="removeQuestion(${number})">
+                        ✕ Remover
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="question_${number}" class="form-label">Enunciado da Questão *</label>
+                    <textarea
+                        id="question_${number}"
+                        name="questions[${number}][text]"
+                        class="form-textarea"
+                        rows="3"
+                        placeholder="Digite o enunciado da questão..."
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="alternatives-container">
+                    <label class="form-label">Alternativas *</label>
+
+                    <div class="alternative-item">
+                        <label class="alternative-label">
+                            <input
+                                type="radio"
+                                name="questions[${number}][correct]"
+                                value="A"
+                                class="alternative-radio"
+                                required
+                            >
+                            <span class="alternative-letter">A</span>
+                            <input
+                                type="text"
+                                name="questions[${number}][alt_a]"
+                                class="alternative-input"
+                                placeholder="Digite a alternativa A"
+                                required
+                            >
+                        </label>
+                    </div>
+
+                    <div class="alternative-item">
+                        <label class="alternative-label">
+                            <input
+                                type="radio"
+                                name="questions[${number}][correct]"
+                                value="B"
+                                class="alternative-radio"
+                                required
+                            >
+                            <span class="alternative-letter">B</span>
+                            <input
+                                type="text"
+                                name="questions[${number}][alt_b]"
+                                class="alternative-input"
+                                placeholder="Digite a alternativa B"
+                                required
+                            >
+                        </label>
+                    </div>
+
+                    <div class="alternative-item">
+                        <label class="alternative-label">
+                            <input
+                                type="radio"
+                                name="questions[${number}][correct]"
+                                value="C"
+                                class="alternative-radio"
+                                required
+                            >
+                            <span class="alternative-letter">C</span>
+                            <input
+                                type="text"
+                                name="questions[${number}][alt_c]"
+                                class="alternative-input"
+                                placeholder="Digite a alternativa C"
+                                required
+                            >
+                        </label>
+                    </div>
+
+                    <div class="alternative-item">
+                        <label class="alternative-label">
+                            <input
+                                type="radio"
+                                name="questions[${number}][correct]"
+                                value="D"
+                                class="alternative-radio"
+                                required
+                            >
+                            <span class="alternative-letter">D</span>
+                            <input
+                                type="text"
+                                name="questions[${number}][alt_d]"
+                                class="alternative-input"
+                                placeholder="Digite a alternativa D"
+                                required
+                            >
+                        </label>
+                    </div>
+
+                    <div class="alternative-item">
+                        <label class="alternative-label">
+                            <input
+                                type="radio"
+                                name="questions[${number}][correct]"
+                                value="E"
+                                class="alternative-radio"
+                                required
+                            >
+                            <span class="alternative-letter">E</span>
+                            <input
+                                type="text"
+                                name="questions[${number}][alt_e]"
+                                class="alternative-input"
+                                placeholder="Digite a alternativa E"
+                                required
+                            >
+                        </label>
+                    </div>
+
+                    <p class="form-help">
+                        Marque a alternativa correta acima
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+
+    // Adicionar questão
+    document.getElementById('addQuestionBtn').addEventListener('click', function() {
+        questionCount++;
+        const container = document.getElementById('questionsContainer');
+        const questionHTML = createQuestionHTML(questionCount);
+        container.insertAdjacentHTML('beforeend', questionHTML);
+    });
+
+    // Remover questão
+    function removeQuestion(number) {
+        const questionBlock = document.querySelector(`[data-question="${number}"]`);
+        if (questionBlock) {
+            questionBlock.remove();
+        }
+    }
+
+    // Submit do formulário
+    document.getElementById('challengeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validação básica
+        const questions = document.querySelectorAll('.question-block');
+        if (questions.length === 0) {
+            alert('Adicione pelo menos uma questão ao desafio!');
+            return;
+        }
+
+        // Aqui você processaria os dados do formulário
+        console.log('Formulário válido! Dados prontos para envio.');
+        alert('Desafio criado com sucesso!');
+
+        // Redirecionar para a lista de desafios
+        // window.location.href = 'desafios.html';
+    });
+</script>
+</body>
+</html>
