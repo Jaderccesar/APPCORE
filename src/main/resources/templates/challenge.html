@@ -16,13 +16,15 @@
                     <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
                     <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
                     <a onclick="window.location.href='challenge.html'" class="nav-link active">Desafios</a>
-                    <a href="#" class="nav-link">Eventos</a>
                 </nav>
             </div>
             <div class="header-right">
-                <a href="profile.html" class="btn btn-icon" title="Perfil">
-                    <img src="../static/icons/user.svg" alt="Perfil" style="width:20px;">
-                </a>
+                <a onclick="window.location.href='user-register.html'" class="btn btn-primary">Entrar / Registrar</a>
+                <button onclick="window.location.href='profile.html'" class="btn btn-icon" title="Meu perfil">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="22" height="22">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 0115 0" />
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
@@ -56,95 +58,26 @@
 
 <footer class="footer">
     <div class="container">
-        <p>© 2025 APPCORE. Todos os direitos reservados.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">APPCORE</h3>
+                <p class="footer-text">A plataforma definitiva para aprender programação se divertindo.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-heading">Plataforma</h4>
+                <ul class="footer-links">
+                    <li><a href="#cursos">Cursos</a></li>
+                    <li><a href="#desafios">Desafios</a></li>
+                    <li><a href="#eventos">Eventos</a></li>
+                    <li><a href="#certificados">Certificados</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </footer>
 
-<script>
-    const API_BASE = "http://localhost:8080/challenges";
+<script src="../scripts/challenge.js"></script>
 
-    function isoDateShort(dateString) {
-      if (!dateString) return "";
-      try {
-        return new Date(dateString).toLocaleDateString('pt-BR');
-      } catch { return dateString; }
-    }
-
-    async function loadChallenges() {
-      const grid = document.getElementById("challengeGrid");
-      const loading = document.getElementById("loadingText");
-      try {
-        const res = await fetch(`${API_BASE}/list`);
-        if (!res.ok) throw new Error("Erro ao carregar");
-        const challenges = await res.json();
-        grid.innerHTML = "";
-
-        if (!challenges || challenges.length === 0) {
-          grid.innerHTML = "<p>Nenhum desafio cadastrado.</p>";
-          return;
-        }
-
-        challenges.forEach(ch => {
-          const ended = ch.endDate ? new Date(ch.endDate) < new Date() : false;
-          const daysLeft = ch.endDate ? Math.ceil((new Date(ch.endDate) - new Date()) / (1000*60*60*24)) : null;
-          const questionCount = ch.questions ? ch.questions.length : (ch.questionCount ?? 0);
-
-          const card = document.createElement("article");
-          card.className = "course-card-full challenge-card";
-          card.innerHTML = `
-            <div class="course-card-image">
-              <div class="placeholder-image" style="background:linear-gradient(135deg,#6772ff 0%,#7b61ff 100%);">
-                <span style="font-size:42px;color:white">🧩</span>
-              </div>
-              <span class="badge ${ended ? 'badge-warning' : 'badge-success'}">${ended ? 'Encerrado' : 'Aberto'}</span>
-            </div>
-            <div class="course-card-content">
-              <h3 class="course-card-title">${escapeHtml(ch.title)}</h3>
-              <p class="course-card-description">${escapeHtml(ch.description || '')}</p>
-              <div class="course-card-meta">
-                <span class="meta-item">🏆 ${ch.maxScore ?? '—'} pts</span>
-                <span class="meta-item">📋 ${questionCount} questões</span>
-                <span class="meta-item">Início: ${isoDateShort(ch.startDate)}</span>
-                <span class="meta-item">Fim: ${isoDateShort(ch.endDate)}</span>
-                ${!ended && daysLeft ? `<span class="meta-item">🔥 ${daysLeft} dias</span>` : ''}
-              </div>
-              <div style="margin-top:12px;display:flex;gap:8px;">
-                <a href="#" data-id="${ch.id}" class="btn btn-primary btn-block btn-view">Ver</a>
-                <a href="challenge-register.html?id=${ch.id}" class="btn btn-outline">Editar</a>
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-
-        // attach simple search/filter behavior
-        document.getElementById('searchInput').addEventListener('input', (e)=>{
-          const term = e.target.value.toLowerCase();
-          document.querySelectorAll('.challenge-card').forEach(card=>{
-            const title = card.querySelector('.course-card-title').textContent.toLowerCase();
-            const desc = card.querySelector('.course-card-description').textContent.toLowerCase();
-            card.style.display = (title.includes(term) || desc.includes(term)) ? 'flex' : 'none';
-          });
-        });
-
-        // view button (could open modal or route)
-        document.querySelectorAll('.btn-view').forEach(b=>{
-          b.addEventListener('click', (ev)=>{
-            ev.preventDefault();
-            const id = b.getAttribute('data-id');
-            window.location.href = `challenge-view.html?id=${id}`; // optional page you can implement
-          });
-        });
-
-      } catch (err) {
-        console.error(err);
-        loading.textContent = "Erro ao carregar desafios.";
-      }
-    }
-
-    function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
-
-    document.addEventListener('DOMContentLoaded', loadChallenges);
-</script>
 </body>
 </html>
