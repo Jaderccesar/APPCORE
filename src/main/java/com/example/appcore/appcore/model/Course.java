@@ -1,6 +1,8 @@
 package com.example.appcore.appcore.model;
 
 import com.example.appcore.appcore.enums.CreateStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,22 +44,23 @@ public class Course {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private User teacher;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Challenge> challenges;
+   @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<Certificate> certificates = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Certificate> certificates;
+    @JsonManagedReference
+    private List<Video> videos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "tb_course_promotion", joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "promotion_id"))
-    private ArrayList<Promotion> promotions;
+    private List<Promotion> promotions = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {

@@ -1,6 +1,7 @@
 package com.example.appcore.appcore.controller;
 
 import com.example.appcore.appcore.model.Course;
+import com.example.appcore.appcore.model.Video;
 import com.example.appcore.appcore.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,10 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/list")
+    @GetMapping("/list") 
     public List<Course> list() {
-        return courseService.findAll();
-    }
+        return courseService.findAll(); 
+    } 
 
     @GetMapping("/{id}")
     public ResponseEntity<Course> listById(@PathVariable Long id) {
@@ -45,5 +46,27 @@ public class CourseController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id) {
         courseService.delete(id);
+    }
+
+    // ----------  VIDEOS  ----------
+
+    @GetMapping("/{courseId}/videos")
+    public List<Video> listVideosByCourse(@PathVariable Long courseId) {
+        return courseService.findVideosByCourse(courseId);
+    }
+    
+    @PostMapping("/{courseId}/videos")
+    public Video addVideo(@PathVariable Long courseId, @RequestBody Video video) {
+        return courseService.addVideoToCourse(courseId, video);
+    }
+
+    @PutMapping("/{courseId}/videos/{videoId}")
+    public Video updateVideo(@PathVariable Long courseId, @PathVariable Long videoId, @RequestBody Video video) {
+        return courseService.updateVideo(courseId, videoId, video);
+    }
+
+    @DeleteMapping("/{courseId}/videos/{videoId}")
+    public void deleteVideo(@PathVariable Long courseId, @PathVariable Long videoId) {
+        courseService.deleteVideo(courseId, videoId);
     }
 }
