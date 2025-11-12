@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Criar / Editar Desafio - APPCORE</title>
+    <link rel="stylesheet" href="../static/challenge.css">
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-left">
+                <a onclick="window.location.href='home.html'" class="logo">APPCORE</a>
+                <nav class="nav">
+                    <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
+                    <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
+                    <a onclick="window.location.href='challenge.html'" class="nav-link active">Desafios</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="section">
+        <div class="container">
+            <div class="form-container">
+                <h1 id="formTitle">Criar Novo Desafio</h1>
+
+                <form id="challengeForm">
+                    <input type="hidden" id="challengeId" />
+
+                    <div class="form-section">
+                        <label class="form-label" for="title">Título *</label>
+                        <input id="title" class="form-input" required />
+
+                        <label class="form-label" for="description" style="margin-top:12px">Descrição *</label>
+                        <textarea id="description" class="form-textarea" rows="5" required></textarea>
+
+                        <div class="form-row" style="margin-top:12px">
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Pontuação Máxima *</label>
+                                <input id="maxScore" type="number" min="1" class="form-input" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="margin-top:12px">
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Data de Início *</label>
+                                <input id="startDate" type="datetime-local" class="form-input" required />
+                            </div>
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Data de Término *</label>
+                                <input id="endDate" type="datetime-local" class="form-input" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="margin-top:18px">
+                        <h2 class="form-section-title">Questões</h2>
+                        <p class="form-help">Adicione questões de múltipla escolha. Marque a alternativa correta em cada questão.</p>
+
+                        <div id="questionsContainer"></div>
+
+                        <div style="margin-top:12px">
+                            <button type="button" id="addQuestionBtn" class="btn btn-outline">+ Adicionar Questão</button>
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="margin-top:18px">
+                        <a onclick="window.location.href='challenge.html'" class="btn btn-outline btn-lg">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-lg">Salvar Desafio</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">APPCORE</h3>
+                <p class="footer-text">A plataforma definitiva para aprender programação se divertindo.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-heading">Plataforma</h4>
+                <ul class="footer-links">
+                    <li><a href="#cursos">Cursos</a></li>
+                    <li><a href="#desafios">Desafios</a></li>
+                    <li><a href="#eventos">Eventos</a></li>
+                    <li><a href="#certificados">Certificados</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../scripts/challenge-register.js"></script>
+
+</body>
+</html>

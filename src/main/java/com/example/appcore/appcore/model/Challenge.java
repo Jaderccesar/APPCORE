@@ -1,19 +1,21 @@
 package com.example.appcore.appcore.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import com.example.appcore.appcore.enums.CorrectionType;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "questions")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @Table(name = "tb_challenge")
 public class Challenge {
 
@@ -21,20 +23,23 @@ public class Challenge {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
+    @Column(columnDefinition = "text")
     private String description;
-    private CorrectionType correctionType;
+
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    private Integer maxScore;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher responsible;
+
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Question> questions;
 
     @PreUpdate
     public void preUpdate() {

@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursos - APPCORE</title>
-    <meta name="description" content="Explore todos os cursos disponíveis na APPCORE">
-    <link rel="stylesheet" href="../static/course.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Desafios - APPCORE</title>
+    <link rel="stylesheet" href="../static/challenge.css">
 </head>
-
 <body>
-
 <header class="header">
     <div class="container">
         <div class="header-content">
             <div class="header-left">
-                <a onclick="window.location.href='home.html'"class="logo">APPCORE</a>
+                <a onclick="window.location.href='home.html'" class="logo">APPCORE</a>
                 <nav class="nav">
                     <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
-                    <a onclick="window.location.href='course.html'" class="nav-link active">Cursos</a>
-                    <a onclick="window.location.href='challenge.html'" class="nav-link">Desafios</a>
+                    <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
+                    <a onclick="window.location.href='challenge.html'" class="nav-link active">Desafios</a>
                 </nav>
             </div>
             <div class="header-right">
-                <a onclick="window.location.href='course-register.html'" class="btn btn-outline">Criar Curso</a>
                 <a onclick="window.location.href='user-register.html'" class="btn btn-primary">Entrar / Registrar</a>
                 <button onclick="window.location.href='profile.html'" class="btn btn-icon" title="Meu perfil">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="22" height="22">
@@ -35,34 +31,26 @@
 </header>
 
 <main>
+    <section class="hero hero-small">
+        <div class="container">
+            <h1>Desafios</h1>
+            <p class="hero-subtitle">Teste seus conhecimentos — participe de desafios práticos com questões de múltipla escolha.</p>
+        </div>
+    </section>
 
     <section class="section">
         <div class="container">
-            <div class="section-header">
-                <div>
-                    <h1>Todos os Cursos</h1>
-                    <p class="hero-subtitle" style="text-align: left; margin-top: 0.5rem;">
-                        Explore nossa biblioteca completa de cursos e comece a aprender hoje
-                    </p>
-                </div>
-                <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
-                    <select class="filter-select">
-                        <option value="">Todos os níveis</option>
-                        <option value="iniciante">Iniciante</option>
-                        <option value="intermediario">Intermediário</option>
-                        <option value="avancado">Avançado</option>
-                    </select>
-                    <select class="filter-select">
-                        <option value="">Ordenar por</option>
-                        <option value="recentes">Mais Recentes</option>
-                        <option value="populares">Mais Populares</option>
-                        <option value="avaliacao">Melhor Avaliados</option>
-                    </select>
-                </div>
+            <div class="search-filter-bar">
+                <input id="searchInput" class="search-input" placeholder="Buscar desafios..." />
+                <a onclick="window.location.href='challenge-register.html'" class="btn btn-primary">+ Criar Desafio</a>
             </div>
+        </div>
+    </section>
 
-            <div class="courses-grid">
-
+    <section class="section section-gray">
+        <div class="container">
+            <div id="challengeGrid" class="courses-grid">
+                <p id="loadingText">Carregando desafios...</p>
             </div>
         </div>
     </section>
@@ -89,9 +77,7 @@
     </div>
 </footer>
 
-<script src="../scripts/course.js"></script>
+<script src="../scripts/challenge.js"></script>
 
 </body>
 </html>
-
-

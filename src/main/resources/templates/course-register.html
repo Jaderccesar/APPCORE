@@ -14,12 +14,11 @@
     <div class="container">
         <div class="header-content">
             <div class="header-left">
-                <a href="appcore.html" class="logo">APPCORE</a>
+                <a onclick="window.location.href='home.html'" class="logo">APPCORE</a>
                 <nav class="nav">
                     <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
                     <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
-                    <a href="#" class="nav-link">Desafios</a>
-                    <a href="#" class="nav-link">Eventos</a>
+                    <a onclick="window.location.href='challenge.html'" class="nav-link">Desafios</a>
                 </nav>
             </div>
             <div class="header-right">
@@ -192,43 +191,6 @@
 </footer>
 </body>
 
-<script>
-    document.querySelector('.course-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const data = {
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value,
-            level: document.getElementById('level').value,
-            workload: parseInt(document.getElementById('workload').value),
-            price: parseFloat(document.getElementById('price').value),
-            status: document.getElementById('status').value.toUpperCase(),
-            imageUrl: document.getElementById('image_url').value,
-            rating: parseFloat(document.querySelector('input[name="rating"]:checked')?.value || 0),
-            certificateEnabled: document.getElementById('certificate_enabled').checked
-        };
-
-        try {
-            const response = await fetch("http://localhost:8080/courses/save", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (response.ok) {
-                alert("Curso criado com sucesso!");
-                document.querySelector('.course-form').reset();
-            } else {
-                const err = await response.text();
-                alert("Erro ao criar curso: " + err);
-            }
-        } catch (error) {
-            console.error("Erro na requisição:", error);
-            alert("Falha ao conectar com o servidor.");
-        }
-    });
-</script>
+<script src="../scripts/course-register.js"></script>
 
 </html>

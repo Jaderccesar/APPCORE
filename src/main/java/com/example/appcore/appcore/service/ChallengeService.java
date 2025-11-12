@@ -1,11 +1,13 @@
 package com.example.appcore.appcore.service;
 
-import com.example.appcore.appcore.enums.CorrectionType;
 import com.example.appcore.appcore.model.Challenge;
+import com.example.appcore.appcore.model.Question;
+import com.example.appcore.appcore.model.Alternative;
 import com.example.appcore.appcore.repository.ChallengeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,22 +27,48 @@ public class ChallengeService {
     }
 
     public Challenge save(Challenge challenge) {
+
+        challenge.setCreateDate(LocalDateTime.now());
+        challenge.setUpdateDate(LocalDateTime.now());
+
+        if (challenge.getQuestions() != null) {
+            challenge.getQuestions().forEach(q -> {
+                q.setChallenge(challenge);
+                if (q.getAlternatives() != null) {
+                    q.getAlternatives().forEach(a -> a.setQuestion(q));
+                }
+            });
+        }
+
         return challengeRepository.save(challenge);
     }
 
     public Challenge update(Long id, Challenge challenge) {
-        Challenge existing = challengeRepository.findById(id).orElseThrow(() -> new RuntimeException("Desafio não encontrado com o id " + id));
+        Challenge existing = challengeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Desafio não encontrado com o id: " + id));
 
         existing.setTitle(challenge.getTitle());
         existing.setDescription(challenge.getDescription());
-        existing.setCorrectionType(challenge.getCorrectionType());
         existing.setStartDate(challenge.getStartDate());
         existing.setEndDate(challenge.getEndDate());
+        existing.setMaxScore(challenge.getMaxScore());
+        existing.setUpdateDate(LocalDateTime.now());
+
+        existing.getQuestions().clear();
+        if (challenge.getQuestions() != null) {
+            for (Question q : challenge.getQuestions()) {
+                q.setChallenge(existing);
+                if (q.getAlternatives() != null) {
+                    q.getAlternatives().forEach(a -> a.setQuestion(q));
+                }
+                existing.getQuestions().add(q);
+            }
+        }
 
         return challengeRepository.save(existing);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         challengeRepository.deleteById(id);
     }
 }
