@@ -1,196 +1,153 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Curso - APPCORE</title>
-    <meta name="description" content="Crie e publique seu curso na APPCORE">
-    <link rel="stylesheet" href="../static/course-register.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Curso - APPCORE</title>
+  <meta name="description" content="Crie e publique seu curso na APPCORE" />
+  <link rel="stylesheet" href="../static/course-register.css" />
 </head>
 <body>
-
 <header class="header">
-    <div class="container">
-        <div class="header-content">
-            <div class="header-left">
-                <a onclick="window.location.href='home.html'" class="logo">APPCORE</a>
-                <nav class="nav">
-                    <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
-                    <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
-                    <a onclick="window.location.href='challenge.html'" class="nav-link">Desafios</a>
-                </nav>
-            </div>
-            <div class="header-right">
-                <a onclick="window.location.href='user-register.html'" class="btn btn-primary">Entrar / Registrar</a>
-                <button onclick="window.location.href='profile.html'" class="btn btn-icon" title="Meu perfil">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="22" height="22">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 0115 0" />
-                    </svg>
-                </button>
-            </div>
-        </div>
+  <div class="container">
+    <div class="header-content">
+      <div class="header-left">
+        <a onclick="window.location.href='home.html'" class="logo">APPCORE</a>
+        <nav class="nav">
+          <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
+          <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
+          <a onclick="window.location.href='challenge.html'" class="nav-link">Desafios</a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <a onclick="window.location.href='user-register.html'" class="btn btn-primary">Entrar / Registrar</a>
+        <button onclick="window.location.href='profile.html'" class="btn btn-icon" title="Meu perfil">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="22" height="22">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 0115 0" />
+          </svg>
+        </button>
+      </div>
     </div>
+  </div>
 </header>
 
 <main>
-    <section class="section">
-        <div class="container">
-            <div class="form-container">
-                <div class="form-header">
-                    <h1>Criar Novo Curso</h1>
-                    <p class="form-subtitle">
-                        Preencha as informações abaixo para criar e publicar seu curso na plataforma
-                    </p>
-                </div>
-
-                <form class="course-form" action="#" method="POST">
-
-                    <div class="form-section">
-                        <h2 class="form-section-title">Informações Básicas</h2>
-
-                        <div class="form-group">
-                            <label for="title" class="form-label">Título do Curso *</label>
-                            <input
-                                    type="text"
-                                    id="title"
-                                    name="title"
-                                    class="form-input"
-                                    placeholder="Ex: Fundamentos de Desenvolvimento Web"
-                                    required
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description" class="form-label">Descrição *</label>
-                            <textarea
-                                    id="description"
-                                    name="description"
-                                    class="form-textarea"
-                                    rows="4"
-                                    placeholder="Descreva o que os alunos irão aprender neste curso..."
-                                    required
-                            ></textarea>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="level" class="form-label">Nível *</label>
-                                <select id="level" name="level" class="form-select" required>
-                                    <option value="">Selecione o nível</option>
-                                    <option value="iniciante">Iniciante</option>
-                                    <option value="intermediario">Intermediário</option>
-                                    <option value="avancado">Avançado</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="workload" class="form-label">Carga Horária (horas) *</label>
-                                <input
-                                        type="number"
-                                        id="workload"
-                                        name="workload"
-                                        class="form-input"
-                                        placeholder="40"
-                                        min="1"
-                                        required
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h2 class="form-section-title">Precificação e Status</h2>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="price" class="form-label">Preço (R$) *</label>
-                                <input
-                                        type="number"
-                                        id="price"
-                                        name="price"
-                                        class="form-input"
-                                        placeholder="149.90"
-                                        step="0.01"
-                                        min="0"
-                                        required
-                                >
-                                <p class="form-help">Digite 0 para curso gratuito</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="status" class="form-label">Status *</label>
-                                <select id="status" name="status" class="form-select" required>
-                                    <option value="">Selecione o status</option>
-                                    <option value="rascunho">Rascunho</option>
-                                    <option value="publicado">Publicado</option>
-                                    <option value="arquivado">Arquivado</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h2 class="form-section-title">Mídia e Recursos</h2>
-
-                        <div class="form-group">
-                            <label for="image_url" class="form-label">URL da Imagem de Capa *</label>
-                            <input
-                                    type="url"
-                                    id="image_url"
-                                    name="image_url"
-                                    class="form-input"
-                                    placeholder="https://exemplo.com/imagem.jpg"
-                                    required
-                            >
-                            <p class="form-help">Recomendamos imagens com proporção 16:9 e resolução mínima de 1280x720</p>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-checkbox-wrapper">
-                                <input
-                                        type="checkbox"
-                                        id="certificate_enabled"
-                                        name="certificate_enabled"
-                                        class="form-checkbox"
-                                >
-                                <span class="form-checkbox-label">Habilitar certificado de conclusão</span>
-                            </label>
-                            <p class="form-help">Os alunos receberão um certificado ao concluir o curso</p>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <a href="cursos.html" class="btn btn-outline btn-lg">Cancelar</a>
-                        <button type="submit" class="btn btn-primary btn-lg">Criar Curso</button>
-                    </div>
-                </form>
-            </div>
+  <section class="section">
+    <div class="container">
+      <div class="form-container">
+        <div class="form-header">
+          <h1>Criar Novo Curso</h1>
+          <p class="form-subtitle">Preencha as informações abaixo para criar e publicar seu curso na plataforma</p>
         </div>
-    </section>
+
+        <form id="course-form" class="course-form">
+          <!-- Informações básicas -->
+          <div class="form-section">
+            <h2 class="form-section-title">Informações Básicas</h2>
+            <div class="form-group">
+              <label for="title" class="form-label">Título do Curso *</label>
+              <input type="text" id="title" name="title" class="form-input" placeholder="Ex: Fundamentos de Desenvolvimento Web" required />
+            </div>
+            <div class="form-group">
+              <label for="description" class="form-label">Descrição *</label>
+              <textarea id="description" name="description" class="form-textarea" rows="4" placeholder="Descreva o que os alunos irão aprender neste curso..." required></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="level" class="form-label">Nível *</label>
+                <select id="level" name="level" class="form-select" required>
+                  <option value="">Selecione o nível</option>
+                  <option value="BÁSICO">Iniciante</option>
+                  <option value="INTERMEDIÁRIO">Intermediário</option>
+                  <option value="AVANÇADO">Avançado</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="workload" class="form-label">Carga Horária (horas) *</label>
+                <input type="number" id="workload" name="workload" class="form-input" placeholder="40" min="1" required />
+              </div>
+            </div>
+          </div>
+
+          <!-- Precificação -->
+          <div class="form-section">
+            <h2 class="form-section-title">Precificação e Status</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="price" class="form-label">Preço (R$) *</label>
+                <input type="number" id="price" name="price" class="form-input" placeholder="149.90" step="0.01" min="0" required />
+                <p class="form-help">Digite 0 para curso gratuito</p>
+              </div>
+              <div class="form-group">
+                <label for="status" class="form-label">Status *</label>
+                <select id="status" name="status" class="form-select" required>
+                  <option value="">Selecione o status</option>
+                  <option value="RASCUNHO">Rascunho</option>
+                  <option value="PUBLICADO">Publicado</option>
+                  <option value="ARQUIVADO">Arquivado</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mídia -->
+          <div class="form-section">
+            <h2 class="form-section-title">Mídia e Recursos</h2>
+            <div class="form-group">
+              <label for="image_url" class="form-label">URL da Imagem de Capa *</label>
+              <input type="url" id="image_url" name="image_url" class="form-input" placeholder="https://exemplo.com/imagem.jpg" required />
+              <p class="form-help">Recomendamos proporção 16:9 e resolução mínima 1280x720</p>
+            </div>
+            <div class="form-group">
+              <label class="form-checkbox-wrapper">
+                <input type="checkbox" id="certificate_enabled" name="certificate_enabled" class="form-checkbox" />
+                <span class="form-checkbox-label">Habilitar certificado de conclusão</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- NOVA SEÇÃO: VÍDEOS -->
+          <div class="form-section">
+            <h2 class="form-section-title">Vídeos do Curso</h2>
+            <p class="form-help">Adicione os vídeos que compõem este curso.</p>
+
+            <div id="videos-container"></div>
+
+            <button type="button" id="add-video-btn" class="btn btn-outline" style="margin-top: 1rem;">
+              + Adicionar Vídeo
+            </button>
+          </div>
+
+          <div class="form-actions">
+            <a href="cursos.html" class="btn btn-outline btn-lg">Cancelar</a>
+            <button type="submit" class="btn btn-primary btn-lg">Criar Curso</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3 class="footer-title">APPCORE</h3>
-                <p class="footer-text">A plataforma definitiva para aprender programação se divertindo.</p>
-            </div>
-
-            <div class="footer-section">
-                <h4 class="footer-heading">Plataforma</h4>
-                <ul class="footer-links">
-                    <li><a href="#cursos">Cursos</a></li>
-                    <li><a href="#desafios">Desafios</a></li>
-                    <li><a href="#eventos">Eventos</a></li>
-                    <li><a href="#certificados">Certificados</a></li>
-                </ul>
-            </div>
-        </div>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3 class="footer-title">APPCORE</h3>
+        <p class="footer-text">A plataforma definitiva para aprender programação se divertindo.</p>
+      </div>
+      <div class="footer-section">
+        <h4 class="footer-heading">Plataforma</h4>
+        <ul class="footer-links">
+          <li><a href="#cursos">Cursos</a></li>
+          <li><a href="#desafios">Desafios</a></li>
+          <li><a href="#eventos">Eventos</a></li>
+          <li><a href="#certificados">Certificados</a></li>
+        </ul>
+      </div>
     </div>
+  </div>
 </footer>
-</body>
 
 <script src="../scripts/course-register.js"></script>
-
+</body>
 </html>
