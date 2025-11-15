@@ -32,6 +32,10 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User author;
+    
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

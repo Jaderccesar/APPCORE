@@ -1,9 +1,13 @@
 package com.example.appcore.service;
 
 import com.example.appcore.enums.CreateStatus;
+import com.example.appcore.model.Comment;
 import com.example.appcore.model.Course;
+import com.example.appcore.model.User;
 import com.example.appcore.model.Video;
+import com.example.appcore.repository.CommentRepository;
 import com.example.appcore.repository.CourseRepository;
+import com.example.appcore.repository.UserRepository;
 import com.example.appcore.repository.VideoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +26,12 @@ public class CourseService {
 
     @Autowired
     private VideoRepository videoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private CommentRepository commentRepository;
 
     public List<Course> findAll() {
         return courseRepository.findAll();
@@ -60,6 +70,62 @@ public class CourseService {
         courseRepository.deleteById(id);
     }
 
+    // Avaliar Curso
+    public boolean evaluate(Long id, Long userId, Double rating, String content) {
+
+        if (rating == null || rating < 1 || rating > 5) {
+            return false;
+        }
+
+        if (content == null || content.trim().isEmpty()) {
+            return false;
+        }
+
+        if (content.contains("<script>")) {
+            return false;
+        }
+
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        Comment comment = new Comment();
+        comment.setRating(rating);
+        comment.setContent(content);
+        comment.setCourse(course);
+        comment.setAuthor(user);
+        comment.setAuthorName(user.getName());
+
+        course.getComments().add(comment);
+
+        courseRepository.save(course);
+        return true;
+
+    }
+    
+     // Editar Avaliação
+    public boolean editEvaluate(Long id, Long userId, Double rating, String content) {
+
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comentário não encontrado"));
+
+        if (!comment.getAuthor().getId().equals(userId)) {
+            throw new RuntimeException("Usuário não autorizado a editar este comentário");
+        }
+
+        if (rating == null || rating < 1 || rating > 5) return false;
+        if (content == null || content.trim().isEmpty()) return false;
+        if (content.contains("<script>")) return false;
+
+        comment.setRating(rating);
+        comment.setContent(content);
+
+        commentRepository.save(comment);
+
+        return true;
+    }
     
     // ----------  VIDEOS  ----------
 
