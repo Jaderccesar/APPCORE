@@ -24,22 +24,18 @@ public class ViewController {
 
     @GetMapping("/profile")
     public String showProfilePage(Model model, HttpSession session, @RequestParam(required = false) Long id) {
-        // Tenta obter o ID do usuário da sessão, parâmetro ou cookie
+
         Long userId = null;
-        
-        // 1. Tenta pegar da sessão
+
         Object sessionUserId = session.getAttribute("userId");
         if (sessionUserId != null) {
             userId = Long.parseLong(sessionUserId.toString());
         }
-        
-        // 2. Se não tiver na sessão, tenta pegar do parâmetro
+
         if (userId == null && id != null) {
             userId = id;
             session.setAttribute("userId", userId);
         }
-        
-        // 3. Se ainda não tiver, tenta pegar do cookie ou header (pode ser implementado depois)
         
         if (userId != null) {
             Optional<Student> student = studentService.findById(userId);

@@ -23,6 +23,7 @@
                 <a onclick="window.location.href='home.html'" class="nav-link active">Home</a>
                 <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
                 <a onclick="window.location.href='challenge.html'" class="nav-link">Desafios</a>
+                <a onclick="window.location.href='ranking.html'" class="nav-link">Ranking</a>
             </nav>
         </div>
         <div class="header-right">
@@ -44,7 +45,7 @@
             <div class="hero-content">
                 <h1 class="hero-title">Aprenda fazendo: cursos, desafios e eventos para quem quer colocar a mão na massa</h1>
                 <p class="hero-subtitle">Uma plataforma que conecta empresas, escolas e educadores a alunos em busca de aprendizado prático. Crie cursos e desafios, acompanhe o progresso e conquiste certificados de forma simples e interativa.</p>
-                <button class="btn btn-primary btn-lg">Explorar cursos</button>
+                <button onclick="window.location.href='course.html'" class="btn btn-primary btn-lg">Explorar cursos</button>
             </div>
         </div>
     </section>
@@ -65,9 +66,9 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-icon">E</div>
-                    <h3 class="card-title">Eventos</h3>
-                    <p class="card-description">Participe de workshops e hackathons online</p>
+                    <div class="card-icon">P</div>
+                    <h3 class="card-title">Progresso</h3>
+                    <p class="card-description">Acompanhe seu progresso</p>
                 </div>
 
                 <div class="card">
@@ -122,103 +123,12 @@
                 <h2 class="section-title">Cursos em destaque</h2>
                 <a href="#todos-cursos" class="link-arrow">Ver todos →</a>
             </div>
-            <div class="grid grid-3">
-                <div class="course-card">
-                    <div class="course-image">
-                        <img src="../images/web.webp" alt="Curso de Desenvolvimento Web">
-                    </div>
-                    <div class="course-content">
-                        <div class="course-tags">
-                            <span class="tag tag-level">Iniciante</span>
-                            <span class="tag tag-price">Gratuito</span>
-                        </div>
-                        <h3 class="course-title">Fundamentos de Desenvolvimento Web</h3>
-                        <p class="course-description">HTML, CSS e JavaScript do zero ao avançado</p>
-                        <button class="btn btn-outline btn-block">Ver curso</button>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image">
-                        <div class="course-image">
-                            <img src="../images/desafio.webp" alt="Desafio Algoritmo">
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <div class="course-tags">
-                            <span class="tag tag-level">Intermediário</span>
-                            <span class="tag tag-price">R$ 99</span>
-                        </div>
-                        <h3 class="course-title">Desafios de Algoritmos</h3>
-                        <p class="course-description">Resolva problemas e aprimore sua lógica</p>
-                        <button class="btn btn-outline btn-block">Ver curso</button>
-                    </div>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-image">
-                        <div class="course-image">
-                            <img src="../images/automacao.jpg" alt="Automação de Testes">
-                        </div>
-                    </div>
-                    <div class="course-content">
-                        <div class="course-tags">
-                            <span class="tag tag-level">Avançado</span>
-                            <span class="tag tag-price">R$ 149</span>
-                        </div>
-                        <h3 class="course-title">Automação de Testes para Java</h3>
-                        <p class="course-description">JUnit, Selenium e melhores práticas</p>
-                        <button class="btn btn-outline btn-block">Ver curso</button>
-                    </div>
-                </div>
-            </div>
+            <div class="grid grid-3" id="featured-courses"></div>
         </div>
     </section>
+
 
     <section class="section section-alt">
-        <div class="container">
-            <h2 class="section-title">Próximos eventos</h2>
-            <div class="events-list">
-                <div class="event-item">
-                    <div class="event-date">
-                        <span class="event-month">Dez</span>
-                        <span class="event-day">15</span>
-                    </div>
-                    <div class="event-info">
-                        <h3 class="event-title">Workshop: Git e GitHub para Iniciantes</h3>
-                        <p class="event-location">Online</p>
-                    </div>
-                    <button class="btn btn-ghost">Participar →</button>
-                </div>
-
-                <div class="event-item">
-                    <div class="event-date">
-                        <span class="event-month">Dez</span>
-                        <span class="event-day">20</span>
-                    </div>
-                    <div class="event-info">
-                        <h3 class="event-title">Hackathon de Natal - Desafio em Equipe</h3>
-                        <p class="event-location">Online</p>
-                    </div>
-                    <button class="btn btn-ghost">Participar →</button>
-                </div>
-
-                <div class="event-item">
-                    <div class="event-date">
-                        <span class="event-month">Jan</span>
-                        <span class="event-day">10</span>
-                    </div>
-                    <div class="event-info">
-                        <h3 class="event-title">Webinar: Carreira em Desenvolvimento Backend</h3>
-                        <p class="event-location">Online</p>
-                    </div>
-                    <button class="btn btn-ghost">Participar →</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
         <div class="container">
             <div class="progress-card">
                 <div class="progress-header">
@@ -258,14 +168,58 @@
             <div class="footer-section">
                 <h4 class="footer-heading">Plataforma</h4>
                 <ul class="footer-links">
-                    <li><a href="#cursos">Cursos</a></li>
-                    <li><a href="#desafios">Desafios</a></li>
-                    <li><a href="#eventos">Eventos</a></li>
-                    <li><a href="#certificados">Certificados</a></li>
+                    <li><a onclick="window.location.href='course.html'">Cursos</a></li>
+                    <li><a onclick="window.location.href='challenge.html'">Desafios</a></li>
+                    <li><a onclick="window.location.href='ranking.html'">Ranking</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 </body>
+
+<script>
+async function carregarCursosDestaque() {
+  const container = document.getElementById("featured-courses");
+  container.innerHTML = "<p>Carregando cursos...</p>";
+
+  try {
+    const response = await fetch("http://localhost:8080/courses/list");
+    const cursos = await response.json();
+
+    if (!cursos || cursos.length === 0) {
+      container.innerHTML = "<p>Nenhum curso disponível no momento.</p>";
+      return;
+    }
+
+    const cursosAleatorios = cursos.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+    container.innerHTML = cursosAleatorios.map(curso => `
+      <div class="course-card">
+        <div class="course-image">
+          <img src="${curso.imageUrl || '../images/placeholder.jpg'}" alt="${curso.title}">
+        </div>
+        <div class="course-content">
+          <div class="course-tags">
+            <span class="tag tag-level">${curso.level || 'Geral'}</span>
+            <span class="tag tag-price">${curso.price > 0 ? 'R$ ' + curso.price.toFixed(2) : 'Gratuito'}</span>
+          </div>
+          <h3 class="course-title">${curso.title}</h3>
+          <p class="course-description">${curso.description || 'Sem descrição disponível.'}</p>
+          <button class="btn btn-outline btn-block" onclick="window.location.href='course.html'">Ver curso</button>
+        </div>
+      </div>
+    `).join("");
+
+  } catch (erro) {
+    console.error("Erro ao carregar cursos:", erro);
+    container.innerHTML = "<p>Erro ao carregar os cursos.</p>";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", carregarCursosDestaque);
+</script>
+
+</script>
+
 </html>
