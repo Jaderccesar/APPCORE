@@ -18,7 +18,7 @@ public class LoginTest extends BaseTest {
         driver.get("https://www.linkedin.com/checkpoint/lg/sign-in-another-account?trk=guest_homepage-basic_nav-header-signin");
 
         driver.findElement(By.id("username")).sendKeys(""); //colocar email válido
-        driver.findElement(By.id("password")).sendKeys(""); //colocar senha válida 
+        driver.findElement(By.id("password")).sendKeys(""); //colocar senha válida
 
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
