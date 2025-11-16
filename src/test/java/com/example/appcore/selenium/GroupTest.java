@@ -12,8 +12,8 @@ import java.util.List;
 
 public class GroupTest extends BaseTest{
 
-    private final String EMAIL = "leandrodasilvak00@gmail.com";     //colocar email válido
-    private final String SENHA = "leandrodasilvak1";     //colocar senha válida
+    private final String EMAIL = "leandrotestesoftware@gmail.com";     //colocar email válido
+    private final String SENHA = "Leandro123@Teste";     //colocar senha válida
 
     @Test
     public void CT01_participarGrupo() throws InterruptedException {
@@ -29,7 +29,7 @@ public class GroupTest extends BaseTest{
 
         WebElement pesquisar = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("/html/body/div/div[2]/div[2]/div[1]/header/div/div/div/div[2]/div/div/input")
+                        By.xpath("//*[@id=\"global-nav-typeahead\"]/input")
                 )
         );
         pesquisar.click();
@@ -40,7 +40,7 @@ public class GroupTest extends BaseTest{
 
         WebElement gruposBtn = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("/html/body/div[6]/div[3]/div[2]/section/div/nav/div/ul/li[6]")
+                        By.xpath("//*[@id=\"search-reusables__filters-bar\"]/ul/li[3]/button")
                 )
         );
         gruposBtn.click();
@@ -52,7 +52,7 @@ public class GroupTest extends BaseTest{
         );
         participarBtn.click();
 
-        driver.get("https://www.linkedin.com/in/leandro-silva-6a3484289/");
+        driver.get("https://www.linkedin.com/in/leandro-silva-45911a392/");
 
         WebElement grupoBtn = wait.until(
                 ExpectedConditions.elementToBeClickable(
@@ -88,7 +88,7 @@ public class GroupTest extends BaseTest{
 
         WebElement pesquisar = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("/html/body/div/div[2]/div[2]/div[1]/header/div/div/div/div[2]/div/div/input")
+                        By.xpath("//*[@id=\"global-nav-typeahead\"]/input")
                 )
         );
         pesquisar.click();
@@ -99,14 +99,14 @@ public class GroupTest extends BaseTest{
 
         WebElement grupoFiltradoBtn = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("/html/body/div[6]/div[3]/div[2]/section/div/nav/div/ul/li[3]")
+                        By.xpath("//*[@id=\"search-reusables__filters-bar\"]/ul/li[1]/button")
                 )
         );
         grupoFiltradoBtn.click();
 
         WebElement participarBtn = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("/html/body/div[6]/div[3]/div[2]/div/div[1]/main/div/div/div[2]/div/ul/li[1]/div/div/div/div[3]/div")
+                        By.xpath("//*[@id=\"ember333\"]")
                 )
         );
         participarBtn.click();
@@ -115,14 +115,14 @@ public class GroupTest extends BaseTest{
 
         WebElement solicitadaBtn = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("//*[@id=\"ember33\"]")
+                        By.xpath("//*[@id=\"ember34\"]")
                 )
         );
         solicitadaBtn.click();
 
         WebElement solicitacoesList = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("//*[@id=\"ember30\"]/div[2]/div")
+                        By.xpath("//*[@id=\"ember31\"]/div[2]/div")
                 )
         );
         solicitacoesList.click();

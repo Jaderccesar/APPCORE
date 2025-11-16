@@ -12,8 +12,8 @@ import java.util.List;
 
 public class MessagesTest extends BaseTest {
 
-    private final String EMAIL = "leandrodasilvak00@gmail.com";     //colocar email válido
-    private final String SENHA = "leandrodasilvak1";     //colocar senha válida
+    private final String EMAIL = "leandrotestesoftware@gmail.com";     //colocar email válido
+    private final String SENHA = "Leandro123@Teste";     //colocar senha válida
 
     @Test
     public void CT01_enviarMensagemDireta() throws InterruptedException {
@@ -39,7 +39,7 @@ public class MessagesTest extends BaseTest {
                 ExpectedConditions.elementToBeClickable(By.xpath("//input[@placeholder='Pesquisar mensagens']"))
         );
 
-        searchBox.sendKeys("Leandro Teste");
+        searchBox.sendKeys("Jader Cesar Vanderlinde");
         Thread.sleep(2000);
         searchBox.sendKeys(Keys.ENTER);
 
@@ -49,7 +49,7 @@ public class MessagesTest extends BaseTest {
                 )
         );
 
-        String mensagem = "Olá, Leandro! Gostaria de falar sobre oportunidades profissionais.";
+        String mensagem = "Olá, Jader! Gostaria de falar sobre oportunidades profissionais.";
         messageBox.sendKeys(mensagem);
 
         WebElement sendBtn = wait.until(
