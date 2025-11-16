@@ -42,7 +42,6 @@ public class LoginTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        // Agora procuramos a mensagem certa:
         WebElement errorMsg = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("error-for-password"))
         );
