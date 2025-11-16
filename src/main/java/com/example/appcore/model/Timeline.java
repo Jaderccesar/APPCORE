@@ -1,6 +1,7 @@
 package com.example.appcore.model;
 
 import com.example.appcore.enums.TimelineVisibility;
+import com.example.appcore.enums.TypeInteration;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,9 @@ public class Timeline {
     private Long id;
     private String description;
     private LocalDateTime time;
+    @Enumerated(EnumType.STRING)
+    private TypeInteration TypeInteration;
+    @Enumerated(EnumType.STRING)
     private TimelineVisibility visibility;
 
     @OneToOne

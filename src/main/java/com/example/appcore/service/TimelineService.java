@@ -1,8 +1,12 @@
 package com.example.appcore.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.appcore.enums.TimelineVisibility;
+import com.example.appcore.enums.TypeInteration;
+import com.example.appcore.model.Student;
 import org.springframework.stereotype.Service;
 import com.example.appcore.model.Timeline;
 import com.example.appcore.repository.TimelineRepository;
@@ -54,6 +58,25 @@ public class TimelineService {
 
     public List<Timeline> findByUserId(Long userId) {
       return timelineRepository.findByUserId(userId);   
+    }
+
+    public boolean registrarInteracao(String tipoInteracao, Student usuario) {
+
+        Optional<TypeInteration> interacao = TypeInteration.fromString(tipoInteracao);
+
+        if (interacao.isEmpty()) {
+            return false; // CT02
+        }
+
+        Timeline timeline = new Timeline();
+        timeline.setUser(usuario);
+        timeline.setDescription("Interação: " + interacao.get().name());
+        timeline.setVisibility(TimelineVisibility.PUBLIC);
+        timeline.setTime(LocalDateTime.now());
+        timeline.setTypeInteration(interacao.get());
+
+        timelineRepository.save(timeline);
+        return true; // CT01
     }
     
 }
