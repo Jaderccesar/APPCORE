@@ -1,9 +1,11 @@
 package com.example.appcore.service;
 
 import com.example.appcore.model.Challenge;
+import com.example.appcore.model.Course;
 import com.example.appcore.model.Question;
 import com.example.appcore.model.Alternative;
 import com.example.appcore.repository.ChallengeRepository;
+import com.example.appcore.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class ChallengeService {
 
     @Autowired
     private ChallengeRepository challengeRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     public List<Challenge> getChallenges() {
         return challengeRepository.findAll();
@@ -83,5 +88,13 @@ public class ChallengeService {
 
     public void delete(Long id) {
         challengeRepository.deleteById(id);
+    }
+
+    public Challenge cadastrarDesafio(Long courseId, Challenge challenge) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+
+        challenge.setCourse(course);
+        return challengeRepository.save(challenge);
     }
 }

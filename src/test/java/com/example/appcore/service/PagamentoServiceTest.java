@@ -37,7 +37,7 @@ class PagamentoServiceTest {
     @Test
     void deveFalharQuandoNomeVazio() {
         boolean resultado = pagamentoService.validaCartaoCreditoValido(
-                "4111111111111111",
+                "4111 1111 1111 1111",
                 " ",
                 "09/29",
                 "123"
@@ -49,7 +49,7 @@ class PagamentoServiceTest {
     @Test
     void deveFalharQuandoCvvInvalido() {
         boolean resultado = pagamentoService.validaCartaoCreditoValido(
-                "4111111111111111",
+                "4111 1111 1111 1111",
                 "Leandro",
                 "09/29",
                 "12"

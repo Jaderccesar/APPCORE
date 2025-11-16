@@ -14,7 +14,10 @@ public enum TypeInteration {
     @JsonProperty("SEGUIDO")
     FOLLOWED,
     @JsonProperty("POSTAGEM")
-    POST;
+    POST,
+
+    @JsonProperty("DESAFIO CONCLUIDO")
+    CHALLENGE_COMPLETED;
 
     public static Optional<TypeInteration> fromString(String value) {
         return Arrays.stream(values())
