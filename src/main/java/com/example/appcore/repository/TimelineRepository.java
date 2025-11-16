@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TimelineRepository extends JpaRepository<Timeline, Long> {
   List<Timeline> findByUserId(Long userId);
+  List<Timeline> findByUserIdOrderByTimeDesc(Long userId);
 }

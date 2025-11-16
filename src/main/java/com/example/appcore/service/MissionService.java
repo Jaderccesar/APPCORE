@@ -43,4 +43,8 @@ public class MissionService {
     public void delete(Long id) {
         missionRepository.deleteById(id);
     }
+
+    public boolean validarPontosMissao(int pontos) {
+        return pontos >= 0 && pontos <= 100;
+    }
 }

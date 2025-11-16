@@ -38,4 +38,22 @@ public class CommentService {
     public void deleteComment(Long id) {
          commentRepository.deleteById(id);
     }
+
+    public boolean validarComentario(String comentario) {
+
+        if (comentario == null) return false;
+
+        String texto = comentario.trim();
+
+        // CT02 – Comentário vazio
+        if (texto.isEmpty()) return false;
+
+        // CT03 – Comentário muito longo
+        if (texto.length() > 500) return false;
+
+        // CT04 – Comentário com caracteres especiais perigosos
+        if (texto.matches(".*<[^>]+>.*")) return false;
+
+        return true; // CT01 – válida
+    }
 }

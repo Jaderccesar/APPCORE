@@ -68,8 +68,8 @@ public abstract class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private ArrayList<Post> posts;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Timeline timeline;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Timeline> timeline = new ArrayList<>();
 
     @PreUpdate
     public void preUpdate() {
