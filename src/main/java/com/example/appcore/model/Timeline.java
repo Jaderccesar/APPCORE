@@ -27,11 +27,11 @@ public class Timeline {
     private String description;
     private LocalDateTime time;
     @Enumerated(EnumType.STRING)
-    private TypeInteration TypeInteration;
+    private TypeInteration typeInteration;
     @Enumerated(EnumType.STRING)
     private TimelineVisibility visibility;
 
-    @OneToOne
-    @JoinColumn(name = "user_id") 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private Student user;
 }

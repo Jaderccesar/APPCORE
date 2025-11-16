@@ -45,6 +45,10 @@ public class Challenge {
     @JsonManagedReference
     private List<Question> questions;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     @PreUpdate
     public void preUpdate() {
         this.updateDate = LocalDateTime.now();

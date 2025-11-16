@@ -62,6 +62,9 @@ public class Course {
     inverseJoinColumns = @JoinColumn(name = "promotion_id"))
     private List<Promotion> promotions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Challenge> challenges = new ArrayList<>();
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
