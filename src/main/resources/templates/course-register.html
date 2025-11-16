@@ -1,15 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Criar Curso - APPCORE</title>
-    <meta name="description" content="Crie e publique seu curso na APPCORE">
-    <link rel="stylesheet" href="../static/course-register.css">
+    <meta name="description" content="Crie e publique seu curso na APPCORE" />
+    <link rel="stylesheet" href="../static/course-register.css" />
 </head>
 <body>
-
 <header class="header">
     <div class="container">
         <div class="header-content">
@@ -39,126 +37,87 @@
             <div class="form-container">
                 <div class="form-header">
                     <h1>Criar Novo Curso</h1>
-                    <p class="form-subtitle">
-                        Preencha as informações abaixo para criar e publicar seu curso na plataforma
-                    </p>
+                    <p class="form-subtitle">Preencha as informações abaixo para criar e publicar seu curso na plataforma</p>
                 </div>
 
-                <form class="course-form" action="#" method="POST">
-
+                <form id="course-form" class="course-form">
+                    <!-- Informações básicas -->
                     <div class="form-section">
                         <h2 class="form-section-title">Informações Básicas</h2>
-
                         <div class="form-group">
                             <label for="title" class="form-label">Título do Curso *</label>
-                            <input
-                                    type="text"
-                                    id="title"
-                                    name="title"
-                                    class="form-input"
-                                    placeholder="Ex: Fundamentos de Desenvolvimento Web"
-                                    required
-                            >
+                            <input type="text" id="title" name="title" class="form-input" placeholder="Ex: Fundamentos de Desenvolvimento Web" required />
                         </div>
-
                         <div class="form-group">
                             <label for="description" class="form-label">Descrição *</label>
-                            <textarea
-                                    id="description"
-                                    name="description"
-                                    class="form-textarea"
-                                    rows="4"
-                                    placeholder="Descreva o que os alunos irão aprender neste curso..."
-                                    required
-                            ></textarea>
+                            <textarea id="description" name="description" class="form-textarea" rows="4" placeholder="Descreva o que os alunos irão aprender neste curso..." required></textarea>
                         </div>
-
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="level" class="form-label">Nível *</label>
                                 <select id="level" name="level" class="form-select" required>
                                     <option value="">Selecione o nível</option>
-                                    <option value="iniciante">Iniciante</option>
-                                    <option value="intermediario">Intermediário</option>
-                                    <option value="avancado">Avançado</option>
+                                    <option value="BÁSICO">Iniciante</option>
+                                    <option value="INTERMEDIÁRIO">Intermediário</option>
+                                    <option value="AVANÇADO">Avançado</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <label for="workload" class="form-label">Carga Horária (horas) *</label>
-                                <input
-                                        type="number"
-                                        id="workload"
-                                        name="workload"
-                                        class="form-input"
-                                        placeholder="40"
-                                        min="1"
-                                        required
-                                >
+                                <input type="number" id="workload" name="workload" class="form-input" placeholder="40" min="1" required />
                             </div>
                         </div>
                     </div>
 
+                    <!-- Precificação -->
                     <div class="form-section">
                         <h2 class="form-section-title">Precificação e Status</h2>
-
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="price" class="form-label">Preço (R$) *</label>
-                                <input
-                                        type="number"
-                                        id="price"
-                                        name="price"
-                                        class="form-input"
-                                        placeholder="149.90"
-                                        step="0.01"
-                                        min="0"
-                                        required
-                                >
+                                <input type="number" id="price" name="price" class="form-input" placeholder="149.90" step="0.01" min="0" required />
                                 <p class="form-help">Digite 0 para curso gratuito</p>
                             </div>
-
                             <div class="form-group">
                                 <label for="status" class="form-label">Status *</label>
                                 <select id="status" name="status" class="form-select" required>
                                     <option value="">Selecione o status</option>
-                                    <option value="rascunho">Rascunho</option>
-                                    <option value="publicado">Publicado</option>
-                                    <option value="arquivado">Arquivado</option>
+                                    <option value="RASCUNHO">Rascunho</option>
+                                    <option value="PUBLICADO">Publicado</option>
+                                    <option value="ARQUIVADO">Arquivado</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Mídia -->
                     <div class="form-section">
                         <h2 class="form-section-title">Mídia e Recursos</h2>
-
                         <div class="form-group">
                             <label for="image_url" class="form-label">URL da Imagem de Capa *</label>
-                            <input
-                                    type="url"
-                                    id="image_url"
-                                    name="image_url"
-                                    class="form-input"
-                                    placeholder="https://exemplo.com/imagem.jpg"
-                                    required
-                            >
-                            <p class="form-help">Recomendamos imagens com proporção 16:9 e resolução mínima de 1280x720</p>
+                            <input type="url" id="image_url" name="image_url" class="form-input" placeholder="https://exemplo.com/imagem.jpg" required />
+                            <p class="form-help">Recomendamos proporção 16:9 e resolução mínima 1280x720</p>
                         </div>
-
                         <div class="form-group">
                             <label class="form-checkbox-wrapper">
-                                <input
-                                        type="checkbox"
-                                        id="certificate_enabled"
-                                        name="certificate_enabled"
-                                        class="form-checkbox"
-                                >
+                                <input type="checkbox" id="certificate_enabled" name="certificate_enabled" class="form-checkbox" />
                                 <span class="form-checkbox-label">Habilitar certificado de conclusão</span>
                             </label>
-                            <p class="form-help">Os alunos receberão um certificado ao concluir o curso</p>
                         </div>
                     </div>
+
+                    <!-- NOVA SEÇÃO: VÍDEOS -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Vídeos do Curso</h2>
+                        <p class="form-help">Adicione os vídeos que compõem este curso.</p>
+
+                        <div id="videos-container"></div>
+
+                        <button type="button" id="add-video-btn" class="btn btn-outline" style="margin-top: 1rem;">
+                            + Adicionar Vídeo
+                        </button>
+                    </div>
+
                     <div class="form-actions">
                         <a href="cursos.html" class="btn btn-outline btn-lg">Cancelar</a>
                         <button type="submit" class="btn btn-primary btn-lg">Criar Curso</button>
@@ -176,7 +135,6 @@
                 <h3 class="footer-title">APPCORE</h3>
                 <p class="footer-text">A plataforma definitiva para aprender programação se divertindo.</p>
             </div>
-
             <div class="footer-section">
                 <h4 class="footer-heading">Plataforma</h4>
                 <ul class="footer-links">
@@ -189,8 +147,7 @@
         </div>
     </div>
 </footer>
-</body>
 
 <script src="../scripts/course-register.js"></script>
-
+</body>
 </html>

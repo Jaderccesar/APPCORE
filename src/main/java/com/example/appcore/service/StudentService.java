@@ -107,12 +107,29 @@ public class StudentService {
 
 
     public Optional<Student> findByEmail(String email) {
-        return studentRepository.findAll().stream()
-                .filter(s -> s.getEmail().equalsIgnoreCase(email))
-                .findFirst();
+        return studentRepository.findByEmail(email);
     }
+
 
     public void delete(Long id) {
         studentRepository.deleteById(id);
     }
+
+    public boolean autenticarStudent(String email, String senha) {
+
+        if (email == null || !email.contains("@") || email.contains("$") || email.contains(",")) {
+            return false;
+        }
+
+        Optional<Student> studentOpt = studentRepository.findByEmail(email);
+
+        if (studentOpt.isEmpty()) {
+            return false;
+        }
+
+        Student student = studentOpt.get();
+
+        return student.getPassword() != null && student.getPassword().equals(senha);
+    }
+
 }

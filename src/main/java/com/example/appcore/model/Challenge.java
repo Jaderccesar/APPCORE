@@ -1,5 +1,6 @@
 package com.example.appcore.model;
 
+import com.example.appcore.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,9 @@ public class Challenge {
     private LocalDateTime updateDate;
 
     private Integer maxScore;
+
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")

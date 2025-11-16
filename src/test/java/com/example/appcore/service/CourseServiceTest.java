@@ -1,5 +1,6 @@
 package com.example.appcore.service;
 
+import com.example.appcore.enums.CreateStatus;
 import com.example.appcore.model.Comment;
 import com.example.appcore.model.Course;
 import com.example.appcore.model.Student;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -148,4 +150,133 @@ class CourseServiceTest {
 
         verify(commentRepository, never()).save(any());
     }
+
+    @Test
+    void deveImpedirCriacaoCursoComNomeInvalido() {
+        Course curso = new Course();
+        curso.setTitle(" ");
+        curso.setDescription("Java para iniciantes");
+        curso.setPrice(39.90);
+        curso.setWorkload(12);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> courseService.save(curso),
+                "Nome inválido deve lançar exceção");
+
+        verify(courseRepository, never()).save(any());
+    }
+
+    @Test
+    void deveImpedirCriacaoCursoComDescricaoInvalida() {
+        Course curso = new Course();
+        curso.setTitle("Java");
+        curso.setDescription(" ");
+        curso.setPrice(39.90);
+        curso.setWorkload(12);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> courseService.save(curso),
+                "Descrição inválida deve lançar exceção");
+
+        verify(courseRepository, never()).save(any());
+    }
+
+    @Test
+    void deveImpedirCriacaoCursoComPrecoInvalido() {
+        Course curso = new Course();
+        curso.setTitle("Java");
+        curso.setDescription("Java para iniciantes");
+        curso.setPrice(-40.0);
+        curso.setWorkload(12);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> courseService.save(curso),
+                "Preço inválido deve lançar exceção");
+
+        verify(courseRepository, never()).save(any());
+    }
+
+    @Test
+    void deveCriarCursoValido() {
+
+        Course curso = new Course();
+        curso.setTitle("Java Web");
+        curso.setDescription("Curso completo");
+        curso.setPrice(59.90);
+        curso.setWorkload(20);
+
+        when(courseRepository.save(any(Course.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Course salvo = courseService.save(curso);
+
+        assertNotNull(salvo);
+        assertEquals(CreateStatus.DRAFT, salvo.getStatus());
+        verify(courseRepository, times(1)).save(curso);
+    }
+
+    @Test
+    void deveListarSomenteCursosAtivos() {
+
+        Course ativo1 = new Course();
+        ativo1.setId(1L);
+        ativo1.setTitle("Java");
+        ativo1.setStatus(CreateStatus.PUBLISHED);
+
+        Course ativo2 = new Course();
+        ativo2.setId(2L);
+        ativo2.setTitle("Spring Boot");
+        ativo2.setStatus(CreateStatus.PUBLISHED);
+
+        Course inativo = new Course();
+        inativo.setId(3L);
+        inativo.setTitle("Python");
+        inativo.setStatus(CreateStatus.ARCHIVED);
+
+        when(courseRepository.findAll())
+                .thenReturn(List.of(ativo1, ativo2, inativo));
+
+        List<Course> resultado = courseService.findAll()
+                .stream()
+                .filter(c -> c.getStatus() == CreateStatus.PUBLISHED)
+                .toList();
+
+        assertEquals(2, resultado.size(), "Deve retornar somente cursos ativos");
+        assertTrue(resultado.contains(ativo1));
+        assertTrue(resultado.contains(ativo2));
+        assertFalse(resultado.contains(inativo));
+    }
+
+    @Test
+    void deveListarSomenteCursosInativos() {
+
+        Course ativo = new Course();
+        ativo.setId(1L);
+        ativo.setTitle("Java");
+        ativo.setStatus(CreateStatus.PUBLISHED);
+
+        Course inativo1 = new Course();
+        inativo1.setId(2L);
+        inativo1.setTitle("Python");
+        inativo1.setStatus(CreateStatus.ARCHIVED);
+
+        Course inativo2 = new Course();
+        inativo2.setId(3L);
+        inativo2.setTitle("Banco de Dados");
+        inativo2.setStatus(CreateStatus.ARCHIVED);
+
+        when(courseRepository.findAll())
+                .thenReturn(List.of(ativo, inativo1, inativo2));
+
+        List<Course> resultado = courseService.findAll()
+                .stream()
+                .filter(c -> c.getStatus() == CreateStatus.ARCHIVED)
+                .toList();
+
+        assertEquals(2, resultado.size(), "Deve retornar somente cursos inativos");
+        assertTrue(resultado.contains(inativo1));
+        assertTrue(resultado.contains(inativo2));
+        assertFalse(resultado.contains(ativo));
+    }
+
 }

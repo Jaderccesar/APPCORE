@@ -41,10 +41,24 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-    public Course save(Course course) { 
+    public Course save(Course course) {
+
+        if (course.getTitle() == null || course.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome inválido");
+        }
+
+        if (course.getDescription() == null || course.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("Descrição inválida");
+        }
+
+        if (course.getPrice() == null || course.getPrice() < 0) {
+            throw new IllegalArgumentException("Preço inválido");
+        }
+
         course.setCreatedAt(LocalDateTime.now());
         course.setUpdatedAt(LocalDateTime.now());
         course.setStatus(CreateStatus.DRAFT);
+
         return courseRepository.save(course);
     }
 

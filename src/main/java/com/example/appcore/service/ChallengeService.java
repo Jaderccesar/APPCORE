@@ -28,6 +28,18 @@ public class ChallengeService {
 
     public Challenge save(Challenge challenge) {
 
+        if (challenge.getTitle() == null || challenge.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome inválido");
+        }
+
+        if (challenge.getDescription() == null || challenge.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("Descrição inválida");
+        }
+
+        if (challenge.getDifficulty() == null) {
+            throw new IllegalArgumentException("Dificuldade inválida");
+        }
+
         challenge.setCreateDate(LocalDateTime.now());
         challenge.setUpdateDate(LocalDateTime.now());
 
@@ -42,6 +54,7 @@ public class ChallengeService {
 
         return challengeRepository.save(challenge);
     }
+
 
     public Challenge update(Long id, Challenge challenge) {
         Challenge existing = challengeRepository.findById(id)
