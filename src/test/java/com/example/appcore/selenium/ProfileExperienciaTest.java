@@ -2,102 +2,197 @@ package com.example.appcore.selenium;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ProfileExperienciaTest {
-
-    private WebDriver driver;
-
-    @BeforeEach
-    public void setUp() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("user-data-dir=C:/Users/Pichau/AppData/Local/Google/Chrome/User Data");
-        options.addArguments("profile-directory=Profile 2");
-        options.addArguments("--disable-extensions");
-
-        driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) driver.quit();
-    }
+public class ProfileExperienciaTest extends BaseTest {
 
     @Test
     public void CT01_adicionarExperienciaComSucesso() {
 
-        driver.get("https://www.google.com/");
-        System.out.println("URL atual: " + driver.getCurrentUrl());
-        driver.get("https://www.linkedin.com/feed/edit/forms/position/new/");
+        driver.get("https://www.linkedin.com/checkpoint/lg/sign-in-another-account");
+
+        driver.findElement(By.id("username")).sendKeys("danielfelipe0550@gmail.com"); 
+        driver.findElement(By.id("password")).sendKeys("C0elho@20221806");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        WebElement titulo = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("positionTitle")));
+        // Abre o formulário
+        driver.get("https://www.linkedin.com/feed/edit/forms/position/new/");
+
+        // ===== TÍTULO =====
+        WebElement titulo = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("input[id$='-title']")
+        )); 
         titulo.sendKeys("Analista de Testes Júnior");
 
-        WebElement empresa = driver.findElement(By.name("companyName"));
+        // ===== EMPRESA =====
+        WebElement empresa = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("input[id$='-requiredCompany']")
+        ));
         empresa.sendKeys("CVS Provider");
 
-        WebElement mesInicio = driver.findElement(By.name("startMonth"));
-        Select selectMes = new Select(mesInicio);
-        selectMes.selectByVisibleText("January");
+        // ===== MÊS DE INÍCIO =====
+        WebElement mesInicio = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("fieldset[data-test-date-dropdown='start'] select[data-test-month-select]")
+        ));
+        new Select(mesInicio).selectByVisibleText("Janeiro");
 
-        WebElement anoInicio = driver.findElement(By.name("startYear"));
-        anoInicio.sendKeys("2025");
+        // ===== ANO DE INÍCIO =====
+        WebElement anoInicio = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("fieldset[data-test-date-dropdown='start'] select[data-test-year-select]")
+        ));
+        new Select(anoInicio).selectByVisibleText("2025");
 
-        WebElement btnSalvar = driver.findElement(By.xpath("//button[contains(@data-test-save-btn,'profileEdit')]"));
-        btnSalvar.click();
+        // Scroll
+        js.executeScript("arguments[0].scrollIntoView(true);", anoInicio);
 
-        boolean voltouParaPerfil = wait.until(ExpectedConditions.urlContains("/in/"));
-        assertTrue(voltouParaPerfil, "A experiência deveria ter sido salva e o perfil reaberto.");
+        // ===== LOCALIDADE =====
+        // campo correto é geoPositionLocation
+        WebElement local = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("input[id$='-geoPositionLocation']")
+        ));
+        local.sendKeys("Rio de Janeiro");
+
+        // ===== TIPO DE LOCALIDADE (É UM SELECT!!!) =====
+        WebElement tipoLocal = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("select[id$='-locationType']")
+        ));
+        new Select(tipoLocal).selectByVisibleText("Remota");
+
+        // ===== DESCRIÇÃO =====
+        WebElement descricao = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("textarea[id$='-description']")
+        ));
+        descricao.sendKeys("Descrição automatizada do cargo.");
+
+        // ===== TÍTULO DO PERFIL =====
+        WebElement tituloPerfil = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("input[id$='-headline']")
+        ));
+        tituloPerfil.sendKeys("Analista de Testes");
+
+        // ===== ONDE ENCONTROU O EMPREGO (TAMBÉM É SELECT) =====
+        WebElement found = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("select[id$='-sourceOfHire']")
+        ));
+        new Select(found).selectByVisibleText("LinkedIn");
+
+        // Scroll para salvar
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+        // ===== BOTÃO SALVAR =====
+        WebElement salvar = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(., 'Salvar')]")
+        ));
+        salvar.click();
+
+        // ===== VALIDA SUCESSO
+        WebElement celebracao = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("img.feed-shared-celebration-image__image")
+                )
+        );
+
+        assertTrue(celebracao.isDisplayed());
+        
     }
 
     @Test
     public void CT02_tentarSalvarSemTitulo() {
 
+        driver.get("https://www.linkedin.com/checkpoint/lg/sign-in-another-account");
+
+        driver.findElement(By.id("username")).sendKeys("danielfelipe0550@gmail.com"); 
+        driver.findElement(By.id("password")).sendKeys("C0elho@20221806");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        // 1. Acessar o perfil
-        driver.get("https://www.linkedin.com/in/me/");
+        // Abre o formulário
+        driver.get("https://www.linkedin.com/feed/edit/forms/position/new/");
 
-        // 2. Clicar em “Adicionar experiência”
-        WebElement botaoAddExp = wait.until(
-                ExpectedConditions.elementToBeClickable(
-                        By.xpath("//button[contains(@aria-label, 'Adicionar experiência')]")
-                )
-        );
-        botaoAddExp.click();
+        // ===== TÍTULO =====
+        //       Vazio
 
-        // 3. Deixar o título vazio (campo obrigatório)
-        driver.findElement(By.id("company-typeahead")).sendKeys("CVS Provider");
+        // ===== EMPRESA =====
+        WebElement empresa = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("input[id$='-requiredCompany']")
+        ));
+        empresa.sendKeys("CVS Provider");
 
-        WebElement dataInicioMes = driver.findElement(By.id("date-range-form-component-profileEditFormElement-startDate-month"));
-        dataInicioMes.sendKeys("01");
+        // ===== MÊS DE INÍCIO =====
+        WebElement mesInicio = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("fieldset[data-test-date-dropdown='start'] select[data-test-month-select]")
+        ));
+        new Select(mesInicio).selectByVisibleText("Janeiro");
 
-        WebElement dataInicioAno = driver.findElement(By.id("date-range-form-component-profileEditFormElement-startDate-year"));
-        dataInicioAno.sendKeys("2025");
+        // ===== ANO DE INÍCIO =====
+        WebElement anoInicio = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("fieldset[data-test-date-dropdown='start'] select[data-test-year-select]")
+        ));
+        new Select(anoInicio).selectByVisibleText("2025");
 
-        // 4. Clicar em salvar
-        WebElement botaoSalvar = driver.findElement(By.xpath("//button[contains(., 'Salvar')]"));
-        botaoSalvar.click();
+        // Scroll
+        js.executeScript("arguments[0].scrollIntoView(true);", anoInicio);
 
-        // 5. Verificar mensagem de erro
+        // ===== LOCALIDADE =====
+        // campo correto é geoPositionLocation
+        WebElement local = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("input[id$='-geoPositionLocation']")
+        ));
+        local.sendKeys("Rio de Janeiro");
+
+        // ===== TIPO DE LOCALIDADE (É UM SELECT!!!) =====
+        WebElement tipoLocal = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("select[id$='-locationType']")
+        ));
+        new Select(tipoLocal).selectByVisibleText("Remota");
+
+        // ===== DESCRIÇÃO =====
+        WebElement descricao = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("textarea[id$='-description']")
+        ));
+        descricao.sendKeys("Descrição automatizada do cargo.");
+
+        // ===== TÍTULO DO PERFIL =====
+        WebElement tituloPerfil = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("input[id$='-headline']")
+        ));
+        tituloPerfil.sendKeys("Analista de Testes");
+
+        // ===== ONDE ENCONTROU O EMPREGO (TAMBÉM É SELECT) =====
+        WebElement found = wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("select[id$='-sourceOfHire']")
+        ));
+        new Select(found).selectByVisibleText("LinkedIn");
+
+        // Scroll para salvar
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+        // ===== BOTÃO SALVAR =====
+        WebElement salvar = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(., 'Salvar')]")
+        ));
+        salvar.click();
+
+        // ===== VALIDA ERRO DE TÍTULO =====
         WebElement erro = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//p[contains(@class,'artdeco-inline-feedback') and contains(text(),'obrigatório')]")
+                        By.cssSelector(".artdeco-inline-feedback__message")
                 )
         );
 
-        assertTrue(
-                erro.getText().contains("obrigatório"),
-                "Mensagem de erro não exibida ao tentar salvar sem título."
-        );
+        assertTrue(erro.isDisplayed());
+        assertEquals("Título é um campo obrigatório", erro.getText().trim());
+
+        
     }
 }
