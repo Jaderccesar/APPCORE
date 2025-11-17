@@ -36,6 +36,7 @@ public class Course {
     private boolean certificateEnabled;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private CreateStatus status;
 
     @Column(updatable = false)
@@ -69,7 +70,10 @@ public class Course {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.status = CreateStatus.DRAFT;
+
+        if (this.status == null) {
+            this.status = CreateStatus.DRAFT;
+        }
     }
 
     @PreUpdate
