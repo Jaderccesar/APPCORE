@@ -35,7 +35,7 @@ public class LoginTest extends BaseTest {
 
         driver.get("https://www.linkedin.com/login");
 
-        driver.findElement(By.id("username")).sendKeys("invalido@gmail.com");
+        driver.findElement(By.id("username")).sendKeys("invalido@gmail.com"); 
         driver.findElement(By.id("password")).sendKeys("");
 
         driver.findElement(By.xpath("//button[@type='submit']")).click();
