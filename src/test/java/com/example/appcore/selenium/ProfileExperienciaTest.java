@@ -16,8 +16,8 @@ public class ProfileExperienciaTest extends BaseTest {
 
         driver.get("https://www.linkedin.com/checkpoint/lg/sign-in-another-account");
 
-        driver.findElement(By.id("username")).sendKeys("danielfelipe0550@gmail.com"); 
-        driver.findElement(By.id("password")).sendKeys("C0elho@20221806");
+        driver.findElement(By.id("username")).sendKeys(""); 
+        driver.findElement(By.id("password")).sendKeys("");
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
@@ -109,8 +109,8 @@ public class ProfileExperienciaTest extends BaseTest {
 
         driver.get("https://www.linkedin.com/checkpoint/lg/sign-in-another-account");
 
-        driver.findElement(By.id("username")).sendKeys("danielfelipe0550@gmail.com"); 
-        driver.findElement(By.id("password")).sendKeys("C0elho@20221806");
+        driver.findElement(By.id("username")).sendKeys(""); 
+        driver.findElement(By.id("password")).sendKeys("");
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
