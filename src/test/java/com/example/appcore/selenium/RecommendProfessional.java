@@ -12,8 +12,8 @@ import java.util.List;
 
 public class RecommendProfessional extends BaseTest{
 
-    private final String EMAIL = "leandrodasilvak00@gmail.com";     //colocar email válido
-    private final String SENHA = "leandrodasilvak1";     //colocar senha válida
+    private final String EMAIL = "leandrotestesoftware@gmail.com";     //colocar email válido
+    private final String SENHA = "Leandro123@Teste";     //colocar senha válida
 
     @Test
     public void CT01_enviarRecomendacao() throws InterruptedException {
@@ -94,7 +94,7 @@ public class RecommendProfessional extends BaseTest{
         );
         pesquisarBtn.click();
 
-        driver.get("https://www.linkedin.com/in/leandro-silva-6a3484289/");
+        driver.get("https://www.linkedin.com/in/leandro-silva-45911a392/");
 
         WebElement recomendacaoFornecidaBtn = wait.until(
                 ExpectedConditions.elementToBeClickable(
@@ -153,14 +153,28 @@ public class RecommendProfessional extends BaseTest{
 
         WebElement relacionamentoSelect2 = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("/html/body/div/dialog/div/div/div/div/div[1]/div[2]/div[1]/div[1]/div/select/option[6]")
+                        By.xpath("/html/body/div/dialog/div/div/div/div/div[1]/div[2]/div[1]/div[1]/div/select/option[4]")
                 )
         );
         relacionamentoSelect2.click();
 
+        WebElement cargoSelect = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("/html/body/div/dialog/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div/select")
+                )
+        );
+        cargoSelect.click();
+
+        WebElement cargoSelect2 = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("/html/body/div/dialog/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div/select/option[2]")
+                )
+        );
+        cargoSelect2.click();
+
         WebElement recomendacaoBox = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("/html/body/div/dialog/div/div/div/div/div[1]/div[2]/div[2]/div[1]/textarea")
+                        By.xpath("//*[@id=\":rh:\"]")
                 )
         );
 

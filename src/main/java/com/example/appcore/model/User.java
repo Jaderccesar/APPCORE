@@ -26,7 +26,7 @@ public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected  Long id;
     private String name;
     private String email;
     @JsonIgnore

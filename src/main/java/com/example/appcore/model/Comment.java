@@ -21,6 +21,8 @@ public class Comment {
     private String content;
     private String authorName;
     private Double rating;
+    private String response;
+    private Long respondedBy;   
 
     private LocalDateTime createdAt;
 
