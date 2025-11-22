@@ -104,53 +104,6 @@ class CourseServiceTest {
     }
 
     
-
-    // ---------- RT02: Editar avaliação (integra regras de autorização) ----------
-
-    @Test
-    void devePermitirEditarComentarioDoProprioUsuario() {
-        User user = new Student();;
-        user.setId(10L);
-        user.setName("Daniel");
-
-        Comment comment = new Comment();
-        comment.setId(5L);
-        comment.setContent("bom");
-        comment.setRating(4.0);
-        comment.setAuthor(user);
-
-        when(commentRepository.findById(5L)).thenReturn(Optional.of(comment));
-        when(commentRepository.save(any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        boolean resultado = courseService.editEvaluate(5L, 10L, 5.0, "Excelente");
-
-        assertTrue(resultado);
-        assertEquals(5.0, comment.getRating());
-        assertEquals("Excelente", comment.getContent());
-        verify(commentRepository, times(1)).save(comment);
-    }
-
-    @Test
-    void deveNegarEdicaoParaOutroUsuario() {
-        User autor = new Student();;
-        autor.setId(10L);
-        autor.setName("Autor");
-
-        Comment comment = new Comment();
-        comment.setId(5L);
-        comment.setAuthor(autor);
-        comment.setContent("original");
-        comment.setRating(4.0);
-
-        when(commentRepository.findById(5L)).thenReturn(Optional.of(comment));
-
-        // usuário 99 não é o autor -> deve lançar RuntimeException (autorizacao)
-        assertThrows(RuntimeException.class, () -> courseService.editEvaluate(5L, 99L, 4.0, "tentativa"),
-                "Usuário não autor deve lançar RuntimeException");
-
-        verify(commentRepository, never()).save(any());
-    }
-
     @Test
     void deveImpedirCriacaoCursoComNomeInvalido() {
         Course curso = new Course();

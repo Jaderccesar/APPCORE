@@ -3,9 +3,14 @@ package com.example.appcore.service;
 import com.example.appcore.enums.CreateStatus;
 import com.example.appcore.enums.Difficulty;
 import com.example.appcore.model.Challenge;
+import com.example.appcore.model.Comment;
 import com.example.appcore.model.Course;
+import com.example.appcore.model.Student;
 import com.example.appcore.repository.ChallengeRepository;
+import com.example.appcore.repository.CommentRepository;
 import com.example.appcore.repository.CourseRepository;
+import com.example.appcore.repository.UserRepository;
+
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
@@ -26,6 +36,12 @@ class CourseServiceIntegrationTest{
 
     @Autowired
     CourseService courseService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Test
     void deveListarSomenteCursosAtivos_integration() {
@@ -110,6 +126,72 @@ class CourseServiceIntegrationTest{
                 .toList();
 
         assertEquals(2, resultado.size(), "Deve retornar somente cursos inativos");
+    }
+
+   @Test
+    void devePermitirEditarComentarioDoProprioUsuario() {
+        
+        Student user = new Student();
+        user.setName("Daniel");
+        user = userRepository.save(user); 
+
+        // Criar comentário real
+        Comment comment = new Comment();
+        comment.setContent("bom");
+        comment.setRating(4.0);
+        comment.setAuthor(user);
+        comment = commentRepository.save(comment); 
+
+        
+        boolean result = courseService.editEvaluate(
+                comment.getId(),
+                user.getId(),
+                5.0,
+                "Excelente"
+        );
+
+        assertTrue(result);
+
+        Comment atualizado = commentRepository.findById(comment.getId()).orElseThrow();
+
+        assertEquals(5.0, atualizado.getRating());
+        assertEquals("Excelente", atualizado.getContent());
+    }
+
+    @Test
+    void deveNegarEdicaoParaOutroUsuario() {
+       
+        Student autor = new Student();
+        autor.setName("Autor");
+        autor = userRepository.save(autor);
+
+        
+        Student outrotemp = new Student();
+        outrotemp.setName("Intruso");
+        Student outro = userRepository.save(outrotemp);
+
+        
+        Comment commentTemp = new Comment();
+        commentTemp.setContent("original");
+        commentTemp.setRating(4.0);
+        commentTemp.setAuthor(autor);
+
+        Comment comment = commentRepository.save(commentTemp);
+
+        
+        assertThrows(RuntimeException.class, () ->
+            courseService.editEvaluate(
+                    comment.getId(),
+                    outro.getId(),
+                    4.0,
+                    "tentativa"
+            )
+        );
+
+        // garante que NÃO alterou nada
+        Comment naoAlterado = commentRepository.findById(comment.getId()).orElseThrow();
+        assertEquals("original", naoAlterado.getContent());
+        assertEquals(4.0, naoAlterado.getRating());
     }
 
 }
