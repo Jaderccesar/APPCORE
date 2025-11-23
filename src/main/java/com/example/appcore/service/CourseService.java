@@ -54,7 +54,7 @@ public class CourseService {
         if (course.getPrice() == null || course.getPrice() < 0) {
             throw new IllegalArgumentException("Preço inválido");
         }
-
+ 
         course.setCreatedAt(LocalDateTime.now());
         course.setUpdatedAt(LocalDateTime.now());
         course.setStatus(CreateStatus.DRAFT);
@@ -120,26 +120,33 @@ public class CourseService {
     }
     
      // Editar Avaliação
-    public boolean editEvaluate(Long id, Long userId, Double rating, String content) {
+     public boolean editEvaluate(Long id, Long userId, Double rating, String content) {
 
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Comentário não encontrado"));
+         Comment comment = commentRepository.findById(id)
+                 .orElseThrow(() -> new RuntimeException("Comentário não encontrado"));
 
-        if (!comment.getAuthor().getId().equals(userId)) {
-            throw new RuntimeException("Usuário não autorizado a editar este comentário");
-        }
+         if (!comment.getAuthor().getId().equals(userId)) {
+             throw new RuntimeException("Usuário não autorizado a editar este comentário");
+         }
 
-        if (rating == null || rating < 1 || rating > 5) return false;
-        if (content == null || content.trim().isEmpty()) return false;
-        if (content.contains("<script>")) return false;
+         if (rating == null || rating < 1 || rating > 5)
+             return false;
+         if (content == null || content.trim().isEmpty())
+             return false;
+         if (content.contains("<script>"))
+             return false;
 
-        comment.setRating(rating);
-        comment.setContent(content);
+         comment.setRating(rating);
+         comment.setContent(content);
 
-        commentRepository.save(comment);
+         commentRepository.save(comment);
 
-        return true;
-    }
+         return true;
+     }
+    
+     public List<Course> listarPorProfessor(Long professorId) {
+         return courseRepository.findByTeacherId(professorId);
+     }
     
     // ----------  VIDEOS  ----------
 

@@ -4,10 +4,8 @@ import com.example.appcore.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import com.example.appcore.enums.CorrectionType;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

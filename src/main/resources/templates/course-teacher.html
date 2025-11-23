@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos - APPCORE</title>
+    <meta name="description" content="Explore todos os cursos disponíveis na APPCORE">
+    <link rel="stylesheet" href="../static/course.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-left">
+                <a onclick="window.location.href='home.html'"class="logo">APPCORE</a>
+                <nav class="nav">
+                    <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
+                    <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
+                    <a onclick="window.location.href='challenge.html'" class="nav-link">Desafios</a>
+                    <a onclick="window.location.href='ranking.html'" class="nav-link">Ranking</a>
+                    <a onclick="window.location.href='course-teacher.html'" class="nav-link active">Meus Cursos</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <section class="section">
+      <div class="container">
+
+          <div class="section-header">
+              <div>
+                  <h1>Meus Cursos</h1>
+                  <p class="hero-subtitle" style="text-align: left; margin-top: .5rem;">
+                      Gerencie seus cursos, edite conteúdos e acompanhe seus alunos.
+                  </p>
+              </div>
+
+              <button onclick="window.location.href='course-register.html'" 
+                  class="btn btn-primary">
+                  + Criar novo curso
+              </button>
+          </div>
+
+          <div class="courses-grid" id="teacher-courses-grid">  
+
+
+          </div>
+
+      </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">APPCORE</h3>
+                <p class="footer-text">A plataforma definitiva para aprender programação se divertindo.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-heading">Plataforma</h4>
+                <ul class="footer-links">
+                    <li><a onclick="window.location.href='course.html'">Cursos</a></li>
+                    <li><a onclick="window.location.href='challenge.html'">Desafios</a></li>
+                    <li><a onclick="window.location.href='ranking.html'">Ranking</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../scripts/course.js"></script>
+
+</body>
+</html>
+
+

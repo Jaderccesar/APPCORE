@@ -19,6 +19,7 @@ public class S3Controller {
     @Autowired
     private S3Uploader s3Uploader;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> uploadVideo(@RequestParam("file") MultipartFile file) {
         try {

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Curso - APPCORE</title>
+    <link rel="stylesheet" href="../static/course-register.css" />
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-left">
+                <a onclick="window.location.href='home.html'" class="logo">APPCORE</a>
+                <nav class="nav">
+                    <a onclick="window.location.href='home.html'" class="nav-link">Home</a>
+                    <a onclick="window.location.href='course.html'" class="nav-link">Cursos</a>
+                    <a onclick="window.location.href='challenge.html'" class="nav-link">Desafios</a>
+                    <a onclick="window.location.href='ranking.html'" class="nav-link">Ranking</a>
+                    <a onclick="window.location.href='course-teacher.html'" class="nav-link active">Meus Cursos</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="section">
+        <div class="container">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>Editar Curso</h1>
+                    <p class="form-subtitle">Modifique as informações e os vídeos deste curso</p>
+                </div>
+
+                <form id="course-edit-form" class="course-form">
+                    
+                    <!-- Informações básicas -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Informações Básicas</h2>
+
+                        <div class="form-group">
+                            <label for="title" class="form-label">Título *</label>
+                            <input type="text" id="title" class="form-input" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="form-label">Descrição *</label>
+                            <textarea id="description" class="form-textarea" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="level" class="form-label">Nível *</label>
+                                <select id="level" class="form-select" required>
+                                    <option value="BÁSICO">Básico</option>
+                                    <option value="INTERMEDIÁRIO">Intermediário</option>
+                                    <option value="AVANÇADO">Avançado</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="workload" class="form-label">Carga Horária *</label>
+                                <input type="number" id="workload" class="form-input" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preço e Status -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Precificação e Status</h2>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="price" class="form-label">Preço *</label>
+                                <input type="number" id="price" class="form-input" step="0.01" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="status" class="form-label">Status *</label>
+                                <select id="status" class="form-select" required>
+                                    <option value="RASCUNHO">Rascunho</option>
+                                    <option value="PUBLICADO">Publicado</option>
+                                    <option value="ARQUIVADO">Arquivado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mídia -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Imagem e Recursos</h2>
+
+                        <div class="form-group">
+                            <label for="image_url" class="form-label">URL da imagem *</label>
+                            <input type="text" id="image_url" class="form-input" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-checkbox-wrapper">
+                                <input type="checkbox" id="certificate_enabled" class="form-checkbox" />
+                                <span>Habilitar certificado</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- VÍDEOS -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Vídeos do Curso</h2>
+                        <p class="form-help">Edite ou adicione novos vídeos</p>
+
+                        <div id="videos-container"></div>
+
+                        <button type="button" id="add-video-btn" class="btn btn-outline" style="margin-top: 1rem;">
+                            + Adicionar Vídeo
+                        </button>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="course-teacher.html" class="btn btn-outline btn-lg">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-lg">Salvar Alterações</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="../scripts/course-edit.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>

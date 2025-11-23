@@ -48,6 +48,12 @@ public class CourseController {
         courseService.delete(id);
     }
 
+    @GetMapping("/teacher/{teacherId}")
+    public ResponseEntity<List<Course>> listarCursosDoProfessor(@PathVariable Long teacherId) {
+        return ResponseEntity.ok(courseService.listarPorProfessor(teacherId));
+    }
+    
+
     // ----------  VIDEOS  ----------
 
     @GetMapping("/{courseId}/videos")

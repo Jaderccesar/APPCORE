@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode 
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_teacher") 
@@ -19,8 +20,8 @@ public class Teacher extends User{
 
     @OneToMany
     @JoinColumn(name = "course_id")
-    private ArrayList<Course> ministredCourses;
+    private List<Course> ministredCourses;
 
     @OneToMany(mappedBy = "responsible", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Challenge> challenges;
+    private List<Challenge> challenges;
 }

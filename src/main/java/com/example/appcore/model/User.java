@@ -6,6 +6,9 @@ import com.example.appcore.enums.Gender;
 import com.example.appcore.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +21,16 @@ import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Getter
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "accountType"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Student.class, name = "STUDENT"),
+        @JsonSubTypes.Type(value = Teacher.class, name = "TEACHER")
+})
+@Getter 
 @Setter
 @EqualsAndHashCode
 @Table(name = "tb_user")
@@ -41,7 +53,7 @@ public abstract class User {
     private FavoriteLanguage FavoriteLanguage;
 
     @Enumerated(EnumType.STRING)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY) //Reviesar tipo da conta na criação no controller e service, como ele irá escolher que tipo de conta será
+    @Column(name = "account_type")
     private AccountType accountType;
 
     @Enumerated(EnumType.STRING)
@@ -65,8 +77,8 @@ public abstract class User {
     @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private ArrayList<Post> posts;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Timeline> timeline = new ArrayList<>();

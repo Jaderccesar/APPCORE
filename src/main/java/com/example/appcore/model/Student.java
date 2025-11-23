@@ -3,8 +3,8 @@ package com.example.appcore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +19,7 @@ public class Student extends User {
     private int totalScore;
     private int nivel;
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private ArrayList<Certificate> certificates;
+    private List<Certificate> certificates;
 
     @ManyToOne
     @JoinColumn(name = "ranking_id")
