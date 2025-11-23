@@ -59,7 +59,6 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    @JsonIgnore
     private List<Video> videos = new ArrayList<>();
 
     @ManyToMany

@@ -1,80 +1,72 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const teacherId = requireUser();
-    const type = getUserType();
-
-  
-    if (type !== "PROFESSOR") {
-        alert("Acesso negado: esta página é somente para professores.");
-        window.location.href = "home.html"; 
-        return;
-  }
-  
-    document.querySelectorAll("[data-show]").forEach(el => {
-            const allowed = el.dataset.show.split(","); 
-
-            if (!allowed.includes(type) && !allowed.includes("ALL")) {
-                el.style.display = "none";
-            }
-    });
-  
-    carregarCursosProfessor(teacherId);
-});
-
-async function carregarCursosProfessor(teacherId) {
-    const container = document.getElementById("teacher-courses-grid");
-    container.innerHTML = "<p>Carregando cursos...</p>";
-
-    if (!teacherId) {
-        container.innerHTML = "<p>Erro: ID do professor não informado na URL.</p>";
+document.addEventListener('DOMContentLoaded', () => {
+    // Garante que as funções de autenticação estão disponíveis.
+    if (typeof getUserId !== 'function' || typeof getUserType !== 'function') {
+        alert("Erro de Autenticação: getUserId()/getUserType() não definidos. Inclua auth.js.");
         return;
     }
 
+    const userId = getUserId();
+    const userType = getUserType();
+
+    // Validação de Acesso
+    if (!userId || userType !== 'PROFESSOR') {
+        const grid = document.getElementById("teacher-courses-grid");
+        grid.innerHTML = '<p class="error-message">Acesso negado. Esta página é exclusiva para Professores logados.</p>';
+        return;
+    }
+
+    carregarCursosDoProfessor(userId);
+});
+
+async function carregarCursosDoProfessor(teacherId) {
+    const grid = document.getElementById("teacher-courses-grid");
+    grid.innerHTML = "<p>Carregando seus cursos...</p>";
+
+    // Endpoint corrigido (use localhost ou 127.0.0.1 consistentemente)
+    const endpoint = `http://localhost:8080/courses/teacher/${teacherId}`;
+
     try {
-        // 2. Chamar sua API correta
-        const response = await fetch(`http://localhost:8080/courses/teacher/${teacherId}`);
+        const response = await fetch(endpoint);
 
         if (!response.ok) {
-            throw new Error("Erro ao carregar cursos do professor");
-        }
-
-        let cursos = await response.json();
-
-        if (cursos.length === 0) {
-            container.innerHTML = "<p>Você ainda não criou nenhum curso.</p>";
+            console.error(`Falha na requisição: Status ${response.status}`);
+            grid.innerHTML = `<p class="error-message">Erro ao carregar cursos. Status: ${response.status}. Verifique o console do servidor e CORS.</p>`;
             return;
         }
 
-        // 3. Renderizar cada curso com o layout original
-        container.innerHTML = cursos.map(curso => `
-            <article class="course-card-full">
-                <div class="course-image" style="background-image: url('${curso.imageUrl}');"></div>
+        const cursos = await response.json();
 
+        if (cursos.length === 0) {
+            grid.innerHTML = `<p>Você ainda não criou nenhum curso. Clique em "+ Criar novo curso" para começar!</p>`;
+            return;
+        }
+
+        grid.innerHTML = cursos.map(curso => `
+            <article class="course-card-full">
+                <div class="course-image" style="background-image: url('${curso.imageUrl || 'placeholder.jpg'}');"></div>
                 <div class="course-content">
                     <div class="course-tags">
                         <span class="tag tag-level">${curso.level}</span>
-                        <span class="tag tag-price">${curso.price > 0 ? "R$ " + curso.price.toFixed(2) : "Gratuito"}</span>
+                        <span class="tag tag-status">${curso.status || 'RASCUNHO'}</span>
                     </div>
-
                     <h3 class="course-title">${curso.title}</h3>
                     <p class="course-description">${curso.description}</p>
-
                     <div class="course-meta">
                         <div class="course-rating">
                             <span class="rating-stars">★★★★★</span>
-                            <span class="rating-value">${curso.rating || "0.0"}</span>
-                        </div>
-                        <div class="course-workload">
-                            ⏱ ${curso.workload}h
+                            <span class="rating-value">${curso.rating ? curso.rating.toFixed(1) : "0.0"}</span>
                         </div>
                     </div>
-
-                    <a href="course-edit.html?id=${curso.id}" class="btn btn-primary btn-block">Gerenciar Curso</a>
+                    <button onclick="window.location.href='course-edit.html?id=${curso.id}'" class="btn btn-primary btn-block">
+                        Editar Curso
+                    </button>
+                    <a href="course-detail.html?id=${curso.id}" style="display: block; text-align: center; margin-top: 10px;">Ver Página Pública</a>
                 </div>
             </article>
         `).join("");
 
     } catch (err) {
-        console.error("Erro:", err);
-        container.innerHTML = "<p>Erro ao carregar seus cursos.</p>";
+        console.error("Erro fatal ao carregar cursos do professor:", err);
+        grid.innerHTML = '<p class="error-message">Ocorreu um erro de rede. Verifique se o servidor está ativo.</p>';
     }
 }
