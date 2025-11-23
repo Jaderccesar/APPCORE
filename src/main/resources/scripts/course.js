@@ -1,6 +1,18 @@
 async function carregarCursos() {
-    const container = document.querySelector(".courses-grid");
-    container.innerHTML = "<p>Carregando cursos...</p>";
+
+  const type = getUserType();
+  
+  console.log("User type:", type);
+    document.querySelectorAll("[data-show]").forEach(el => {
+            const allowed = el.dataset.show.split(","); 
+
+            if (!allowed.includes(type) && !allowed.includes("ALL")) {
+                el.style.display = "none";
+            }
+    });
+  
+      const container = document.querySelector(".courses-grid");
+      container.innerHTML = "<p>Carregando cursos...</p>";
 
     try {
         const response = await fetch("http://localhost:8080/courses/list");

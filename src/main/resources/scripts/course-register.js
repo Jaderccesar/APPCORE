@@ -1,4 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    const teacherId = requireUser();
+    const type = getUserType();
+
+    document.querySelectorAll("[data-show]").forEach(el => {
+            const allowed = el.dataset.show.split(","); 
+
+            if (!allowed.includes(type) && !allowed.includes("ALL")) {
+                el.style.display = "none";
+            }
+    });
+  
+    if (type !== "PROFESSOR") {
+        alert("Acesso negado: esta página é somente para professores.");
+        window.location.href = "home.html"; 
+        return;
+  }
+  
   const videosContainer = document.getElementById("videos-container");
   const addVideoBtn = document.getElementById("add-video-btn");
   const form = document.getElementById("course-form");
@@ -47,7 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
       status: form.status.value,
       workload: parseInt(form.workload.value),
       certificateEnabled: form.certificate_enabled.checked,
-      teacher: null
+      teacher: {
+            id: parseInt(teacherId),
+            accountType: "TEACHER"
+          }
     };
 
     try {
@@ -95,11 +116,29 @@ document.addEventListener("DOMContentLoaded", () => {
           })
         });
 
-        console.log('Sucesso ao adicionar vídeo:');
+        Swal.fire({
+          icon: "success",
+          title: "",
+          text: "Curso cadastrado com sucesso!",
+          timer: 2000,
+          showConfirmButton: false,
+          position: "top",
+        }).then(() => {
+             window.location.href = `course-teacher.html`;
+        });
+
       }
     } catch (err) {
-      console.error(err);
-      alert("Ocorreu um erro ao criar o curso. Verifique o console.");
+
+      Swal.fire({
+        icon: "error",
+        title: "",
+        text: "Ops..., algo deu errado!",
+        timer: 2500,
+        showConfirmButton: false,
+        position: "top",
+      });
+      
     }
   });
-});
+}); 

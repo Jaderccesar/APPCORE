@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,7 +24,14 @@ public class Comment {
     private String authorName;
     private Double rating;
     private String response;
-    private Long respondedBy;   
+    private Long respondedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> replies = new ArrayList<>();
 
     private LocalDateTime createdAt;
 

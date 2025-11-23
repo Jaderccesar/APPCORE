@@ -193,7 +193,20 @@ const API_BASE = "http://localhost:8080/challenges";
 
     document.getElementById('submitBtn').addEventListener('click', submitAnswers);
 
-    document.addEventListener('DOMContentLoaded', loadChallenge);
+    document.addEventListener('DOMContentLoaded', () => { 
+        const type = getUserType(); 
+
+        document.querySelectorAll("[data-show]").forEach(el => {
+            const allowed = el.dataset.show.split(","); 
+
+            if (!allowed.includes(type) && !allowed.includes("ALL")) {
+                el.style.display = "none";
+            }
+        });
+        
+        loadChallenge()
+    })
+    
 
     window.addEventListener('beforeunload', () => {
         if (timerInterval) clearInterval(timerInterval);
