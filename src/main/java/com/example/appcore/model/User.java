@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "accountType"
+        property = "type"
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Student.class, name = "STUDENT"),
