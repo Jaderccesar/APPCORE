@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const addVideoBtn = document.getElementById("add-video-btn");
   const form = document.getElementById("course-form");
 
-  // Adiciona um novo bloco de vídeo
   addVideoBtn.addEventListener("click", () => {
     const index = videosContainer.children.length + 1;
 
@@ -35,11 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
     videosContainer.appendChild(videoBlock);
   });
 
-  // Submissão do formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Dados do curso
     const courseData = {
       title: form.title.value,
       description: form.description.value,
@@ -54,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      // Cadastra o curso
       const courseRes = await fetch("http://localhost:8080/courses/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const course = await courseRes.json();
       const courseId = course.id;
 
-      const videoBlocks = videosContainer.querySelectorAll(".video-block");
+      const videoBlocks = videosContainer.querySelectorAll(".form-group");
 
       for (const block of videoBlocks) {
         const title = block.querySelector(".video-title")?.value;
@@ -103,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (err) {
       console.error(err);
-      alert("❌ Ocorreu um erro ao criar o curso. Verifique o console.");
+      alert("Ocorreu um erro ao criar o curso. Verifique o console.");
     }
   });
 });

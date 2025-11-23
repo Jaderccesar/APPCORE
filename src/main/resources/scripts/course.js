@@ -1,14 +1,14 @@
 async function carregarCursos() {
-      const container = document.querySelector(".courses-grid");
-      container.innerHTML = "<p>Carregando cursos...</p>";
+    const container = document.querySelector(".courses-grid");
+    container.innerHTML = "<p>Carregando cursos...</p>";
 
-      try {
+    try {
         const response = await fetch("http://localhost:8080/courses/list");
         const cursos = await response.json();
 
         if (cursos.length === 0) {
-          container.innerHTML = "<p>Nenhum curso disponível no momento.</p>";
-          return;
+            container.innerHTML = "<p>Nenhum curso disponível no momento.</p>";
+            return;
         }
 
         container.innerHTML = cursos.map(curso => `
@@ -30,14 +30,18 @@ async function carregarCursos() {
                           ⏱ ${curso.workload}h
                       </div>
                   </div>
-                  <a href="#" class="btn btn-primary btn-block">Ver Curso</a>
+                  <button onclick="verDetalhesCurso(${curso.id})" class="btn btn-primary btn-block">Ver Curso</button>
               </div>
           </article>
         `).join("");
-      } catch (err) {
-        console.error("Erro:", err);
-        container.innerHTML = "<p>Erro ao carregar os cursos.</p>";
-      }
+    } catch (err) {
+        console.error("Erro ao carregar cursos:", err);
+        container.innerHTML = "<p>Erro ao carregar os cursos. Verifique se o backend está rodando.</p>";
     }
+}
 
-    carregarCursos();
+function verDetalhesCurso(courseId) {
+    window.location.href = `course-detail.html?id=${courseId}`;
+}
+
+carregarCursos();
