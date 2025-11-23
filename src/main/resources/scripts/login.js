@@ -61,10 +61,13 @@ document.addEventListener("DOMContentLoaded", function () {
               throw new Error("O servidor não retornou o ID do usuário.");
           }
 
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("userType", accountType);
+
           if (accountType === 'PROFESSOR') {
-             window.location.href = `course-teacher.html?userId=${userId}`;
+             window.location.href = `course-teacher.html`;
           } else if (accountType === 'ESTUDANTE') {
-              window.location.href = `course.html?userId=${userId}`; 
+              window.location.href = `course.html`; 
           }
           
 

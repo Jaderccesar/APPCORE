@@ -50,7 +50,7 @@ public class CourseController {
 
     @GetMapping("/teacher/{teacherId}")
     public ResponseEntity<List<Course>> listarCursosDoProfessor(@PathVariable Long teacherId) {
-        return ResponseEntity.ok(courseService.listarPorProfessor(teacherId));
+        return ResponseEntity.ok(courseService.listarPorProfessor(teacherId)); 
     }
     
 
