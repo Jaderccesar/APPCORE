@@ -1,5 +1,15 @@
 function loadUserData() {
-        if (!userData) {
+
+        const type = getUserType();
+        document.querySelectorAll("[data-show]").forEach(el => {
+                const allowed = el.dataset.show.split(","); 
+
+                if (!allowed.includes(type) && !allowed.includes("ALL")) {
+                    el.style.display = "none";
+                }
+        });
+    
+            if (!userData) {
             return;
         }
 

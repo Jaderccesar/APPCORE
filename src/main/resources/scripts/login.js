@@ -14,10 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
         messageBox.classList.add("hidden");
         messageBox.textContent = "";
 
-        // Desabilita botão
-        btnSubmit.disabled = true;
-        btnSubmit.textContent = "Entrando...";
-
         try {
           const url = `http://localhost:8080/users/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
           

@@ -166,8 +166,18 @@ const API_BASE = "http://localhost:8080/challenges";
       return `${yyyy}-${MM}-${dd}T${hh}:${mm}`;
     }
 
-    document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', () => {
+      
+      const type = getUserType(); 
 
+      document.querySelectorAll("[data-show]").forEach(el => {
+          const allowed = el.dataset.show.split(","); 
+
+          if (!allowed.includes(type) && !allowed.includes("ALL")) {
+              el.style.display = "none";
+          }
+      });
+  
       if (!location.search.includes('id=')) {
         document.getElementById('addQuestionBtn').click();
       }

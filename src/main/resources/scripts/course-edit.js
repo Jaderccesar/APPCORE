@@ -1,9 +1,26 @@
 const params = new URLSearchParams(window.location.search);
 const courseId = params.get("id");
 
+const teacherId = requireUser();
+const type = getUserType();
+
+document.querySelectorAll("[data-show]").forEach(el => {
+            const allowed = el.dataset.show.split(","); 
+
+            if (!allowed.includes(type) && !allowed.includes("ALL")) {
+                el.style.display = "none";
+            }
+        });
+          
+if (type !== "PROFESSOR") {
+    alert("Acesso negado: esta página é somente para professores.");
+    window.location.href = "home.html"; 
+}
+  
 if (!courseId) {
     Swal.fire("Erro", "Nenhum ID de curso informado.", "error");
 }
+
 
 // ====================================================================
 // CARREGA CURSO
@@ -229,7 +246,14 @@ document.getElementById("course-edit-form").addEventListener("submit", async (e)
         }
     }
 
-    Swal.fire("Sucesso!", "Curso atualizado!", "success").then(() => {
-        window.location.href = "course-teacher.html";
-    });
+      Swal.fire({
+            icon: "success",
+            title: "Sucesso!",
+            text: "Curso atualizado com sucesso!",
+            timer: 2000,
+            showConfirmButton: false,
+            position: "top",
+          }).then(() => {
+              window.location.href = `course-teacher.html`; 
+          });
 });

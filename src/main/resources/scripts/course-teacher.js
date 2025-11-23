@@ -7,8 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Acesso negado: esta página é somente para professores.");
         window.location.href = "home.html"; 
         return;
-    }
+  }
+  
+    document.querySelectorAll("[data-show]").forEach(el => {
+            const allowed = el.dataset.show.split(","); 
 
+            if (!allowed.includes(type) && !allowed.includes("ALL")) {
+                el.style.display = "none";
+            }
+    });
+  
     carregarCursosProfessor(teacherId);
 });
 
@@ -60,7 +68,7 @@ async function carregarCursosProfessor(teacherId) {
                         </div>
                     </div>
 
-                    <a href="#" class="btn btn-primary btn-block">Gerenciar Curso</a>
+                    <a href="course-edit.html?id=${curso.id}" class="btn btn-primary btn-block">Gerenciar Curso</a>
                 </div>
             </article>
         `).join("");

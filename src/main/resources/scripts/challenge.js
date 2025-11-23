@@ -80,4 +80,16 @@
 
     function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
-    document.addEventListener('DOMContentLoaded', loadChallenges);
+    document.addEventListener('DOMContentLoaded', () => { 
+        const type = getUserType(); 
+
+        document.querySelectorAll("[data-show]").forEach(el => {
+            const allowed = el.dataset.show.split(","); 
+
+            if (!allowed.includes(type) && !allowed.includes("ALL")) {
+                el.style.display = "none";
+            }
+        });
+        
+        loadChallenge()
+    })
