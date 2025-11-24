@@ -82,6 +82,34 @@ async function carregarDetalhesCurso() {
         const teacherName = curso.teacher && curso.teacher.name ? curso.teacher.name : "Professor Desconhecido";
 
         // --- 3. Renderizar Vídeos (Omitido por brevidade, mas deve existir) ---
+        // --- 3. Renderizar Vídeos ---
+        elements.videosList.innerHTML = '';
+
+        if (!curso.videos || curso.videos.length === 0) {
+            elements.videosList.innerHTML = '<li>Nenhum vídeo listado para este curso.</li>';
+        } else {
+            curso.videos.forEach(video => {
+
+                const item = document.createElement('li');
+                item.classList.add('video-item');
+
+                item.innerHTML = `
+                    <span>${video.title}</span>
+                    <button class="btn-play" data-video-id="${video.id}" style="
+                        margin-left:auto;
+                        background-color: var(--color-primary);
+                        border:none; padding:6px 12px;
+                        border-radius:6px; color:white; cursor:pointer;">
+                        ▶ Assistir
+                    </button>
+                `;
+
+                elements.videosList.appendChild(item);
+            });
+
+            aplicarEventosPlay(courseId);
+        }
+
         // ... Lógica para preencher elements.videosList ...
 
         // --- 4. Lógica da Sidebar (Incluindo Botão de Gestão) ---
@@ -314,5 +342,53 @@ async function handleCommentSubmit(e) {
     } catch (error) {
         console.error("Erro ao enviar comentário:", error);
         Swal.fire('Erro de Rede', 'Não foi possível conectar ao servidor.', 'error');
+    }
+}
+
+aplicarEventosPlay(courseId);
+
+function aplicarEventosPlay(courseId) {
+    const buttons = document.querySelectorAll(".btn-play");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", async () => {
+
+            const videoId = btn.getAttribute("data-video-id");
+            const studentId = getUserId(); // estudante logado
+
+            if (!studentId) {
+                Swal.fire("Atenção!", "Faça login para assistir.", "warning");
+                return;
+            }
+
+            await marcarProgressoVideo(studentId, courseId, videoId);
+
+            window.location.href = `video-player.html?courseId=${courseId}&videoId=${videoId}`;
+        });
+    });
+}
+
+async function marcarProgressoVideo(studentId, courseId, videoId) {
+    try {
+        const response = await fetch("http://localhost:8080/progress/complete-video", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                studentId: Number(studentId),
+                courseId: Number(courseId),
+                videoId: Number(videoId)
+            })
+        });
+
+        if (!response.ok) {
+            const err = await response.json().catch(() => null);
+            console.warn("Erro ao registrar progresso:", err?.message || response.status);
+            return;
+        }
+
+        console.log("Progresso registrado para o vídeo:", videoId);
+
+    } catch (error) {
+        console.error("Erro ao marcar progresso:", error);
     }
 }
