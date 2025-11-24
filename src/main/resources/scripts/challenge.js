@@ -91,5 +91,5 @@
             }
         });
         
-        loadChallenge()
+        loadChallenges()
     })
