@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Getter
 @Setter
@@ -36,15 +39,17 @@ public class Comment {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course_id") 
     private Course course;
-
+ 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @JsonBackReference("post-comments")
     private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonManagedReference("comment-author")
     private User author;
     
     @PrePersist

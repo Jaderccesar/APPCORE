@@ -1,6 +1,8 @@
 package com.example.appcore.model;
 
 import com.example.appcore.enums.PhoneType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +24,6 @@ public class Telephone {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference("user-phones")
     private User user;
 }
