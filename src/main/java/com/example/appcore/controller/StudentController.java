@@ -2,7 +2,9 @@ package com.example.appcore.controller;
 
 import com.example.appcore.model.Student;
 import com.example.appcore.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +58,25 @@ public class StudentController {
 
         Student updatedStudent = studentService.update(id, student);
          return ResponseEntity.ok(updatedStudent);
+    }
+
+    @PostMapping("/{studentId}/courses/{courseId}")
+    public ResponseEntity<Void> enrollCourse(
+            @PathVariable Long studentId,
+            @PathVariable Long courseId) {
+
+        try {
+            studentService.enrollStudentInCourse(studentId, courseId);
+
+            return ResponseEntity.ok().build();
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/delete/{id}")

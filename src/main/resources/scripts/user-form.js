@@ -1,7 +1,6 @@
 const accountTypeSelect = document.getElementById("accountType");
 const teacherFields = document.getElementById("teacherFields");
 
-// Mostrar campos específicos
 accountTypeSelect.addEventListener("change", () => {
     const type = accountTypeSelect.value;
 
@@ -12,7 +11,6 @@ accountTypeSelect.addEventListener("change", () => {
     }
 }); 
 
-// Envio do formulário
 document.getElementById("userForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 

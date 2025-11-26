@@ -1,22 +1,19 @@
 package com.example.appcore.service;
 
 import com.example.appcore.enums.CreateStatus;
-import com.example.appcore.model.Comment;
-import com.example.appcore.model.Course;
-import com.example.appcore.model.User;
-import com.example.appcore.model.Video;
-import com.example.appcore.repository.CommentRepository;
-import com.example.appcore.repository.CourseRepository;
-import com.example.appcore.repository.UserRepository;
-import com.example.appcore.repository.VideoRepository;
+import com.example.appcore.model.*;
+import com.example.appcore.repository.*;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -29,6 +26,9 @@ public class CourseService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
     
     @Autowired
     private CommentRepository commentRepository;
@@ -60,6 +60,15 @@ public class CourseService {
         course.setStatus(CreateStatus.DRAFT);
 
         return courseRepository.save(course);
+    }
+
+    public boolean checkIfStudentPurchasedCourse(Long studentId, Long courseId) {
+        return studentRepository.existsById(studentId) &&
+                studentRepository.findById(studentId)
+                        .get()
+                        .getCourses()
+                        .stream()
+                        .anyMatch(course -> course.getId().equals(courseId));
     }
 
     public Course update(Long id, Course course) {
@@ -187,6 +196,16 @@ public class CourseService {
         return video;
     }
 
+    @Transactional
+    public Set<Long> getPurchasedCourseIds(Long userId) {
+        Student student = studentRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado com ID: " + userId));
+
+        return student.getCourses().stream()
+                .map(Course::getId)
+                .collect(Collectors.toSet());
+    }
+
     public void deleteVideo(Long courseId, Long videoId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com id: " + courseId));
@@ -198,6 +217,6 @@ public class CourseService {
         }
 
         courseRepository.save(course);
-    } 
-     
+    }
+
 }

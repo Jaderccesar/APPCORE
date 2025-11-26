@@ -41,11 +41,17 @@
         <div class="container">
             <div class="section-header">
                 <div>
-                    <h1>Todos os Cursos</h1>
+                    <h1 id="course-list-title">Todos os Cursos</h1>
                     <p class="hero-subtitle" style="text-align: left; margin-top: 0.5rem;">
-                        Explore nossa biblioteca completa de cursos e comece a aprender hoje
+                        <span id="course-list-subtitle">Explore nossa biblioteca completa de cursos e comece a aprender hoje</span>
                     </p>
+
+                    <div id="student-course-menu" class="course-filter-menu" style="display: none; margin-top: 15px;">
+                        <button class="btn btn-primary menu-btn active" data-filter="ALL_AVAILABLE">Cursos Disponíveis</button>
+                        <button class="btn btn-outline menu-btn" data-filter="PURCHASED">Meus Cursos</button>
+                    </div>
                 </div>
+
                 <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
                     <select class="filter-select">
                         <option value="">Todos os níveis</option>
@@ -61,9 +67,7 @@
                     </select>
                 </div>
             </div>
-
             <div class="courses-grid">
-
             </div>
         </div>
     </section>
@@ -90,8 +94,6 @@
 </footer>
 
 <script src="../scripts/course.js"></script>
-
-
 </body>
 </html>
 

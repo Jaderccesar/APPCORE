@@ -558,15 +558,12 @@
         let userData = /*[[${user}]]*/ null;
         let currentUserId = /*[[${userId}]]*/ null;
 
-        // Função para carregar dados do usuário do backend (se não vier do Thymeleaf)
         async function loadUserDataFromBackend() {
-            // Se já temos dados do Thymeleaf, usa eles
             if (userData && currentUserId) {
                 loadUserData();
                 return;
             }
 
-            // Caso contrário, tenta buscar via API
             try {
                 const response = await fetch('/Students/current?id=' + (currentUserId || ''));
 

@@ -85,7 +85,6 @@ async function carregarDados(userId, type) {
 function loadUserData() {
     if (!userData) return;
 
-    // Dados Pessoais
     document.getElementById('inputName').value = userData.name || '';
     document.getElementById('inputCPF').value = userData.cpf || '';
     document.getElementById('inputBirthday').value = userData.birthday || '';
@@ -97,7 +96,6 @@ function loadUserData() {
     };
     document.getElementById('inputGenero').value = generoMap[userData.genero] || '';
 
-    // Conta
     document.getElementById('inputEmail').value = userData.email || '';
 
     const accountTypeMap = {
@@ -113,11 +111,9 @@ function loadUserData() {
     };
     document.getElementById('inputFavLanguage').value = languageMap[userData.favoriteLanguage] || '';
 
-    // Status
     const statusText = userData.status === 'ACTIVE' ? 'Ativa' : 'Inativa';
     document.getElementById('accountStatus').textContent = statusText;
 
-    // Header
     document.getElementById('profileName').textContent = userData.name || 'Nome do Usuário';
     document.getElementById('profileEmail').textContent = userData.email || '';
 
@@ -130,7 +126,6 @@ function loadUserData() {
 }
 
 function updateStats() {
-    // Mantém padrão por enquanto
 }
 
 function switchTab(tabName) {
@@ -183,7 +178,6 @@ function capitalizeFirst(str) {
 
 function setupFormHandlers() {
 
-    // Dados pessoais
     document.getElementById('personalForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -206,7 +200,6 @@ function setupFormHandlers() {
         await saveUserData(currentUserId, updatedData, 'personal');
     });
 
-    // Conta
     document.getElementById('accountForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -241,7 +234,6 @@ function setupFormHandlers() {
         await saveUserData(currentUserId, updatedData, 'account');
     });
 
-    // Endereço
     document.getElementById('addressForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 

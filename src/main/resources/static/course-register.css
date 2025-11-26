@@ -1,9 +1,3 @@
-/* =====================================================
-   APPCORE — Página de Cadastro de Curso
-   Tema: Azul (#0d6efd) e Branco
-   ===================================================== */
-
-/* ======= Variáveis globais ======= */
 :root {
   --color-primary: #0d6efd;
   --color-primary-hover: #0b5ed7;
@@ -43,7 +37,7 @@
   --transition: all 0.3s ease;
 }
 
-/* ======= Reset ======= */
+
 * {
   margin: 0;
   padding: 0;
@@ -58,7 +52,6 @@ body {
   color: var(--color-black);
 }
 
-/* ======= Header ======= */
 .header {
   position: sticky;
   top: 0;
@@ -119,7 +112,6 @@ body {
   gap: var(--spacing-sm);
 }
 
-/* ======= Botões ======= */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -160,12 +152,11 @@ body {
   font-size: var(--font-size-base);
 }
 
-/* ======= Seções ======= */
+
 .section {
   padding: var(--spacing-2xl) 0;
 }
 
-/* ======= Formulário ======= */
 .form-container {
   background-color: var(--color-white);
   border: 1px solid var(--color-gray-200);
@@ -267,7 +258,6 @@ body {
   color: var(--color-gray-700);
 }
 
-/* ======= Avaliação (estrelas) ======= */
 .rating-input {
   display: flex;
   gap: 0.25rem;
@@ -289,10 +279,9 @@ body {
 .rating-input input:checked ~ label,
 .rating-input label:hover,
 .rating-input label:hover ~ label {
-  color: #facc15; /* dourado */
+  color: #facc15;
 }
 
-/* ======= Ações do formulário ======= */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -300,7 +289,6 @@ body {
   margin-top: var(--spacing-lg);
 }
 
-/* ======= Footer ======= */
 .footer {
   padding: var(--spacing-2xl) 0;
   background-color: var(--color-gray-50);

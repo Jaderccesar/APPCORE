@@ -2,12 +2,19 @@ package com.example.appcore.controller;
 
 import com.example.appcore.model.Course;
 import com.example.appcore.model.Video;
+import com.example.appcore.repository.StudentRepository;
 import com.example.appcore.service.CourseService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -17,16 +24,51 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/list") 
-    public List<Course> list() {
-        return courseService.findAll(); 
-    } 
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @GetMapping("/list")
+    public List<Map<String, Object>> listCourses(@RequestParam(required = false) Long userId) {
+
+        List<Course> allCourses = courseService.findAll();
+
+        Set<Long> purchasedCourseIds = Set.of();
+
+        if (userId != null) {
+            try {
+                purchasedCourseIds = courseService.getPurchasedCourseIds(userId);
+            } catch (EntityNotFoundException e) {
+                System.err.println("Aluno não encontrado para verificar status de compra: " + userId);
+            }
+        }
+
+        Set<Long> finalPurchasedCourseIds = purchasedCourseIds;
+        return allCourses.stream()
+                .map(course -> {
+                    Map<String, Object> courseMap = objectMapper.convertValue(course, Map.class);
+
+                    boolean isPurchased = finalPurchasedCourseIds.contains(course.getId());
+                    courseMap.put("isPurchased", isPurchased);
+
+                    return courseMap;
+                })
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> listById(@PathVariable Long id) {
-        return courseService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Map<String, Object> getCourseDetails(@PathVariable Long id, @RequestParam(required = false) Long userId) {
+
+        Optional<Course> course = courseService.findById(id);
+
+        Map<String, Object> courseDetails = objectMapper.convertValue(course, Map.class);
+
+        boolean isPurchased = false;
+        if (userId != null) {
+            isPurchased = courseService.checkIfStudentPurchasedCourse(userId, id);
+        }
+
+        courseDetails.put("isPurchased", isPurchased);
+        return courseDetails;
     }
 
     @PostMapping("/save")
@@ -52,9 +94,7 @@ public class CourseController {
     public ResponseEntity<List<Course>> listarCursosDoProfessor(@PathVariable Long teacherId) {
         return ResponseEntity.ok(courseService.listarPorProfessor(teacherId)); 
     }
-    
 
-    // ----------  VIDEOS  ----------
 
     @GetMapping("/{courseId}/videos")
     public List<Video> listVideosByCourse(@PathVariable Long courseId) {

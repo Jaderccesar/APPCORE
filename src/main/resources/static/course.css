@@ -48,6 +48,23 @@
     box-sizing: border-box;
 }
 
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--color-text-primary);
+}
+
+#payment-modal input[type="text"],
+#payment-modal input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
 body {
     font-family: var(--font-family);
     font-size: var(--font-size-base);

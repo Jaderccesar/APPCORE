@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Inicialização e Verificação de Autenticação
     if (typeof getUserId !== 'function' || typeof getUserType !== 'function') {
         console.error("ERRO: As funções getUserId() e getUserType() não foram encontradas. Inclua seu script de autenticação ANTES deste script no HTML.");
-        // Mock functions para evitar crash
         window.getUserId = () => null;
         window.getUserType = () => null;
     }
@@ -16,26 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-/**
- * Função utilitária para esconder/mostrar elementos de navegação.
- */
+
 function updateNavVisibility() {
-    // Implementação da navegação aqui (omitida para foco)
     const userId = getUserId();
     document.querySelectorAll("[data-auth]").forEach(el => {
-        // Exemplo: mostrar links se userId existir
         el.style.display = userId ? 'block' : 'none';
     });
 }
 
-/**
- * Carrega todos os dados do curso do backend e preenche a página.
- */
 async function carregarDetalhesCurso() {
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get('id');
 
-    // Mapeamento dos elementos do DOM
     const elements = {
         title: document.getElementById('detail-title'),
         titlePage: document.getElementById('course-title-page'),
@@ -48,10 +38,10 @@ async function carregarDetalhesCurso() {
         commentForm: document.getElementById('comment-form'),
         commentFormMessage: document.getElementById('comment-form-message'),
         commentContent: document.getElementById('comment-content'),
-        submitButton: document.getElementById('submit-comment-btn')
+        submitButton: document.getElementById('submit-comment-btn'),
+        coursePriceModal: document.getElementById('course-price-modal')
     };
 
-    // Validação inicial do ID
     if (!courseId) {
         elements.title.textContent = "Erro: ID do curso não encontrado.";
         return;
@@ -60,16 +50,19 @@ async function carregarDetalhesCurso() {
     elements.title.textContent = "Carregando...";
 
     try {
-        const response = await fetch(`http://localhost:8080/courses/${courseId}`);
+        const loggedUserId = getUserId();
+        const loggedUserType = getUserType();
+
+        const response = await fetch(`http://localhost:8080/courses/${courseId}?userId=${loggedUserId}`);
 
         if (!response.ok) {
             elements.title.textContent = "Curso Não Encontrado";
             return;
         }
 
-        const curso = await response.json();
+        let curso = await response.json();
 
-        // --- 2. Popular os Detalhes Principais ---
+
         elements.title.textContent = curso.title;
         elements.titlePage.textContent = `${curso.title} - Detalhes`;
         elements.subtitle.textContent = curso.description;
@@ -80,74 +73,101 @@ async function carregarDetalhesCurso() {
         const averageRating = curso.averageRating || 0.0;
         const totalWorkload = curso.workload || 0;
         const teacherName = curso.teacher && curso.teacher.name ? curso.teacher.name : "Professor Desconhecido";
-
-        // --- 3. Renderizar Vídeos (Omitido por brevidade, mas deve existir) ---
-        // --- 3. Renderizar Vídeos ---
-        elements.videosList.innerHTML = '';
-
-        if (!curso.videos || curso.videos.length === 0) {
-            elements.videosList.innerHTML = '<li>Nenhum vídeo listado para este curso.</li>';
-        } else {
-            curso.videos.forEach(video => {
-
-                const item = document.createElement('li');
-                item.classList.add('video-item');
-
-                item.innerHTML = `
-                    <span>${video.title}</span>
-                    <button class="btn-play" data-video-id="${video.id}" style="
-                        margin-left:auto;
-                        background-color: var(--color-primary);
-                        border:none; padding:6px 12px;
-                        border-radius:6px; color:white; cursor:pointer;">
-                        ▶ Assistir
-                    </button>
-                `;
-
-                elements.videosList.appendChild(item);
-            });
-
-            aplicarEventosPlay(courseId);
-        }
-
-        // ... Lógica para preencher elements.videosList ...
-
-        // --- 4. Lógica da Sidebar (Incluindo Botão de Gestão) ---
-        const loggedUserId = getUserId();
-        const loggedUserType = getUserType();
         const teacherId = (curso.teacher && curso.teacher.id) ? String(curso.teacher.id) : '';
 
-        elements.sidebar.innerHTML = ''; // Limpa a sidebar
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.id = 'course-teacher-id';
+        hiddenInput.value = teacherId;
+        document.body.appendChild(hiddenInput);
 
-        // BOTÃO DE GESTÃO: Visível apenas para o professor DO CURSO
-        if (loggedUserType === 'PROFESSOR' && String(loggedUserId) === teacherId) {
-            const managementButtonHtml = `
-                <a href="course-teacher-management.html?courseId=${courseId}" 
-                   class="btn btn-primary" 
-                   style="display: block; text-align: center; margin-bottom: 15px; background-color: var(--color-primary); color: white; padding: 10px; border-radius: 4px; text-decoration: none;">
-                   👩‍🏫 Gerenciar Feedbacks
-                </a>
-            `;
-            elements.sidebar.insertAdjacentHTML('beforeend', managementButtonHtml);
-        }
+        elements.videosList.innerHTML = '';
+        const isStudentBlocked = loggedUserType === 'ESTUDANTE' && !curso.isPurchased;
 
-        // Adiciona Metadados à Sidebar
+        const videoListContent = curso.videos && curso.videos.length > 0
+            ? curso.videos.map(video => {
+                const buttonStyle = isStudentBlocked
+                    ? `opacity: 0.6; cursor: not-allowed;`
+                    : `background-color: var(--color-primary);`;
+
+                return `<li class="video-item">
+                            <span>${video.title}</span>
+                            <button class="btn-play" 
+                                data-video-id="${video.id}"
+                                data-video-url="${video.videoUrl}"
+                                style="margin-left:auto; border:none; padding:6px 12px; border-radius:6px; color:white; cursor:pointer; ${buttonStyle}">
+                                ▶ Assistir
+                            </button>
+                        </li>`;
+            }).join('')
+            : '<li>Nenhum vídeo listado para este curso.</li>';
+
+        elements.videosList.innerHTML = videoListContent;
+        aplicarEventosPlay(courseId, curso.isPurchased);
+
+        elements.sidebar.innerHTML = '';
+        const formattedPrice = curso.price.toFixed(2).replace('.', ',');
+
         const metadataHtml = `
             <div class="course-metadata" style="margin-top: 1.5rem;">
+                <p><strong>Preço:</strong> <span style="font-size: 1.5rem; color: var(--color-success); font-weight: bold;">R$ ${formattedPrice}</span></p>
                 <p><strong>Professor:</strong> ${teacherName}</p>
                 <p><strong>Avaliação:</strong> <span class="rating-stars" style="color: gold;">${'★'.repeat(Math.floor(averageRating))}</span> ${averageRating.toFixed(1)}/5.0</p>
                 <p><strong>Carga Horária:</strong> ${totalWorkload}h</p>
-                </div>
+            </div>
         `;
         elements.sidebar.insertAdjacentHTML('beforeend', metadataHtml);
 
+        let buttonHtml = '';
 
-        // --- 5. Renderizar Comentários ---
+        if (loggedUserType === 'PROFESSOR' && String(loggedUserId) === teacherId) {
+            buttonHtml = `
+                <a href="course-teacher-management.html?courseId=${courseId}" 
+                   class="btn btn-primary buy-button" 
+                   style="background-color: var(--color-primary);">
+                   👩‍🏫 Gerenciar Curso
+                </a>
+            `;
+        } else if (loggedUserType === 'ESTUDANTE' && curso.isPurchased) {
+            buttonHtml = `
+                <button class="buy-button" disabled style="background-color: var(--color-success); cursor: default;">
+                   ✅ Curso Adquirido
+                </button>
+            `;
+        } else if (loggedUserType === 'ESTUDANTE' && !curso.isPurchased) {
+            buttonHtml = `
+                <button id="buy-course-btn" class="buy-button" style="background-color: var(--color-success);">
+                   🛒 Comprar Agora
+                </button>
+            `;
+        } else if (!loggedUserId) {
+            buttonHtml = `
+                <button onclick="window.location.href='login.html'" class="buy-button" style="background-color: var(--color-primary);">
+                   Login para Comprar
+                </button>
+            `;
+        }
+
+        elements.sidebar.insertAdjacentHTML('beforeend', buttonHtml);
+
+        const buyButton = document.getElementById('buy-course-btn');
+        if (buyButton) {
+            if(elements.coursePriceModal) elements.coursePriceModal.textContent = formattedPrice;
+
+            buyButton.addEventListener('click', () => {
+                document.getElementById('payment-modal').style.display = 'block';
+            });
+
+            const paymentForm = document.getElementById('payment-form');
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', (e) => handlePaymentSubmit(e, courseId, curso.price));
+            }
+        }
+
         if (elements.commentsContainer) {
             renderizarComentarios(curso.comments || []);
         }
 
-        // --- 6. Configurar o Formulário de Comentário (Criar ou Modificar) ---
         let formMessage = '';
         let showForm = true;
         let existingComment = null;
@@ -156,12 +176,9 @@ async function carregarDetalhesCurso() {
             existingComment = curso.comments.find(c => String(c.author.id) === String(loggedUserId));
         }
 
-        // Limpa o formulário antes de re-preencher
         if (elements.commentForm) {
             elements.commentForm.reset();
-            // Limpa o conteúdo (caso o form.reset não remova o valor de textarea)
             if(elements.commentContent) elements.commentContent.value = '';
-            // Limpa a ação padrão
             elements.commentForm.setAttribute('data-action', 'create');
         }
 
@@ -172,13 +189,11 @@ async function carregarDetalhesCurso() {
             formMessage = '<p class="error-message">Como professor, você não pode avaliar este curso.</p>';
             showForm = false;
         }
-        // LÓGICA CHAVE: Se o comentário EXISTE, permite MODIFICAÇÃO
         else if (existingComment) {
             formMessage = '<p style="color: var(--color-success);">Você já avaliou este curso. Modifique sua avaliação abaixo.</p>';
             showForm = true;
 
             if (elements.commentForm) {
-                // Preenche o rating (arredonda para o inteiro mais próximo para preencher o rádio)
                 const ratingValue = Math.round(existingComment.rating);
                 const starInput = document.getElementById(`star${ratingValue}`);
                 if (starInput) {
@@ -187,19 +202,16 @@ async function carregarDetalhesCurso() {
 
                 if(elements.commentContent) elements.commentContent.value = existingComment.content;
 
-                // Configura a ação para UPDATE (será enviado via PUT)
                 if(elements.submitButton) elements.submitButton.textContent = 'Atualizar Avaliação';
                 elements.commentForm.setAttribute('data-action', 'update');
             }
         } else {
-            // NOVO COMENTÁRIO (Criação - será enviado via POST)
             if (elements.commentForm && elements.submitButton) {
                 elements.submitButton.textContent = 'Enviar Avaliação';
                 elements.commentForm.setAttribute('data-action', 'create');
             }
         }
 
-        // 6.3 Lógica final de exibição do formulário
         if (elements.commentForm) {
             if (showForm) {
                 elements.commentForm.setAttribute('data-course-id', courseId);
@@ -211,6 +223,7 @@ async function carregarDetalhesCurso() {
             }
         }
 
+
     } catch (error) {
         console.error("Erro fatal ao carregar detalhes do curso:", error);
         elements.title.textContent = "Erro ao Carregar Detalhes";
@@ -218,12 +231,102 @@ async function carregarDetalhesCurso() {
     }
 }
 
-/**
- * Renderiza a lista de comentários.
- */
+async function handlePaymentSubmit(e, courseId, price) {
+    e.preventDefault();
+
+    const cardNumber = document.getElementById('card-number').value.trim();
+    const cardName = document.getElementById('card-name').value.trim();
+    const cardExpiry = document.getElementById('card-expiry').value.trim();
+    const cardCvv = document.getElementById('card-cvv').value.trim();
+
+    const studentIdStr = getUserId();
+    const courseIdStr = courseId;
+
+    const studentIdNum = Number(studentIdStr);
+    const courseIdNum = Number(courseIdStr);
+
+    if (!studentIdStr || studentIdStr === 'null' || isNaN(studentIdNum)) {
+        Swal.fire('Erro', 'ID do estudante inválido. Certifique-se de que está logado corretamente.', 'error');
+        return;
+    }
+    if (!courseIdStr || courseIdStr === 'null' || isNaN(courseIdNum)) {
+        Swal.fire('Erro', 'ID do curso inválido.', 'error');
+        return;
+    }
+    console.log(`Tentando matricular Estudante ID: ${studentIdNum} no Curso ID: ${courseIdNum}`);
+
+    if (cardNumber.length < 16 || cardName.length < 3 || cardExpiry.length < 5 || cardCvv.length < 3) {
+        Swal.fire('Atenção', 'Preencha todos os dados do cartão corretamente.', 'warning');
+        return;
+    }
+
+    document.getElementById('payment-modal').style.display = 'none';
+    Swal.fire({
+        title: 'Processando Pagamento...',
+        text: 'Aguarde a confirmação da transação.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    try {
+        const buyResponse = await fetch(`http://localhost:8080/Students/${studentIdNum}/courses/${courseIdNum}`, {
+
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                pricePaid: price
+            })
+        });
+
+        if (buyResponse.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Compra Realizada!',
+                text: `O curso ${courseIdNum} foi adicionado ao seu perfil.`,
+                timer: 3000
+            }).then(() => {
+                window.location.reload();
+            });
+        } else {
+            const errorData = await buyResponse.json().catch(() => ({ message: 'Erro desconhecido ou servidor não retornou JSON.' }));
+            console.error("Erro do Backend:", buyResponse.status, errorData);
+
+            let errorMessage = errorData.message || 'Ocorreu um erro ao processar a compra.';
+
+            if (buyResponse.status === 404) {
+                errorMessage = 'Erro 404: Aluno ou Curso não encontrado no servidor. Verifique os IDs.';
+            } else if (buyResponse.status === 409) {
+                errorMessage = 'Você já está matriculado neste curso.';
+            } else if (buyResponse.status >= 500) {
+                errorMessage = 'Erro interno do servidor ao processar a matrícula.';
+            }
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Falha na Transação!',
+                text: errorMessage,
+                timer: 5000
+            });
+        }
+    } catch (error) {
+        console.error("Erro ao registrar a compra:", error);
+        Swal.fire('Erro de Rede', 'Não foi possível conectar ao servidor para finalizar a compra.', 'error');
+    }
+}
+
 function renderizarComentarios(comments) {
     const container = document.getElementById('comments-container');
     container.innerHTML = '';
+
+    const loggedUserId = getUserId();
+    const loggedUserType = getUserType();
+    const courseTeacherId = String(document.getElementById('course-teacher-id').value);
 
     if (comments.length === 0) {
         container.innerHTML = '<p>Este curso ainda não possui avaliações.</p>';
@@ -234,15 +337,16 @@ function renderizarComentarios(comments) {
 
     comments.forEach(comment => {
         const formattedDate = new Date(comment.createdAt).toLocaleDateString('pt-BR', { year: 'numeric', month: 'short', day: 'numeric' });
-        // O `authorName` vem do backend, garantindo o nome do autor mesmo se o objeto `author` for parcial
         const authorName = comment.authorName || (comment.author && comment.author.name ? comment.author.name : 'Usuário Desconhecido');
 
         const rating = comment.rating || 0;
         const filledStars = '★'.repeat(Math.floor(rating));
         const emptyStars = '☆'.repeat(5 - Math.floor(rating));
+        const isTeacherOfCourse = loggedUserType === 'PROFESSOR' && String(loggedUserId) === courseTeacherId;
+        const needsReplyForm = isTeacherOfCourse && !comment.response;
 
         const commentHtml = `
-            <div class="comment-item">
+            <div class="comment-item" data-comment-id="${comment.id}">
                 <div class="comment-header">
                     <strong>${authorName}</strong>
                     <span>${formattedDate}</span>
@@ -258,27 +362,80 @@ function renderizarComentarios(comments) {
                         <p style="margin: 0;">${comment.response}</p>
                     </div>
                 ` : ''}
+
+                ${needsReplyForm ? `
+                    <form class="reply-form" data-comment-id="${comment.id}" style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
+                        <textarea class="form-textarea reply-content" placeholder="Responda o aluno..." required style="margin-bottom: 5px;"></textarea>
+                        <button type="submit" class="btn btn-sm btn-primary">Responder</button>
+                    </form>
+                ` : ''}
             </div>
         `;
         container.innerHTML += commentHtml;
     });
+
+    async function handleReplySubmit(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const commentId = form.getAttribute('data-comment-id');
+        const replyContent = form.querySelector('.reply-content').value.trim();
+        const professorId = getUserId();
+
+        if (!replyContent || replyContent.length < 5) {
+            Swal.fire('Erro', 'A resposta deve ter pelo menos 5 caracteres.', 'warning');
+            return;
+        }
+
+        const payload = {
+            professorId: Number(professorId),
+            reply: replyContent
+        };
+
+        try {
+            const response = await fetch(`http://localhost:8080/comments/${commentId}/reply`, {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Resposta Enviada!',
+                    text: 'A resposta foi registrada com sucesso.',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    position: "top"
+                }).then(() => {
+                    carregarDetalhesCurso();
+                });
+            } else {
+                const errorData = await response.json();
+                Swal.fire('Falha ao Responder', errorData.message || 'Ocorreu um erro ao enviar a resposta.', 'error');
+            }
+
+        } catch (error) {
+            console.error("Erro ao enviar resposta:", error);
+            Swal.fire('Erro de Rede', 'Não foi possível conectar ao servidor para responder.', 'error');
+        }
+    }
+
+    document.querySelectorAll('.reply-form').forEach(form => {
+        form.addEventListener('submit', handleReplySubmit);
+    });
 }
 
-/**
- * Envia ou Atualiza o comentário e a avaliação para o backend (POST ou PUT).
- */
 async function handleCommentSubmit(e) {
     e.preventDefault();
 
     const form = e.target;
     const courseId = String(form.getAttribute('data-course-id'));
-    // Obtém a ação definida na função carregarDetalhesCurso
     const actionType = form.getAttribute('data-action') || 'create';
     const userId = String(getUserId());
     const ratingElement = document.querySelector('input[name="rating"]:checked');
     const content = document.getElementById('comment-content').value.trim();
 
-    // 1. Validações
     if (!userId || !courseId || userId === 'null' || courseId === 'null') {
         Swal.fire('Erro', 'Você precisa estar logado para comentar.', 'warning');
         return;
@@ -292,7 +449,6 @@ async function handleCommentSubmit(e) {
         return;
     }
 
-    // 2. Payload (Garantindo que os IDs e Rating são Numbers)
     const commentData = {
         userId: Number(userId),
         courseId: Number(courseId),
@@ -300,7 +456,6 @@ async function handleCommentSubmit(e) {
         content: content
     };
 
-    // 3. Determina o Método HTTP e URL
     const method = actionType === 'update' ? 'PUT' : 'POST';
     const url = `http://localhost:8080/comments`;
 
@@ -311,15 +466,13 @@ async function handleCommentSubmit(e) {
             body: JSON.stringify(commentData)
         });
 
-        // 4. Tratamento de Erro de Regra de Negócio (403 Forbidden)
         if (response.status === 403 || response.status === 400) {
             const errorData = await response.json();
             Swal.fire('Ação Não Permitida', errorData.message || 'Erro de regra de negócio.', 'error');
-            carregarDetalhesCurso(); // Recarrega para refletir o estado correto do formulário
+            carregarDetalhesCurso();
             return;
         }
 
-        // 5. Tratamento de Sucesso
         if (!response.ok) {
             const errorData = await response.json();
             Swal.fire('Falha ao Enviar', errorData.message || 'Ocorreu um erro ao enviar sua avaliação.', 'error');
@@ -336,7 +489,7 @@ async function handleCommentSubmit(e) {
             showConfirmButton: false,
             position: "top"
         }).then(() => {
-            carregarDetalhesCurso(); // Recarrega para atualizar a lista de comentários e o formulário
+            carregarDetalhesCurso();
         });
 
     } catch (error) {
@@ -345,25 +498,43 @@ async function handleCommentSubmit(e) {
     }
 }
 
-aplicarEventosPlay(courseId);
-
-function aplicarEventosPlay(courseId) {
+function aplicarEventosPlay(courseId, isPurchased) {
     const buttons = document.querySelectorAll(".btn-play");
+    const studentId = getUserId();
+    const userType = getUserType();
 
     buttons.forEach(btn => {
         btn.addEventListener("click", async () => {
 
             const videoId = btn.getAttribute("data-video-id");
-            const studentId = getUserId(); // estudante logado
+            const videoUrl = btn.getAttribute("data-video-url");
 
             if (!studentId) {
                 Swal.fire("Atenção!", "Faça login para assistir.", "warning");
                 return;
             }
 
-            await marcarProgressoVideo(studentId, courseId, videoId);
+            if (userType === 'ESTUDANTE' && !isPurchased) {
+                Swal.fire({
+                    title: "Acesso Restrito",
+                    text: "Você precisa comprar o curso para assistir aos vídeos. Adquira-o abaixo!",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    confirmButtonText: "Entendi"
+                });
+                return;
+            }
 
-            window.location.href = `video-player.html?courseId=${courseId}&videoId=${videoId}`;
+            if (!videoUrl) {
+                Swal.fire("Erro", "URL do vídeo não encontrada.", "error");
+                return;
+            }
+
+            if (userType === 'ESTUDANTE') {
+                await marcarProgressoVideo(studentId, courseId, videoId);
+            }
+
+            window.open(videoUrl, '_blank');
         });
     });
 }

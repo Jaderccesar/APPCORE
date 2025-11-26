@@ -31,9 +31,6 @@ public class Mission {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    //adicionar curso?
-    //metodo concluir adicioonar o aluno?
-
     @PreUpdate
     public void preUpdate() {
         this.setUpdatedAt(LocalDateTime.now());

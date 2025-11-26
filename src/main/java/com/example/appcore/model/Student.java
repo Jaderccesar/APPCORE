@@ -24,7 +24,14 @@ public class Student extends User {
     @ManyToOne
     @JoinColumn(name = "ranking_id")
     private Ranking ranking;
-    //private ArrayList<achievement> achievements;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "tb_student_course",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
