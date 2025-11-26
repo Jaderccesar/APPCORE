@@ -37,7 +37,9 @@ public class PostService {
         return postRepository.save(existing);
     }
 
-    public void delete(Post post) {
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Post com id " + id + " não encontrado"));
         postRepository.delete(post);
     }
 }
