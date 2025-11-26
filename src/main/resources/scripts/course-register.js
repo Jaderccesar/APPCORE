@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       certificateEnabled: form.certificate_enabled.checked,
       teacher: {
             id: parseInt(teacherId),
-            accountType: "TEACHER"
+            type: "TEACHER" 
           }
     };
 
