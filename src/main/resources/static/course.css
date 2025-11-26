@@ -451,3 +451,57 @@ ul {
 .btn-icon:hover {
     background: rgba(0, 0, 0, 0.05);
 }
+
+.post-card {
+    background: #fff;
+    padding: 1.8rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px #00000015;
+    transition: 0.2s ease-in-out;
+}
+
+.post-card:hover {
+    box-shadow: 0 6px 16px #00000025;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    gap: 12px;
+}
+
+.post-author-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--color-primary-100, #e6ebff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-primary-700, #3f51b5);
+}
+
+.post-meta {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 2px;
+}
+
+.post-title {
+    margin: 0 0 .8rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.post-content {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.6;
+}
+
+/* cores dos status */
+.status-ATIVA { color: #2e7d32; }
+.status-OCULTA { color: #ff9800; }
+.status-REMOVIDA { color: #d32f2f; }
