@@ -61,7 +61,7 @@
                     </div>
                     <div class="stat-item">
                         <span class="stat-value" id="badgesCount">8</span>
-                        <span class="stat-label">Badges</span>
+                        <span class="stat-label">Desafios</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-value" id="pointsCount">2.450</span>
@@ -305,12 +305,6 @@
                         <span class="badge-date">Conquistado em 22/09/2024</span>
                     </div>
                     <div class="badge-card earned">
-                        <div class="badge-icon">⚡</div>
-                        <h3 class="badge-title">Velocista</h3>
-                        <p class="badge-description">Complete 5 aulas em um dia</p>
-                        <span class="badge-date">Conquistado em 10/10/2024</span>
-                    </div>
-                    <div class="badge-card earned">
                         <div class="badge-icon">🔥</div>
                         <h3 class="badge-title">Em Chamas</h3>
                         <p class="badge-description">7 dias consecutivos estudando</p>
@@ -319,7 +313,7 @@
                     <div class="badge-card earned">
                         <div class="badge-icon">💬</div>
                         <h3 class="badge-title">Comunicador</h3>
-                        <p class="badge-description">Faça 20 posts no fórum</p>
+                        <p class="badge-description">Faça 10 posts no fórum</p>
                         <span class="badge-date">Conquistado em 18/11/2024</span>
                     </div>
                     <div class="badge-card earned">
@@ -327,12 +321,6 @@
                         <h3 class="badge-title">Graduado</h3>
                         <p class="badge-description">Complete 5 cursos</p>
                         <span class="badge-date">Conquistado em 01/12/2024</span>
-                    </div>
-                    <div class="badge-card earned">
-                        <div class="badge-icon">👥</div>
-                        <h3 class="badge-title">Colaborador</h3>
-                        <p class="badge-description">Participe de 3 eventos</p>
-                        <span class="badge-date">Conquistado em 08/12/2024</span>
                     </div>
                     <div class="badge-card earned">
                         <div class="badge-icon">⭐</div>
@@ -351,18 +339,6 @@
                         <h3 class="badge-title">Diamante</h3>
                         <p class="badge-description">Alcance 5000 pontos</p>
                         <span class="badge-progress">2450/5000 pontos</span>
-                    </div>
-                    <div class="badge-card locked">
-                        <div class="badge-icon">🏅</div>
-                        <h3 class="badge-title">Mentor</h3>
-                        <p class="badge-description">Ajude 50 alunos no fórum</p>
-                        <span class="badge-progress">12/50 ajudas</span>
-                    </div>
-                    <div class="badge-card locked">
-                        <div class="badge-icon">🎖️</div>
-                        <h3 class="badge-title">Veterano</h3>
-                        <p class="badge-description">1 ano na plataforma</p>
-                        <span class="badge-progress">5 meses</span>
                     </div>
                 </div>
 
@@ -558,33 +534,11 @@
         let userData = /*[[${user}]]*/ null;
         let currentUserId = /*[[${userId}]]*/ null;
 
-        // Função para carregar dados do usuário do backend (se não vier do Thymeleaf)
         async function loadUserDataFromBackend() {
-            // Se já temos dados do Thymeleaf, usa eles
+
             if (userData && currentUserId) {
                 loadUserData();
                 return;
-            }
-
-            // Caso contrário, tenta buscar via API
-            try {
-                const response = await fetch('/Students/current?id=' + (currentUserId || ''));
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        showNotification('Usuário não encontrado. Por favor, faça login.', 'error');
-                        return;
-                    }
-                    throw new Error('Erro ao carregar dados do usuário');
-                }
-
-                userData = await response.json();
-                currentUserId = userData.id;
-
-                loadUserData();
-            } catch (error) {
-                console.error('Erro ao carregar dados:', error);
-                showNotification('Erro ao carregar dados do perfil. Tente novamente.', 'error');
             }
         }
 

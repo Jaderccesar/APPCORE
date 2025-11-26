@@ -1,7 +1,3 @@
-// profile-progress.js
-// Coloque este script depois do profile.js (ou importe em profile.html)
-// Depende de requireUser() / getUserId() que você já tem
-
 document.addEventListener("DOMContentLoaded", () => {
   try {
     const userId = (typeof requireUser === 'function') ? requireUser() : (localStorage.getItem('userId') || null);
@@ -19,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
 async function carregarProgressDoAluno(studentId) {
   const url = `http://localhost:8080/progress/student/${studentId}`;
 
-  // elementos do DOM
   const coursesCountEl = document.getElementById('coursesCount');
   const pointsCountEl = document.getElementById('pointsCount');
   const badgesCountEl = document.getElementById('badgesCount');
@@ -36,33 +31,26 @@ async function carregarProgressDoAluno(studentId) {
 
     const data = await res.json();
 
-    // Estrutura esperada:
-    // data = { coursesInProgress: [...], stats: { coursesEnrolled, coursesCompleted, challengesSolved, points } }
-
     const stats = data.stats || {};
     const cursos = data.coursesInProgress || [];
 
-    // Atualiza contadores no header
     if (coursesCountEl) coursesCountEl.textContent = stats.coursesEnrolled != null ? stats.coursesEnrolled : '-';
     if (pointsCountEl) pointsCountEl.textContent = stats.points != null ? stats.points.toLocaleString('pt-BR') : '0';
-    // Badges: por enquanto usamos challengesSolved como proxy (ou adapte para certificates)
+
     if (badgesCountEl) badgesCountEl.textContent = stats.challengesSolved != null ? stats.challengesSolved : '0';
 
-    // Atualiza os cards de estatísticas à direita (se existirem)
-    // A página já contém 4 cards; vamos preencher seus .stat-number na ordem
     if (statsGrid) {
       const statNumbers = statsGrid.querySelectorAll('.stat-number');
-      // ordem: Cursos Inscritos, Cursos Concluídos, Desafios Resolvidos, Eventos Participados (opcional)
+
       if (statNumbers.length >= 3) {
         statNumbers[0].textContent = stats.coursesEnrolled != null ? stats.coursesEnrolled : '0';
         statNumbers[1].textContent = stats.coursesCompleted != null ? stats.coursesCompleted : '0';
         statNumbers[2].textContent = stats.challengesSolved != null ? stats.challengesSolved : '0';
-        // se houver 4º card, mantemos o valor existente ou zero
+
         if (statNumbers[3]) statNumbers[3].textContent = statNumbers[3].textContent || '0';
       }
     }
 
-    // Preenche a lista de cursos em andamento
     if (courseProgressListEl) {
       courseProgressListEl.innerHTML = '';
 
@@ -91,7 +79,6 @@ async function carregarProgressDoAluno(studentId) {
           courseProgressListEl.appendChild(item);
         });
 
-        // adiciona event listener para abrir a página do curso ao clicar no título
         courseProgressListEl.querySelectorAll('.course-title-link').forEach(el => {
           el.addEventListener('click', (ev) => {
             const courseId = ev.currentTarget.getAttribute('data-course-id');
@@ -106,7 +93,6 @@ async function carregarProgressDoAluno(studentId) {
   }
 }
 
-/* small helper */
 function escapeHtml(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
