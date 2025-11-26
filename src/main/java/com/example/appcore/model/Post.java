@@ -1,11 +1,13 @@
 package com.example.appcore.model;
 
 import com.example.appcore.enums.PostStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +32,12 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User author;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private ArrayList<Comment> comments;
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    private List<Comment> comments;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createDate = LocalDateTime.now();
+    }
 }
