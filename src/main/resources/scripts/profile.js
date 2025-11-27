@@ -19,11 +19,10 @@ function getUserType() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    currentUserId = requireUser();
+    const currentUserId = requireUser();
     const type = getUserType();
 
-    console.log(type);
-
+    console.log("User ID:", currentUserId, "Type:", type);
     const typeMap = {
         "ESTUDANTE": "STUDENT",
         "PROFESSOR": "TEACHER",
@@ -43,6 +42,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "home.html";
         return;
     }
+
+    document.querySelectorAll("[data-show]").forEach(el => {
+        const allowed = el.dataset.show.split(",");
+        if (!allowed.includes(type) && !allowed.includes("ALL")) {
+            el.style.display = "none";
+        }
+    });
 
     carregarDados(currentUserId, normalizedType);
 
@@ -328,11 +334,11 @@ function handleLogout() {
             .then(() => {
                 showNotification('Até logo!', 'info');
                 setTimeout(() => {
-                    window.location.href = '/';
+                    window.location.href = 'login.html';
                 }, 1500);
             })
             .catch(() => {
-                window.location.href = '/';
+                window.location.href = 'login.html';
             });
     }
 }

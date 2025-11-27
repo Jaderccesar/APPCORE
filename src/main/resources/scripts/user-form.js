@@ -41,8 +41,16 @@ document.getElementById("userForm").addEventListener("submit", async (e) => {
 
         if (!response.ok) throw new Error("Erro ao salvar");
 
-        const data = await response.json();
-        alert("Usuário criado com sucesso!");
+        Swal.fire({
+          icon: "success",
+          title: "",
+          text: "Usuário cadastrado com sucesso!",
+          timer: 2000,
+          showConfirmButton: false,
+          position: "top",
+        }).then(() => {
+             window.location.href = `login.html`;
+        });
 
     } catch (err) {
         alert("Erro ao criar usuário");

@@ -6,6 +6,16 @@ const formCreatePost = document.getElementById("form-create-post");
 
 // Chamada inicial: exige login e carrega feed
 document.addEventListener("DOMContentLoaded", () => {
+
+    const type = getUserType();
+
+    document.querySelectorAll("[data-show]").forEach(el => {
+        const allowed = el.dataset.show.split(",");
+        if (!allowed.includes(type) && !allowed.includes("ALL")) {
+            el.style.display = "none";
+        }
+    });
+   
     requireUser();
     loadFeed();
 });

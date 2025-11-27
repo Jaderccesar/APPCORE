@@ -15,6 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+
+    document.querySelectorAll("[data-show]").forEach(el => {
+        const allowed = el.dataset.show.split(",");
+        if (!allowed.includes(userType) && !allowed.includes("ALL")) {
+            el.style.display = "none";
+        }
+    });
+
     carregarCursosDoProfessor(userId);
 });
 

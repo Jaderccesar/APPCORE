@@ -15,7 +15,7 @@ public class PostService {
     private PostRepository postRepository;
 
     public List<Post> findAll() {
-        return postRepository.findAllByOrderByCreateDateDesc();
+        return postRepository.findAllByOrderByCreateDateDesc(); 
     }
 
     public Optional<Post> findById(Long id) {
