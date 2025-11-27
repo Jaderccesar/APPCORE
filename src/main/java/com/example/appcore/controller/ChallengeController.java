@@ -3,6 +3,7 @@ package com.example.appcore.controller;
 import com.example.appcore.model.Challenge;
 import com.example.appcore.service.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class ChallengeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/save")
+    @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@RequestBody Challenge challenge) {
         try {
             Challenge saved = challengeService.save(challenge);

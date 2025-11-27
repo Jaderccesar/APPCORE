@@ -49,7 +49,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonManagedReference("comment-author")
+    @JsonBackReference("comment-author")
     private User author;
     
     @PrePersist

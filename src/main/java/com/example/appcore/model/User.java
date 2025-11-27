@@ -81,14 +81,14 @@ public abstract class User {
     private Address address;
 
     @OneToMany(mappedBy = "author")
-    @JsonBackReference("post-author") 
+    @JsonManagedReference("post-author")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Timeline> timeline = new ArrayList<>();
 
     @OneToMany(mappedBy = "author")
-    @JsonBackReference("comment-author")
+    @JsonManagedReference("comment-author")
     private List<Comment> comments = new ArrayList<>();
 
     @PreUpdate

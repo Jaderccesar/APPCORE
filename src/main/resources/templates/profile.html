@@ -564,17 +564,6 @@
                 return;
             }
 
-            try {
-                const response = await fetch('/Students/current?id=' + (currentUserId || ''));
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        showNotification('Usuário não encontrado. Por favor, faça login.', 'error');
-                        return;
-                    }
-                    throw new Error('Erro ao carregar dados do usuário');
-                }
-
                 userData = await response.json();
                 currentUserId = userData.id;
 

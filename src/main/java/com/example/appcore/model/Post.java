@@ -1,6 +1,7 @@
 package com.example.appcore.model;
 
 import com.example.appcore.enums.PostStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -30,11 +31,11 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonManagedReference("post-author")
+    @JsonBackReference("post-author")
     private User author; 
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonManagedReference("post-comments")
+    @JsonBackReference("post-comments")
     private List<Comment> comments;
 
     @PrePersist

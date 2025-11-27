@@ -99,7 +99,7 @@ public class CommentService {
         reply.setAuthor(author);
         reply.setAuthorName(author.getName());
         reply.setCourse(parent.getCourse());
-        reply.setParent(parent); // 🔥 encadeamento
+        reply.setParent(parent);
 
         parent.getReplies().add(reply);
 
