@@ -1,15 +1,17 @@
 package com.example.appcore.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import com.example.appcore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.appcore.enums.AccountType;
 import com.example.appcore.enums.Gender;
+import com.example.appcore.model.Post;
 import com.example.appcore.model.Student;
 import com.example.appcore.model.Teacher;
 import com.example.appcore.model.User;
@@ -19,11 +21,17 @@ import com.example.appcore.repository.TeacherRepository;
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+
     @Autowired
     private StudentRepository studentRepository;
 
     @Autowired
     private TeacherRepository teacherRepository;
+
+    UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User createUserFromMap(Map<String, Object> data) {
 
@@ -63,24 +71,32 @@ public class UserService {
     
     public User login(String email, String password) {
 
-    // tenta primeiro como estudante
-    Optional<Student> student = studentRepository.findByEmail(email);
-    if (student.isPresent()) {
+      // tenta primeiro como estudante
+      Optional<Student> student = studentRepository.findByEmail(email);
+      if (student.isPresent()) {
         if (student.get().getPassword().equals(password)) {
-            return student.get();
+          return student.get();
         }
         throw new IllegalArgumentException("Senha incorreta");
-    }
+      }
 
-    // tenta como professor
-    Optional<Teacher> teacher = teacherRepository.findByEmail(email); 
-    if (teacher.isPresent()) {
+      // tenta como professor
+      Optional<Teacher> teacher = teacherRepository.findByEmail(email);
+      if (teacher.isPresent()) {
         if (teacher.get().getPassword().equals(password)) {
-            return teacher.get();
+          return teacher.get();
         }
         throw new IllegalArgumentException("Senha incorreta");
-    }
+      }
 
-    throw new IllegalArgumentException("Usuário não encontrado");
+      throw new IllegalArgumentException("Usuário não encontrado");
+    }
+    
+    public Optional<User> findById(Long id) {
+      return userRepository.findById(id);
+    }
+    
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

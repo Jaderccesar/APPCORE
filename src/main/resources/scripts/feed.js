@@ -25,13 +25,14 @@ async function loadFeed() {
     postsContainer.innerHTML = "<p>Carregando posts...</p>";
 
     try {
-        const response = await fetch(`${API_BASE}/posts`);
-        if (!response.ok) {
-            throw new Error("Erro ao carregar posts");
-        }
+        // Carrega todos os usuários
+        const response = await fetch("http://localhost:8080/users/list");
+        if (!response.ok) throw new Error("Erro ao carregar usuários");
 
-        const posts = await response.json();
-        renderPosts(posts);
+        const users = await response.json();
+
+        // Renderiza o feed com posts + autores
+        renderPostsFromUsers(users);
 
     } catch (error) {
         console.error("Erro:", error);
@@ -40,46 +41,46 @@ async function loadFeed() {
 }
 
 
-function renderPosts(posts) {
-    if (!posts || posts.length === 0) {
-        postsContainer.innerHTML = "<p>Nenhum post encontrado.</p>";
-        return;
-    }
-
+function renderPostsFromUsers(users) {
     postsContainer.innerHTML = "";
 
-    posts.forEach(post => {
-        const author = post.author || {};
-        
-        const item = document.createElement("div");
-        item.classList.add("post-card");
+    // Percorre todos os usuários
+    for (const user of users) {
 
-        item.innerHTML = `
-            <div class="post-header">
+        // Se o usuário não tem posts → ignora
+        if (!user.posts || user.posts.length === 0) continue;
 
-                <div>
-                    <strong>${author.name ?? "Autor desconhecido"}</strong>
+        // Percorre todos os posts desse usuário
+        for (const post of user.posts) {
 
-                    <div class="post-meta">
-                        ${new Date(post.createDate).toLocaleString()}
-                        • <span class="status-${post.status}">${post.status}</span>
+            const item = document.createElement("div");
+            item.classList.add("post-card");
+
+            item.innerHTML = `
+                <div class="post-header">
+                    <div>
+                        <strong>${user.name}</strong>
+
+                        <div class="post-meta">
+                            ${new Date(post.createDate).toLocaleString()}
+                            • <span class="status-${post.status}">${post.status}</span>
+                        </div>
+
+                        <div class="post-author-extra">
+                            <small>${user.accountType}</small><br>
+                            <small>Área: ${user.specializedArea ?? "Não informada"}</small>
+                        </div>
                     </div>
-
-                    <div class="post-author-extra">
-                        <small>${author.accountType ?? "-"}</small><br>
-                        ${author.specializedArea ? `<small>Área: ${author.specializedArea}</small>` : ""}
-                    </div>
-
                 </div>
-            </div>
 
-            <h2 class="post-title">${post.title}</h2>
+                <h2 class="post-title">${post.title}</h2>
 
-            <p class="post-content">${post.content}</p>
-        `;
+                <p class="post-content">${post.content}</p>
+            `;
 
-        postsContainer.appendChild(item);
-    });
+            postsContainer.appendChild(item);
+        }
+    }
 }
 
 const modal = document.getElementById("modal-overlay");
