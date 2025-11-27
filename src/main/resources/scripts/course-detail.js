@@ -5,6 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
         window.getUserType = () => null;
     }
 
+    const type = getUserType(); 
+
+    document.querySelectorAll("[data-show]").forEach(el => {
+        const allowed = el.dataset.show.split(","); 
+
+        if (!allowed.includes(type) && !allowed.includes("ALL")) {
+            el.style.display = "none";
+        }
+    });
+
     updateNavVisibility();
     carregarDetalhesCurso();
 

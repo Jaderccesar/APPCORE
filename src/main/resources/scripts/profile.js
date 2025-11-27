@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    console.log("Type: " + type  );
     document.querySelectorAll("[data-show]").forEach(el => {
         const allowed = el.dataset.show.split(",");
         if (!allowed.includes(type) && !allowed.includes("ALL")) {
