@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Garante que as funções de autenticação estão disponíveis.
     if (typeof getUserId !== 'function' || typeof getUserType !== 'function') {
         alert("Erro de Autenticação: getUserId()/getUserType() não definidos. Inclua auth.js.");
         return;
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userId = getUserId();
     const userType = getUserType();
 
-    // Validação de Acesso
     if (!userId || userType !== 'PROFESSOR') {
         const grid = document.getElementById("teacher-courses-grid");
         grid.innerHTML = '<p class="error-message">Acesso negado. Esta página é exclusiva para Professores logados.</p>';
@@ -30,7 +28,6 @@ async function carregarCursosDoProfessor(teacherId) {
     const grid = document.getElementById("teacher-courses-grid");
     grid.innerHTML = "<p>Carregando seus cursos...</p>";
 
-    // Endpoint corrigido (use localhost ou 127.0.0.1 consistentemente)
     const endpoint = `http://localhost:8080/courses/teacher/${teacherId}`;
 
     try {

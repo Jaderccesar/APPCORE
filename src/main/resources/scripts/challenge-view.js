@@ -1,4 +1,5 @@
 const API_BASE = "http://localhost:8080/challenges";
+const PROGRESS_API = "http://localhost:8080/progress";
 
     let challengeData = null;
     let userAnswers = {};
@@ -145,68 +146,91 @@ const API_BASE = "http://localhost:8080/challenges";
         }
     }
 
-    async function submitAnswers() {
-        if (Object.keys(userAnswers).length < challengeData.questions.length) {
-            alert('Por favor, responda todas as questões antes de enviar.');
-            return;
-        }
+   async function submitAnswers() {
+       if (Object.keys(userAnswers).length < challengeData.questions.length) {
+           alert('Por favor, responda todas as questões antes de enviar.');
+           return;
+       }
 
-        let correctCount = 0;
-        challengeData.questions.forEach((q, index) => {
-            const userAnswer = userAnswers[index];
-            const correctAlt = q.alternatives.find(a => a.correct);
-            const correctLetter = ['A','B','C','D','E'][q.alternatives.indexOf(correctAlt)];
+       let correctCount = 0;
+       challengeData.questions.forEach((q, index) => {
+           const userAnswer = userAnswers[index];
+           const correctAlt = q.alternatives.find(a => a.correct);
+           const correctLetter = ['A','B','C','D','E'][q.alternatives.indexOf(correctAlt)];
 
-            if (userAnswer === correctLetter) {
-                correctCount++;
-            }
-        });
+           if (userAnswer === correctLetter) {
+               correctCount++;
+           }
+       });
 
-        const totalQuestions = challengeData.questions.length;
-        const scorePercentage = (correctCount / totalQuestions) * 100;
-        const finalScore = Math.round((scorePercentage / 100) * challengeData.maxScore);
+       const totalQuestions = challengeData.questions.length;
+       const scorePercentage = (correctCount / totalQuestions) * 100;
+       const finalScore = Math.round((scorePercentage / 100) * challengeData.maxScore);
 
-        document.getElementById('finalScore').textContent = finalScore;
-        document.getElementById('finalMaxScore').textContent = challengeData.maxScore;
-        document.getElementById('resultMessage').textContent =`Você acertou ${correctCount} de ${totalQuestions} questões (${scorePercentage.toFixed(0)}%)`;
+       try {
+           const studentId = parseInt(localStorage.getItem("userId"));
 
-        const resultIcon = document.getElementById('resultIcon');
-        if (scorePercentage >= 80) {
-            resultIcon.textContent = '🏆';
-        } else if (scorePercentage >= 60) {
-            resultIcon.textContent = '🎉';
-        } else if (scorePercentage >= 40) {
-            resultIcon.textContent = '👍';
-        } else {
-            resultIcon.textContent = '📚';
-        }
+           const body = {
+               studentId: studentId,
+               challengeId: challengeData.id,
+               score: finalScore
+           };
 
-        document.getElementById('resultModal').classList.add('show');
+           const response = await fetch(`${PROGRESS_API}/complete-challenge`, {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify(body)
+           });
 
-        // Here you would normally send the results to the backend
-        // await fetch(`${API_BASE}/submit/${challengeData.id}`, {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ answers: userAnswers, score: finalScore })
-        // });
-    }
+           if (!response.ok) {
+               const msg = await response.text();
+               alert("Erro ao registrar desafio: " + msg);
+               return;
+           }
+
+           console.log("Desafio enviado para o backend com sucesso!");
+
+       } catch (e) {
+           console.error("Erro ao enviar resultado:", e);
+           alert("Falha ao registrar resultado do desafio.");
+       }
+
+       document.getElementById('finalScore').textContent = finalScore;
+       document.getElementById('finalMaxScore').textContent = challengeData.maxScore;
+       document.getElementById('resultMessage').textContent =
+           `Você acertou ${correctCount} de ${totalQuestions} questões (${scorePercentage.toFixed(0)}%)`;
+
+       const resultIcon = document.getElementById('resultIcon');
+       if (scorePercentage >= 80) {
+           resultIcon.textContent = '🏆';
+       } else if (scorePercentage >= 60) {
+           resultIcon.textContent = '🎉';
+       } else if (scorePercentage >= 40) {
+           resultIcon.textContent = '👍';
+       } else {
+           resultIcon.textContent = '📚';
+       }
+
+       document.getElementById('resultModal').classList.add('show');
+   }
 
     document.getElementById('submitBtn').addEventListener('click', submitAnswers);
 
-    document.addEventListener('DOMContentLoaded', () => { 
-        const type = getUserType(); 
+    document.addEventListener('DOMContentLoaded', () => {
+        const type = getUserType();
+        const studentId = parseInt(localStorage.getItem("userId"));
 
         document.querySelectorAll("[data-show]").forEach(el => {
-            const allowed = el.dataset.show.split(","); 
+            const allowed = el.dataset.show.split(",");
 
             if (!allowed.includes(type) && !allowed.includes("ALL")) {
                 el.style.display = "none";
             }
         });
-        
+
         loadChallenge()
     })
-    
+
 
     window.addEventListener('beforeunload', () => {
         if (timerInterval) clearInterval(timerInterval);

@@ -34,7 +34,6 @@ public class ProgressService {
     @Autowired
     private ChallengeRepository challengeRepository;
 
-    // INSCRIÇÃO EM CURSO
     @Transactional
     public Enrollment enrollStudent(Long studentId, Long courseId) {
 
@@ -57,7 +56,6 @@ public class ProgressService {
         return enrollmentRepository.save(enrollment);
     }
 
-    // COMPLETAR VIDEO
     @Transactional
     public Map<String, Object> completeVideo(Long studentId, Long courseId, Long videoId) {
 
@@ -91,7 +89,6 @@ public class ProgressService {
         long total = enrollment.getCourse().getVideos().size();
         int pct = total == 0 ? 0 : (int) ((completed * 100) / total);
 
-        // finalizar curso
         if (completed == total && total > 0 && !enrollment.isCompleted()) {
             enrollment.setCompleted(true);
             enrollmentRepository.save(enrollment);
@@ -109,7 +106,6 @@ public class ProgressService {
         return response;
     }
 
-    // COMPLETAR DESAFIO
     @Transactional
     public ChallengeResult completeChallenge(Long studentId, Long challengeId, int score) {
 
@@ -134,7 +130,6 @@ public class ProgressService {
         return cr;
     }
 
-    // PROGRESSO GERAL DO ALUNO
     public Map<String, Object> getStudentProgress(Long studentId) {
 
         Map<String, Object> out = new HashMap<>();

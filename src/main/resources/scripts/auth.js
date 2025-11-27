@@ -9,7 +9,7 @@ function getUserType() {
 function requireUser() {
     const id = getUserId();
     if (!id) {
-        window.location.href = "login.html"; // volta pro login
+        window.location.href = "login.html";
     }
     return id;
 }

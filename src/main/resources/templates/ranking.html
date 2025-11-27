@@ -63,8 +63,6 @@
                     </div>
                     <div class="podium-stats">
                             <span class="stat-item">
-                                <span class="stat-icon">🎯</span>
-                                <span id="challenges-2">0</span> desafios
                             </span>
                     </div>
                 </div>
@@ -81,8 +79,6 @@
                     </div>
                     <div class="podium-stats">
                             <span class="stat-item">
-                                <span class="stat-icon">🎯</span>
-                                <span id="challenges-1">0</span> desafios
                             </span>
                     </div>
                 </div>
@@ -99,8 +95,6 @@
                     </div>
                     <div class="podium-stats">
                             <span class="stat-item">
-                                <span class="stat-icon">🎯</span>
-                                <span id="challenges-3">0</span> desafios
                             </span>
                     </div>
                 </div>
@@ -159,28 +153,18 @@
                     el.style.display = "none";
                 }
             });
-    const SUPABASE_URL = 'https://dyidvzicuhetnyylzluz.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5aWR2emljdWhldG55eWx6bHV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4MTQ1NjMsImV4cCI6MjA3ODM5MDU2M30.DoDx6NRevvVO-dYG-fHQ0HxGJNFRHE3NFThnkhOpG-Q';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let allRankings = [];
 
-
     async function loadRankings() {
-        const { data, error } = await supabase
-            .from('user_scores')
-            .select('*')
-            .order('total_score', { ascending: false });
+        const response = await fetch("http://localhost:8080/api/ranking");
+        const rankings = await response.json();
 
-        if (error) {
-            console.error('Erro ao carregar ranking:', error);
-            return;
-        }
-
-        allRankings = data || [];
-        displayPodium(allRankings);
-        displayRankingList(allRankings);
+        allRankings = rankings;
+        displayPodium(rankings);
+        displayRankingList(rankings);
     }
+
 
     function getInitials(name) {
         if (!name) return '?';
@@ -249,10 +233,6 @@
                 <div class="ranking-info">
                     <div class="ranking-name">${user.user_name}</div>
                     <div class="ranking-stats-small">
-                        <span class="stat-badge">
-                            <span class="stat-icon">🎯</span>
-                            ${user.challenges_completed || 0} desafios
-                        </span>
                     </div>
                 </div>
                 <div class="ranking-score">

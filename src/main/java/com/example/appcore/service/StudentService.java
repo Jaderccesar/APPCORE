@@ -3,10 +3,13 @@ package com.example.appcore.service;
 import com.example.appcore.enums.AccountType;
 import com.example.appcore.enums.Status;
 import com.example.appcore.model.Address;
+import com.example.appcore.model.Course;
 import com.example.appcore.model.Student;
 import com.example.appcore.repository.AddressRepository;
+import com.example.appcore.repository.CourseRepository;
 import com.example.appcore.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,9 @@ public class StudentService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     public List<Student> findAll() {
         return studentRepository.findAll();
@@ -130,6 +136,31 @@ public class StudentService {
         Student student = studentOpt.get();
 
         return student.getPassword() != null && student.getPassword().equals(senha);
+    }
+
+    @Transactional // Garante que a operação seja atômica
+    public void enrollStudentInCourse(Long studentId, Long courseId) {
+        // 1. Encontra o Aluno
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado com ID: " + studentId));
+
+        // 2. Encontra o Curso (Você precisa ter o modelo Course e o CourseRepository)
+        // Se o CourseRepository for outro (ex: CourseRepo), ajuste aqui.
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + courseId));
+
+        // 3. Verifica se o aluno já está matriculado
+        // OBSERVAÇÃO CRUCIAL: Esta lógica pressupõe que seu modelo Student tem um campo:
+        // private List<Course> courses;
+        if (student.getCourses().contains(course)) {
+            throw new IllegalStateException("Aluno já está matriculado neste curso.");
+        }
+
+        // 4. Adiciona o curso à lista do aluno
+        student.getCourses().add(course);
+
+        // 5. Salva o Aluno, persistindo a nova matrícula
+        studentRepository.save(student);
     }
 
 }

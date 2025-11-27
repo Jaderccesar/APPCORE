@@ -1,12 +1,9 @@
-// 1. Variáveis e Validação Inicial
 const params = new URLSearchParams(window.location.search);
 const courseId = params.get("id");
 
-// Garante que o usuário está logado e é professor ANTES de prosseguir
-const teacherId = requireUser(); // Assume que requireUser() verifica e retorna o ID
+const teacherId = requireUser();
 const type = getUserType();
 
-// O código abaixo DEVE estar na página de edição (course-edit.html)
 document.querySelectorAll("[data-show]").forEach(el => {
     const allowed = el.dataset.show.split(",");
     if (!allowed.includes(type) && !allowed.includes("ALL")) {
@@ -20,14 +17,11 @@ if (type !== "PROFESSOR") {
 }
 
 if (!courseId) {
-    // Se não há ID, pode ser uma tentativa de acesso direto. Redireciona para a lista.
     Swal.fire("Erro", "Nenhum ID de curso informado. Redirecionando...", "error").then(() => {
         window.location.href = "course-teacher.html";
     });
 }
 
-
-// 2. Carregamento dos Dados
 async function carregarCurso() {
     try {
         const res = await fetch(`http://localhost:8080/courses/${courseId}`);
@@ -40,7 +34,6 @@ async function carregarCurso() {
         const curso = await res.json();
         console.log("Curso carregado:", curso);
 
-        // Preenche os campos do formulário
         document.getElementById("title").value = curso.title || '';
         document.getElementById("description").value = curso.description || '';
         document.getElementById("price").value = curso.price || 0;
@@ -50,7 +43,6 @@ async function carregarCurso() {
         document.getElementById("workload").value = curso.workload || 0;
         document.getElementById("certificate_enabled").checked = curso.certificateEnabled || false;
 
-        // Se o curso.teacher.id não for o mesmo do loggedUserId, o professor não deve editar.
         const courseTeacherId = curso.teacher && curso.teacher.id ? String(curso.teacher.id) : null;
         if (String(teacherId) !== courseTeacherId) {
             Swal.fire("Acesso negado", "Você não é o criador deste curso.", "error").then(() => {
@@ -67,15 +59,12 @@ async function carregarCurso() {
     }
 }
 
-// Inicializa o carregamento se o ID existir
 if (courseId) {
     carregarCurso();
 }
 
 
-// 3. Funções de Templates e Eventos (Vídeos)
 function videoTemplate(id, index, title, description, url) {
-    // Seu template de vídeo
     return `
     <div class="video-item" 
         data-id="${id ?? ''}" 
@@ -133,14 +122,12 @@ function carregarVideos(videos) {
     });
 }
 
-// Listener para Adicionar Vídeo
 document.getElementById("add-video-btn").addEventListener("click", () => {
     const container = document.getElementById("videos-container");
     const count = document.querySelectorAll(".video-item").length + 1;
     container.innerHTML += videoTemplate(null, count, "", "", "");
 });
 
-// Listener para Excluir/Remover Vídeo
 document.addEventListener("click", async (e) => {
     if (e.target.classList.contains("btn-delete-video")) {
         const videoEl = e.target.closest(".video-item");
@@ -155,7 +142,6 @@ document.addEventListener("click", async (e) => {
 
         if (!confirm.isConfirmed) return;
 
-        // Requisição para o Backend
         await fetch(`http://localhost:8080/courses/${courseId}/videos/${videoId}`, {
             method: "DELETE"
         });
@@ -169,11 +155,9 @@ document.addEventListener("click", async (e) => {
 });
 
 
-// 4. Lógica de Submissão do Formulário
 document.getElementById("course-edit-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Reúne os dados do curso
     const cursoData = {
         title: document.getElementById("title").value,
         description: document.getElementById("description").value,
@@ -185,14 +169,12 @@ document.getElementById("course-edit-form").addEventListener("submit", async (e)
         certificateEnabled: document.getElementById("certificate_enabled").checked
     };
 
-    // Atualiza os dados principais do curso
     await fetch(`http://localhost:8080/courses/update/${courseId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cursoData)
     });
 
-    // Atualiza ou cria os vídeos
     const videos = [...document.querySelectorAll(".video-item")];
 
     for (const v of videos) {
@@ -205,7 +187,6 @@ document.getElementById("course-edit-form").addEventListener("submit", async (e)
 
         let videoUrl = existingUrl;
 
-        // Se um novo arquivo foi selecionado, faz o upload
         if (file) {
             const fd = new FormData();
             fd.append("file", file);
@@ -226,16 +207,13 @@ document.getElementById("course-edit-form").addEventListener("submit", async (e)
             orderNumber: Number(order)
         };
 
-        // Requisição PUT ou POST para Vídeo
         if (id) {
-            // Atualizar Vídeo
             await fetch(`http://localhost:8080/courses/${courseId}/videos/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
         } else {
-            // Criar Novo Vídeo
             await fetch(`http://localhost:8080/courses/${courseId}/videos`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -244,7 +222,6 @@ document.getElementById("course-edit-form").addEventListener("submit", async (e)
         }
     }
 
-    // Sucesso
     Swal.fire({
         icon: "success",
         title: "Sucesso!",
@@ -253,7 +230,6 @@ document.getElementById("course-edit-form").addEventListener("submit", async (e)
         showConfirmButton: false,
         position: "top",
     }).then(() => {
-        // Volta para a lista de cursos do professor
         window.location.href = `course-teacher.html`;
     });
 });

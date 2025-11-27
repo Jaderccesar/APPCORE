@@ -41,10 +41,6 @@ public class ChallengeService {
             throw new IllegalArgumentException("Descrição inválida");
         }
 
-        if (challenge.getDifficulty() == null) {
-            throw new IllegalArgumentException("Dificuldade inválida");
-        }
-
         challenge.setCreateDate(LocalDateTime.now());
         challenge.setUpdateDate(LocalDateTime.now());
 

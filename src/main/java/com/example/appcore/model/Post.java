@@ -1,7 +1,7 @@
 package com.example.appcore.model;
 
 import com.example.appcore.enums.PostStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @Setter 
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
+@AllArgsConstructor 
 @NoArgsConstructor
 @Table(name = "tb_post")
 public class Post {
@@ -24,16 +24,17 @@ public class Post {
     private Long id;
     private String title;
     private String content;
-    private LocalDateTime createDate;
+    private LocalDateTime createDate = LocalDateTime.now();
     @Enumerated(EnumType.STRING)
     private PostStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User author;
+    @JsonManagedReference("post-author")
+    private User author; 
 
-    @OneToMany(mappedBy = "post")
-    @JsonIgnore
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @JsonManagedReference("post-comments")
     private List<Comment> comments;
 
     @PrePersist

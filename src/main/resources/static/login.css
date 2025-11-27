@@ -1,11 +1,10 @@
-/* Reset */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Design Tokens */
 :root {
     --background: hsl(0, 0%, 100%);
     --foreground: hsl(0, 0%, 15%);
@@ -18,14 +17,12 @@
     --muted-foreground: hsl(0, 0%, 45%);
 }
 
-/* Geral */
 body {
     font-family: Arial, sans-serif;
     background: var(--background);
     color: var(--foreground);
 }
 
-/* Header */
 .header {
     width: 100%;
     background: white;

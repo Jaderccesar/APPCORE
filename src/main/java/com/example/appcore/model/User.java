@@ -4,7 +4,9 @@ import com.example.appcore.enums.AccountType;
 import com.example.appcore.enums.FavoriteLanguage;
 import com.example.appcore.enums.Gender;
 import com.example.appcore.enums.Status;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -71,18 +73,23 @@ public abstract class User {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-phones")
     private List<Telephone> phones = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @OneToMany(mappedBy = "author")
+    @JsonBackReference("post-author") 
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Timeline> timeline = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author")
+    @JsonBackReference("comment-author")
+    private List<Comment> comments = new ArrayList<>();
 
     @PreUpdate
     public void preUpdate() {
