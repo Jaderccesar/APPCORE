@@ -72,6 +72,17 @@ async function carregarDetalhesCurso() {
 
         let curso = await response.json();
 
+        let comments = [];
+        try {
+            const commentsResponse = await fetch(`http://localhost:8080/comments/course/${courseId}`);
+            if (commentsResponse.ok) {
+                comments = await commentsResponse.json();
+            } else {
+                console.warn("Falha ao carregar comentários do endpoint dedicado.");
+            }
+        } catch (commentError) {
+            console.error("Erro de rede ao buscar comentários:", commentError);
+        }
 
         elements.title.textContent = curso.title;
         elements.titlePage.textContent = `${curso.title} - Detalhes`;
@@ -130,7 +141,7 @@ async function carregarDetalhesCurso() {
 
         let buttonHtml = '';
 
-          if (loggedUserType === 'ESTUDANTE' && curso.isPurchased) {
+        if (loggedUserType === 'ESTUDANTE' && curso.isPurchased) {
             buttonHtml = `
                 <button class="buy-button" disabled style="background-color: var(--color-success); cursor: default;">
                    ✅ Curso Adquirido
@@ -167,15 +178,15 @@ async function carregarDetalhesCurso() {
         }
 
         if (elements.commentsContainer) {
-            renderizarComentarios(curso.comments || []);
+            renderizarComentarios(comments || []);
         }
 
         let formMessage = '';
         let showForm = true;
-        let existingComment = null;
 
-        if (curso.comments) {
-            existingComment = curso.comments.find(c => String(c.author.id) === String(loggedUserId));
+        let existingComment = null;
+        if (comments && loggedUserId) {
+            existingComment = comments.find(c => c.author && String(c.author.id) === String(loggedUserId));
         }
 
         if (elements.commentForm) {

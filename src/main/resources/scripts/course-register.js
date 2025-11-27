@@ -115,19 +115,17 @@ document.addEventListener("DOMContentLoaded", () => {
             orderNumber: parseInt(orderNumber)
           })
         });
-
-        Swal.fire({
-          icon: "success",
-          title: "",
-          text: "Curso cadastrado com sucesso!",
-          timer: 2000,
-          showConfirmButton: false,
-          position: "top",
-        }).then(() => {
-             window.location.href = `course-teacher.html`;
-        });
-
       }
+        Swal.fire({
+            icon: "success",
+            title: "",
+            text: "Curso cadastrado com sucesso!",
+            timer: 2000,
+            showConfirmButton: false,
+            position: "top",
+        }).then(() => {
+            window.location.href = `course-teacher.html`;
+        });
     } catch (err) {
 
       Swal.fire({

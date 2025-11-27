@@ -188,23 +188,36 @@
 
     function displayPodium(rankings) {
 
+        const BASE_AVATAR_URL = "http://localhost:8080";
+
         for (let i = 0; i < 3 && i < rankings.length; i++) {
             const user = rankings[i];
             const position = i + 1;
 
             const nameEl = document.getElementById(`name-${position}`);
             const scoreEl = document.getElementById(`score-${position}`);
-            const challengesEl = document.getElementById(`challenges-${position}`);
             const avatarEl = document.getElementById(`avatar-${position}`);
 
             if (nameEl) nameEl.textContent = user.user_name;
             if (scoreEl) {
                 scoreEl.innerHTML = `<span class="score-value">${user.total_score.toLocaleString('pt-BR')}</span> pts`;
             }
-            if (challengesEl) challengesEl.textContent = user.challenges_completed || 0;
+
             if (avatarEl) {
-                avatarEl.style.background = getAvatarColor(i);
-                avatarEl.querySelector('.avatar-initials').textContent = getInitials(user.user_name);
+                const initialsSpan = avatarEl.querySelector('.avatar-initials');
+
+                if (user.avatarUrl) {
+                    const fullUrl = `${BASE_AVATAR_URL}${user.avatarUrl}`;
+
+                    avatarEl.style.backgroundImage = `url(${fullUrl})`;
+                    avatarEl.style.backgroundSize = 'cover';
+                    avatarEl.style.backgroundPosition = 'center';
+                    initialsSpan.style.display = 'none';
+                } else {
+                    avatarEl.style.background = getAvatarColor(i);
+                    initialsSpan.textContent = getInitials(user.user_name);
+                    initialsSpan.style.display = 'block';
+                }
             }
         }
     }
@@ -214,6 +227,7 @@
         listContainer.innerHTML = '';
 
         const restOfRankings = rankings.slice(3);
+        const BASE_AVATAR_URL = "http://localhost:8080";
 
         if (restOfRankings.length === 0) {
             listContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: var(--color-gray-600);">Nenhum outro usuário no ranking ainda.</p>';
@@ -225,21 +239,32 @@
             const rankingItem = document.createElement('div');
             rankingItem.className = 'ranking-item';
 
+            let avatarStyle = '';
+            let initialsDisplay = 'block';
+
+            if (user.avatarUrl) {
+                const fullUrl = `${BASE_AVATAR_URL}${user.avatarUrl}`;
+                avatarStyle = `background-image: url('${fullUrl}'); background-size: cover; background-position: center;`;
+                initialsDisplay = 'none';
+            } else {
+                avatarStyle = `background: ${getAvatarColor(position - 1)};`;
+            }
+
             rankingItem.innerHTML = `
-                <div class="ranking-position">${position}º</div>
-                <div class="ranking-avatar" style="background: ${getAvatarColor(position - 1)}">
-                    <span class="avatar-initials">${getInitials(user.user_name)}</span>
+            <div class="ranking-position">${position}º</div>
+            <div class="ranking-avatar" style="${avatarStyle}">
+                <span class="avatar-initials" style="display: ${initialsDisplay};">${getInitials(user.user_name)}</span>
+            </div>
+            <div class="ranking-info">
+                <div class="ranking-name">${user.user_name}</div>
+                <div class="ranking-stats-small">
                 </div>
-                <div class="ranking-info">
-                    <div class="ranking-name">${user.user_name}</div>
-                    <div class="ranking-stats-small">
-                    </div>
-                </div>
-                <div class="ranking-score">
-                    <span class="score-value">${user.total_score.toLocaleString('pt-BR')}</span>
-                    <span class="score-label">pontos</span>
-                </div>
-            `;
+            </div>
+            <div class="ranking-score">
+                <span class="score-value">${user.total_score.toLocaleString('pt-BR')}</span>
+                <span class="score-label">pontos</span>
+            </div>
+        `;
 
             listContainer.appendChild(rankingItem);
         });

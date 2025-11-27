@@ -91,6 +91,9 @@ public abstract class User {
     @JsonManagedReference("comment-author")
     private List<Comment> comments = new ArrayList<>();
 
+    @Column(length = 255)
+    private String avatarUrl;
+
     @PreUpdate
     public void preUpdate() {
         this.setUpdatedAt(LocalDateTime.now());

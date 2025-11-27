@@ -30,6 +30,7 @@ public class RankingRealService {
             item.put("total_score", s.getTotalScore());
             item.put("challenges_completed", s.getNivel());
             item.put("id", s.getId());
+            item.put("avatarUrl", s.getAvatarUrl());
 
             ranking.add(item);
         }

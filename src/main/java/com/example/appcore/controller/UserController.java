@@ -5,19 +5,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.appcore.model.User;
 import com.example.appcore.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
@@ -58,5 +54,29 @@ public class UserController {
         }
 
         return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/uploadAvatar/{userId}/{accountType}")
+    public ResponseEntity<?> uploadAvatar(
+            @PathVariable Long userId,
+            @PathVariable String accountType,
+            @RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "O arquivo está vazio."));
+        }
+
+        try {
+
+            String fileUrl = userService.saveAvatarAndReturnUrl(userId, file, accountType.toUpperCase());
+
+            return ResponseEntity.ok(Map.of("avatarUrl", fileUrl, "message", "Avatar atualizado com sucesso."));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            System.err.println("Erro no upload do avatar: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("message", "Erro ao salvar o arquivo: " + e.getMessage()));
+        }
     }
 }

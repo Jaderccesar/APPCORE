@@ -319,7 +319,7 @@
                     <div class="badge-card earned">
                         <div class="badge-icon">💬</div>
                         <h3 class="badge-title">Comunicador</h3>
-                        <p class="badge-description">Faça 20 posts no fórum</p>
+                        <p class="badge-description">Faça 20 posts no feed</p>
                         <span class="badge-date">Conquistado em 18/11/2024</span>
                     </div>
                     <div class="badge-card earned">
@@ -327,12 +327,6 @@
                         <h3 class="badge-title">Graduado</h3>
                         <p class="badge-description">Complete 5 cursos</p>
                         <span class="badge-date">Conquistado em 01/12/2024</span>
-                    </div>
-                    <div class="badge-card earned">
-                        <div class="badge-icon">👥</div>
-                        <h3 class="badge-title">Colaborador</h3>
-                        <p class="badge-description">Participe de 3 eventos</p>
-                        <span class="badge-date">Conquistado em 08/12/2024</span>
                     </div>
                     <div class="badge-card earned">
                         <div class="badge-icon">⭐</div>
@@ -345,24 +339,6 @@
                         <h3 class="badge-title">Mestre dos Códigos</h3>
                         <p class="badge-description">Complete 10 cursos</p>
                         <span class="badge-progress">5/10 cursos</span>
-                    </div>
-                    <div class="badge-card locked">
-                        <div class="badge-icon">💎</div>
-                        <h3 class="badge-title">Diamante</h3>
-                        <p class="badge-description">Alcance 5000 pontos</p>
-                        <span class="badge-progress">2450/5000 pontos</span>
-                    </div>
-                    <div class="badge-card locked">
-                        <div class="badge-icon">🏅</div>
-                        <h3 class="badge-title">Mentor</h3>
-                        <p class="badge-description">Ajude 50 alunos no fórum</p>
-                        <span class="badge-progress">12/50 ajudas</span>
-                    </div>
-                    <div class="badge-card locked">
-                        <div class="badge-icon">🎖️</div>
-                        <h3 class="badge-title">Veterano</h3>
-                        <p class="badge-description">1 ano na plataforma</p>
-                        <span class="badge-progress">5 meses</span>
                     </div>
                 </div>
 
@@ -553,35 +529,7 @@
 
 </body>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-        let userData = /*[[${user}]]*/ null;
-        let currentUserId = /*[[${userId}]]*/ null;
 
-        async function loadUserDataFromBackend() {
-            if (userData && currentUserId) {
-                loadUserData();
-                return;
-            }
-
-                userData = await response.json();
-                currentUserId = userData.id;
-
-                loadUserData();
-            } catch (error) {
-                console.error('Erro ao carregar dados:', error);
-                showNotification('Erro ao carregar dados do perfil. Tente novamente.', 'error');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUserDataFromBackend();
-            setupFormHandlers();
-            setupCPFMask();
-            setupCEPMask();
-        });
-    /*]]>*/
-</script>
 
 <script src="../scripts/profile.js"></script>
 <script src="../scripts/profile-progress.js"></script>

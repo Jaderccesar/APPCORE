@@ -1,3 +1,11 @@
+let currentUserId = null;
+let userData = null;
+const typeMap = {
+    "ESTUDANTE": "STUDENT",
+    "PROFESSOR": "TEACHER",
+    "EMPRESA": "ENTERPRISE"
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
     const currentUserId = requireUser();
     const type = getUserType();
@@ -104,9 +112,29 @@ function loadUserData() {
     document.getElementById('profileName').textContent = userData.name || 'Nome do Usuário';
     document.getElementById('profileEmail').textContent = userData.email || '';
 
-    if (userData.name) {
+    const avatar = document.getElementById('profileAvatar');
+    const initialsSpan = document.getElementById('avatarInitials');
+
+    if (userData.avatarUrl) {
+
+        const fullUrl = `http://localhost:8080${userData.avatarUrl}`;
+
+        avatar.style.backgroundImage = `url(${fullUrl})`;
+        avatar.style.backgroundSize = 'cover';
+        avatar.style.backgroundPosition = 'center';
+        initialsSpan.style.display = 'none';
+
+    } else if (userData.name) {
+
         const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        document.getElementById('avatarInitials').textContent = initials;
+        initialsSpan.textContent = initials;
+        initialsSpan.style.display = 'block';
+        avatar.style.backgroundImage = 'none';
+    } else {
+
+        initialsSpan.textContent = 'UN';
+        initialsSpan.style.display = 'block';
+        avatar.style.backgroundImage = 'none';
     }
 
     updateStats();
@@ -264,9 +292,20 @@ function changeAvatar() {
     document.getElementById('avatarInput').click();
 }
 
-function handleAvatarChange(event) {
+async function handleAvatarChange(event) {
     const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
+    const type = getUserType();
+    const currentUserId = requireUser();
+
+    if (!file || !currentUserId || !type) {
+        showNotification('Erro: Falta o arquivo ou os dados do usuário.', 'error');
+        console.log(file);
+        console.log(currentUserId);
+        console.log(type);
+        return;
+    }
+
+    if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = function (e) {
             const avatar = document.getElementById('profileAvatar');
@@ -274,10 +313,36 @@ function handleAvatarChange(event) {
             avatar.style.backgroundSize = 'cover';
             avatar.style.backgroundPosition = 'center';
             document.getElementById('avatarInitials').style.display = 'none';
-
-            showNotification('Foto de perfil atualizada!', 'success');
         };
         reader.readAsDataURL(file);
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const normalizedType = typeMap[type] || type;
+
+    try {
+
+        const response = await fetch(`http://localhost:8080/users/uploadAvatar/${currentUserId}/${normalizedType}`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Falha ao enviar a imagem.');
+        }
+
+        const data = await response.json();
+
+        userData.avatarUrl = data.avatarUrl;
+
+        showNotification('Foto de perfil atualizada e salva!', 'success');
+
+    } catch (error) {
+        console.error('Erro no upload da foto:', error);
+        showNotification('Erro ao salvar a foto de perfil: ' + error.message, 'error');
     }
 }
 

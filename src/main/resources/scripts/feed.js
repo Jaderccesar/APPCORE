@@ -1,6 +1,7 @@
 
 
-const API_BASE = "http://localhost:8080";  
+const API_BASE = "http://localhost:8080";
+const BASE_AVATAR_URL = API_BASE;
 const postsContainer = document.getElementById("posts-container");
 const formCreatePost = document.getElementById("form-create-post");
 
@@ -40,6 +41,14 @@ async function loadFeed() {
     }
 }
 
+function getInitials(name) {
+    if (!name) return '?';
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+}
 
 function renderPostsFromUsers(users) {
     postsContainer.innerHTML = "";
@@ -50,6 +59,31 @@ function renderPostsFromUsers(users) {
         // Se o usuário não tem posts → ignora
         if (!user.posts || user.posts.length === 0) continue;
 
+        // === NOVO: LÓGICA DO AVATAR ===
+        let avatarHtml = '';
+        const initials = getInitials(user.name);
+
+        if (user.avatarUrl) {
+            // Se houver URL, usa a imagem
+            const fullUrl = `${BASE_AVATAR_URL}${user.avatarUrl}`;
+
+            avatarHtml = `
+                <div class="post-avatar" style="
+                    background-image: url('${fullUrl}');
+                    background-size: cover;
+                    background-position: center;
+                "></div>
+            `;
+        } else {
+            // Se não houver URL, usa as iniciais
+            avatarHtml = `
+                <div class="post-avatar post-avatar-initials">
+                    <span>${initials}</span>
+                </div>
+            `;
+        }
+        // ============================
+
         // Percorre todos os posts desse usuário
         for (const post of user.posts) {
 
@@ -58,7 +92,8 @@ function renderPostsFromUsers(users) {
 
             item.innerHTML = `
                 <div class="post-header">
-                    <div>
+                    
+                    ${avatarHtml} <div>
                         <strong>${user.name}</strong>
 
                         <div class="post-meta">
