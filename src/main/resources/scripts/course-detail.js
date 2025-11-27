@@ -130,15 +130,7 @@ async function carregarDetalhesCurso() {
 
         let buttonHtml = '';
 
-        if (loggedUserType === 'PROFESSOR' && String(loggedUserId) === teacherId) {
-            buttonHtml = `
-                <a href="course-teacher-management.html?courseId=${courseId}" 
-                   class="btn btn-primary buy-button" 
-                   style="background-color: var(--color-primary);">
-                   👩‍🏫 Gerenciar Curso
-                </a>
-            `;
-        } else if (loggedUserType === 'ESTUDANTE' && curso.isPurchased) {
+          if (loggedUserType === 'ESTUDANTE' && curso.isPurchased) {
             buttonHtml = `
                 <button class="buy-button" disabled style="background-color: var(--color-success); cursor: default;">
                    ✅ Curso Adquirido

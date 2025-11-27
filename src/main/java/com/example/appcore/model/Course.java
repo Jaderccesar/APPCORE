@@ -46,6 +46,7 @@ public class Course {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
