@@ -1,23 +1,3 @@
-function getUserType() {
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (!user) return null;
-
-    if (user.type === "TEACHER" || user.type === "STUDENT") {
-        return user.type;
-    }
-
-    if (user.accountType) {
-        if (user.accountType.toUpperCase() === "PROFESSOR") return "TEACHER";
-        if (user.accountType.toUpperCase() === "ESTUDANTE") return "STUDENT";
-    }
-
-    document.getElementById("profileName").value = userData.name || '';
-    document.getElementById("profileEmail").value = userData.email || '';
-
-    return null;
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
     const currentUserId = requireUser();
     const type = getUserType();
@@ -238,26 +218,6 @@ function setupFormHandlers() {
         };
 
         await saveUserData(currentUserId, updatedData, 'account');
-    });
-
-    document.getElementById('addressForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const addressData = {
-            street: document.getElementById('inputRua').value,
-            number: parseInt(document.getElementById('inputNumero').value) || 0,
-            complement: document.getElementById('inputComplemento').value,
-            city: document.getElementById('inputCidade').value,
-            state: '',
-            zip: document.getElementById('inputCEP').value,
-            country: 'Brasil'
-        };
-
-        const updatedData = {
-            address: addressData
-        };
-
-        await saveUserData(currentUserId, updatedData, 'address');
     });
 }
 
